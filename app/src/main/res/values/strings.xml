@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">AndroidProject</string>
+    <string name="project_name">Android University Project</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="registration_page">Registration Page</string>
+</resources>
