@@ -29,51 +29,45 @@ public class Register extends AppCompatActivity {
         pass_word=findViewById(R.id.registerpassword);
         btn2_signup=findViewById(R.id.signup2);
         mAuth=FirebaseAuth.getInstance();
-        btn2_signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = user_name.getText().toString().trim();
-                String password= pass_word.getText().toString().trim();
-                if(email.isEmpty())
-                {
-                    user_name.setError("Email is empty");
-                    user_name.requestFocus();
-                    return;
-                }
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-                {
-                    user_name.setError("Enter the valid email address");
-                    user_name.requestFocus();
-                    return;
-                }
-                if(password.isEmpty())
-                {
-                    pass_word.setError("Enter the password");
-                    pass_word.requestFocus();
-                    return;
-                }
-                if(password.length()<6)
-                {
-                    pass_word.setError("Length of the password should be more than 6");
-                    pass_word.requestFocus();
-                    return;
-                }
-                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful())
-                        {
-                            Toast.makeText(Register.this,"You are successfully Registered", Toast.LENGTH_LONG).show();
-                        }
-                        else
-                        {
-                            Toast.makeText(Register.this,"You are not Registered! Try again",Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(Register.this, MainActivity.class));
-                        }
-                    }
-                });
-
+        btn2_signup.setOnClickListener(v -> {
+            String email = user_name.getText().toString().trim();
+            String password= pass_word.getText().toString().trim();
+            if(email.isEmpty())
+            {
+                user_name.setError("Email is empty");
+                user_name.requestFocus();
+                return;
             }
+            if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+            {
+                user_name.setError("Enter the valid email address");
+                user_name.requestFocus();
+                return;
+            }
+            if(password.isEmpty())
+            {
+                pass_word.setError("Enter the password");
+                pass_word.requestFocus();
+                return;
+            }
+            if(password.length()<6)
+            {
+                pass_word.setError("Length of the password should be more than 6");
+                pass_word.requestFocus();
+                return;
+            }
+            mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
+                if(task.isSuccessful())
+                {
+                    Toast.makeText(Register.this,"You are successfully Registered", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Toast.makeText(Register.this,"You are not Registered! Try again",Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(Register.this, MainActivity.class));
+                }
+            });
+
         });
 
     }
