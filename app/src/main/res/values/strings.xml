@@ -6,4 +6,6 @@
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
     <string name="registration_page">Registration Page</string>
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 </resources>

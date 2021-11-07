@@ -1,19 +1,14 @@
 package com.example.androidproject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Register extends AppCompatActivity {
@@ -60,11 +55,12 @@ public class Register extends AppCompatActivity {
                 if(task.isSuccessful())
                 {
                     Toast.makeText(Register.this,"You are successfully Registered", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(Register.this, MainActivity.class));
                 }
                 else
                 {
                     Toast.makeText(Register.this,"You are not Registered! Try again",Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(Register.this, MainActivity.class));
+                    startActivity(new Intent(Register.this, Login.class));
                 }
             });
 
