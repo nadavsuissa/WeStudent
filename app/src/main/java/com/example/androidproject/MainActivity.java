@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import java.util.Objects;
 
@@ -18,6 +21,10 @@ public class MainActivity extends AppCompatActivity   {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Button btn_crt = findViewById(R.id.button5);
+        btn_crt.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,EditProfileActivity.class )));
+
+
 
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
@@ -38,12 +45,7 @@ public class MainActivity extends AppCompatActivity   {
     // the item click listener callback
     // to open and close the navigation
     // drawer when the icon is clicked
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
+
 }
