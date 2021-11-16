@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/textViewProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:gravity="center_horizontal"
+        android:text="@string/create_profile"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/TextViewName"
+        tools:layout_editor_absoluteX="0dp"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/TextViewName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/name"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/EditTextName"
+        tools:layout_editor_absoluteX="0dp"
+        android:textAlignment="center"/>
+
+    <EditText
+        android:id="@+id/EditTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:hint="@string/enter_your_name"
+        android:inputType="textPersonName|textCapSentences"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/TextViewSurName"
+        tools:ignore="TextContrastCheck"
+        tools:layout_editor_absoluteX="16dp"
+        android:importantForAutofill="no"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/TextViewSurName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/surname"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/EditTextSurname"
+        tools:layout_editor_absoluteX="0dp"
+        android:textAlignment="center"/>
+
+    <EditText
+        android:id="@+id/EditTextSurname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/enter_your_surname"
+        android:inputType="textPersonName|textCapSentences"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/TextViewPhoneNo"
+        tools:ignore="TextContrastCheck"
+        tools:layout_editor_absoluteX="0dp"
+        android:importantForAutofill="no" />
+
+    <TextView
+        android:id="@+id/TextViewPhoneNo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/phone_number"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/EditTextPhoneNo"
+        tools:layout_editor_absoluteX="0dp"
+        android:textAlignment="center"/>
+
+    <EditText
+        android:id="@+id/EditTextPhoneNo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:hint="@string/enter_your_phone_number"
+        android:inputType="number"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/TextViewEmail"
+
+        tools:ignore="TextFields,TextContrastCheck"
+        tools:layout_editor_absoluteX="0dp"
+        android:importantForAutofill="no" />
+
+    <TextView
+        android:id="@+id/TextViewEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/email"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/textViewEmailAddress"
+        tools:layout_editor_absoluteX="16dp"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/textViewEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:text="@string/email_address"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSaveButton"
+        tools:layout_editor_absoluteX="0dp"
+        android:textAlignment="center"/>
+
+    <Button
+        android:id="@+id/btnSaveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ok"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="32dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

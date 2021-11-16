@@ -1,14 +1,12 @@
 package com.example.androidproject;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity {
@@ -62,10 +60,8 @@ public class Login extends AppCompatActivity {
                             "Please Check Your login Credentials",
                             Toast.LENGTH_SHORT).show();
                 }
-
             });
         });
         btn_sign.setOnClickListener(v -> startActivity(new Intent(Login.this,Register.class )));
     }
-
 }
