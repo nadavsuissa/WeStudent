@@ -52,3 +52,6 @@
 	- בדיקה אם כיתה פנויה
 
 - עזר\הסבר
+
+- auto ask if long time pass
+- auto delete joined person
