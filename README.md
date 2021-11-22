@@ -1,3 +1,4 @@
+![workflow](https://github.com/nadavsuissa/AndroidProject/actions/workflows/android.yml/badge.svg)
 
 # Android Project
 
