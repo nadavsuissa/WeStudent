@@ -50,7 +50,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         String name = editTextName.getText().toString().trim();
         String surname = editTextSurname.getText().toString().trim();
         String phoneno = editTextPhoneNo.getText().toString().trim();
-        Userinformation userinformation = new Userinformation(name, surname, phoneno);
+        UserInformation userinformation = new UserInformation(name, surname, phoneno);
         FirebaseUser user = firebaseAuth.getCurrentUser();
         assert user != null;
         databaseReference.child(user.getUid()).setValue(userinformation);

@@ -1,18 +1,18 @@
 package com.example.androidproject;
 
-public class Userinformation {
+public class UserInformation {
 
     public String name;
     public String surname;
-    public String phoneno;
+    public String phone;
 
-    public Userinformation(){
+    public UserInformation() {
     }
 
-    public Userinformation(String name,String surname, String phoneno){
+    public UserInformation(String name, String surname, String phone) {
         this.name = name;
         this.surname = surname;
-        this.phoneno = phoneno;
+        this.phone = phone;
     }
 
     public String getName() {
@@ -31,11 +31,11 @@ public class Userinformation {
         this.surname = surname;
     }
 
-    public String getPhoneno() {
-        return phoneno;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhoneno(String phoneno) {
-        this.phoneno = phoneno;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
