@@ -3,22 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_edit_profile.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_login.xml" value="0.33" />
-        <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_main2.xml" value="0.35260416666666666" />
-        <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_register.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidProject/app/src/main/res/layout/fragment_login.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidProject/app/src/main/res/menu/navigation_menu.xml" value="0.20102564102564102" />
-        <entry key="..\:/AndroidProject/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2203125" />
         <entry key="..\:/Users/97252/AndroidStudioProjects/AndroidProject/app/src/main/res/layout/activity_edit_profile.xml" value="0.25" />
         <entry key="..\:/Users/97252/AndroidStudioProjects/AndroidProject/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/97252/AndroidStudioProjects/AndroidProject/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/97252/AndroidStudioProjects/AndroidProject/app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="..\:/Users/97252/AndroidStudioProjects/AndroidProject/app/src/main/res/layout/navigation_menu.xml" value="0.15729166666666666" />
         <entry key="..\:/Users/97252/AndroidStudioProjects/AndroidProject/app/src/main/res/layout/rounded_fg.xml" value="0.14673913043478262" />
-        <entry key="..\:/Users/ishay/Desktop/AndroidProject/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/ishay/Desktop/AndroidProject/app/src/main/res/layout/fragment_login.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

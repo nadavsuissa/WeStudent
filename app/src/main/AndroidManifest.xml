@@ -11,16 +11,16 @@
         android:theme="@style/Theme.AndroidProject"
         >
         <activity
-            android:name=".MainActivity"
+            android:name="com.project.westudentmain.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".EditProfileActivity"
+            android:name="com.project.westudentmain.EditProfileActivity"
             android:exported="true" />
         <activity
-            android:name=".Register"
+            android:name="com.project.westudentmain.Register"
             android:exported="true" />
         <activity
-            android:name=".Login"
+            android:name="com.project.westudentmain.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

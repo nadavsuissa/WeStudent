@@ -1,4 +1,4 @@
-package com.example.androidproject;
+package com.project.westudentmain;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.androidproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Register extends AppCompatActivity {
