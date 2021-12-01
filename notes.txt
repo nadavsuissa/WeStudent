@@ -1,0 +1,11 @@
+assingments:
+
+- connection to firebase(dealing with data transportation).
+- design with matirial.io
+- typo and xml files.
+- classes - (major controller,userInfo,groups,profile,etc)
+- activities - private profile, list of groups(recycle view), detail of specific group, login, register,etc)
+- security (option).
+
+
+כאשר מסיימים פונקציה כלשהי שאפשר להשתמש בה במקומות אחרים- לתעד! זה מאוד חשוב לתקשורת בין כולם
