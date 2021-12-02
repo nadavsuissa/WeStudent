@@ -2,6 +2,7 @@ package com.project.westudentmain;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +17,7 @@ public class Login extends AppCompatActivity {
     private EditText user_name, pass_word;
     private Button btn_login, btn_sign;
     FirebaseAuth mAuth; // private?
-
+    private static final String TAG = "Login";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,20 +32,25 @@ public class Login extends AppCompatActivity {
 
             // or just email or password are not correct
             if (email.isEmpty()) {
+                Log.d(TAG,"test");
                 user_name.setError("Email is empty");
                 user_name.requestFocus();
+                return;
             }
             else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 user_name.setError("Enter valid email");
                 user_name.requestFocus();
+                return;
             }
             else if (password.isEmpty()) {
                 pass_word.setError("Password is empty");
                 pass_word.requestFocus();
+                return;
             }
             else if (password.length() < 6) {
                 pass_word.setError("Password length needs to be at least 6");
                 pass_word.requestFocus();
+                return;
             }
             //TODO: check if user already logged in
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {

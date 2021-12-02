@@ -32,18 +32,22 @@ public class Register extends AppCompatActivity {
             if (email.isEmpty()) {
                 user_name.setError("Email is empty");
                 user_name.requestFocus();
+                return;
             }
             else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 user_name.setError("Enter the valid email address");
                 user_name.requestFocus();
+                return;
             }
             else if (password.isEmpty()) {
                 pass_word.setError("Enter a password");
                 pass_word.requestFocus();
+                return;
             }
             else if (password.length() < 6) {
                 pass_word.setError("Password length needs to be at least 6");
                 pass_word.requestFocus();
+                return;
             }
 
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
