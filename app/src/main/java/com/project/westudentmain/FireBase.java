@@ -3,6 +3,7 @@ package com.project.westudentmain;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +27,9 @@ public class FireBase {
 
     public static void emailLogin(@NonNull String email, @NonNull String password, @NonNull OnCompleteListener<AuthResult> var1) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(var1);
+    }
+    public Task<AuthResult> createUserWithEmailAndPassword(String email, String password) {
+        return mAuth.createUserWithEmailAndPassword(email, password);
     }
 
     //    TODO:check for fails
