@@ -8,43 +8,57 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button btnsave;
-    private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference;
     private EditText editTextName;
     private EditText editTextSurname;
     private EditText editTextPhoneNo;
+    private FireBase fire_base;
 
     public EditProfileActivity() {
     }
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() == null) {
+        fire_base = FireBase.getInstance();
+        if (!fire_base.loggedIn()) {
             finish();
             startActivity(new Intent(getApplicationContext(), Login.class));
         }
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+
         editTextName = findViewById(R.id.EditTextName);
         editTextSurname = findViewById(R.id.EditTextSurname);
         editTextPhoneNo = findViewById(R.id.EditTextPhoneNo);
         btnsave = findViewById(R.id.btnSaveButton);
-        FirebaseUser user = firebaseAuth.getCurrentUser();
         btnsave.setOnClickListener(this);
         TextView textViewemailname = findViewById(R.id.textViewEmailAddress);
-        textViewemailname.setText(user.getEmail());
+        textViewemailname.setText(fire_base.getEmail());
 
+        // TODO: check why it needs to be an array (probably because pointers)
+        // get last data if data is empty it will stay null so add something to catch it in `onDataChange`
+        final UserInformation[] t = {new UserInformation()};
+        fire_base.getData(t[0], new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                t[0] = snapshot.getValue(t[0].getClass());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+               //error
+            }
+        });
     }
 
     private void userInformation() {
@@ -52,10 +66,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         String surname = editTextSurname.getText().toString().trim();
         String phoneno = editTextPhoneNo.getText().toString().trim();
         UserInformation userinformation = new UserInformation(name, surname, phoneno);
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        assert user != null;
-        databaseReference.child(user.getUid()).setValue(userinformation);
-        Toast.makeText(getApplicationContext(), "User information updated", Toast.LENGTH_LONG).show();
+        boolean res = fire_base.sendData(userinformation);
+        if (res)
+            Toast.makeText(getApplicationContext(), "User information updated", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(getApplicationContext(), "User information update ERROR", Toast.LENGTH_LONG).show();
+
     }
 
     @Override
