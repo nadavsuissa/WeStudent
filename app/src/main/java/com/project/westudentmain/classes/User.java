@@ -1,6 +1,7 @@
 package com.project.westudentmain.classes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     private String user_name;
@@ -11,12 +12,14 @@ public class User {
     private Profile profile;
     //TODO: student card
 
-    private final ArrayList<User> friends; // maybe split to a manager
-    private final ArrayList<Group> groups; // maybe split to a manager
+    private final List<String> friends; // maybe split to a manager
+    private final List<Integer> groups_participant; // maybe split to a manager
+    private final List<Integer> groups_manager; // maybe split to a manager
 
     public User() {
-        this.friends = new ArrayList<User>();
-        this.groups = new ArrayList<Group>();
+        this.friends = new ArrayList<String>();
+        this.groups_participant = new ArrayList<Integer>();
+        this.groups_manager = new ArrayList<Integer>();
     }
 
     public User(String user_name, String name, String last_name, String mail, String phone) {
@@ -26,24 +29,33 @@ public class User {
         this.mail = mail;
         this.phone = phone;
 
-        this.friends = new ArrayList<User>();
-        this.groups = new ArrayList<Group>();
+        this.friends = new ArrayList<String>();
+        this.groups_participant = new ArrayList<Integer>();
+        this.groups_manager = new ArrayList<Integer>();
     }
 
-    public void addFriend(User friend){
+    public void addFriend(String friend){ //TODO: check if already exist
         this.friends.add(friend);
     }
 
-    public boolean removeFriend(String user_name){
-        return friends.removeIf(friend -> friend.getName().equals(user_name));
+    public boolean removeFriend(String user_name){ // TODO: check if works
+        return friends.removeIf(friend -> friend.equals(user_name));
     }
 
-    public void addGroup(Group group){
-        this.groups.add(group);
+    public void addGroupManage(int group){ //TODO: check if already exist
+        this.groups_manager.add(group);
     }
 
-    public boolean removeGroup(String group_name){
-        return groups.removeIf(group -> group.getGroupName().equals(group_name));
+    public boolean removeGroupManage(int group_name){
+        return groups_manager.remove((Integer)group_name);
+    }
+
+    public void addGroupParticipant(int group){ //TODO: check if already exist
+        this.groups_participant.add(group);
+    }
+
+    public boolean removeGroupParticipant(int group_name){
+        return groups_participant.remove((Integer)group_name);
     }
 
     public String getUserName() {
@@ -54,7 +66,7 @@ public class User {
         this.user_name = user_name;
     }
 
-    public ArrayList<User> getFriends() {
+    public List<String> getFriends() {
         return friends;
     }
 
@@ -98,7 +110,11 @@ public class User {
         this.profile = profile;
     }
 
-    public ArrayList<Group> getGroups() {
-        return groups;
+    public List<Integer> getGroupsParticipant() {
+        return groups_participant;
+    }
+
+    public List<Integer> getGroupsManager() {
+        return groups_manager;
     }
 }
