@@ -4,7 +4,7 @@ public class Profile {
     private String university;
     private String department;
     private String degree;
-    private int year;
+    private int year; //TODO: make it date and calculate on the fly
     private String BIO;
     private String from_where_am_i;
     //TODO: picture

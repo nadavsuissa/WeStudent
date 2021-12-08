@@ -11,11 +11,12 @@ public class User {
     private Profile profile;
     //TODO: student card
 
-    private ArrayList<User> friends;
-    private ArrayList<Group> groups;
+    private final ArrayList<User> friends; // maybe split to a manager
+    private final ArrayList<Group> groups; // maybe split to a manager
 
     public User() {
         this.friends = new ArrayList<User>();
+        this.groups = new ArrayList<Group>();
     }
 
     public User(String user_name, String name, String last_name, String mail, String phone) {
@@ -26,6 +27,7 @@ public class User {
         this.phone = phone;
 
         this.friends = new ArrayList<User>();
+        this.groups = new ArrayList<Group>();
     }
 
     public void addFriend(User friend){
