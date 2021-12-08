@@ -15,7 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 public class Register extends AppCompatActivity {
     private Button btn2_signup;
     private EditText user_name, pass_word;
-    FirebaseAuth mAuth;
+//    FirebaseAuth mAuth;
+    private FireBase fire_base;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +24,8 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         connect_items_by_id();
 
-        mAuth = FirebaseAuth.getInstance();
+        fire_base = FireBase.getInstance();
+//        mAuth = FirebaseAuth.getInstance();
 
         btn2_signup.setOnClickListener(v -> {
             String email = user_name.getText().toString().trim();
@@ -50,7 +52,8 @@ public class Register extends AppCompatActivity {
                 return;
             }
 
-            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            // TODO: add on fail listener
+            fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Register.this, MainActivity.class));

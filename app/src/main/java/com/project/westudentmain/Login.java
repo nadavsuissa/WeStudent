@@ -53,7 +53,10 @@ public class Login extends AppCompatActivity {
                 return;
             }
             //TODO: check if user already logged in
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            //TODO: show progress bar
+            //TODO: close this page when login successful
+            //TODO: check network fail
+           FireBase.emailLogin(email,password,task -> {
                 if (task.isSuccessful()) {
                     startActivity(new Intent(Login.this, MainActivity.class));
                 } else {

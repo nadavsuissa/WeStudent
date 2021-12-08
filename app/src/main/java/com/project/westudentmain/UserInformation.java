@@ -1,6 +1,6 @@
 package com.project.westudentmain;
 
-public class UserInformation {
+public class UserInformation implements FireBaseData{
 
     public String name;
     public String surname;
@@ -37,5 +37,10 @@ public class UserInformation {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public String getClassName() {
+        return "UserInformation";
     }
 }
