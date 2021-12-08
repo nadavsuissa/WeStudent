@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.project.westudentmain.classes.User;
 
 public class Register extends AppCompatActivity {
     private Button btn2_signup;
@@ -51,10 +52,15 @@ public class Register extends AppCompatActivity {
                 pass_word.requestFocus();
                 return;
             }
+//            User user = new User("user_name", "name", "last_name", email, "0563214798");
 
             // TODO: add on fail listener
             fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
+
+//                    FireBase fireBase = FireBase.getInstance();
+//                    fireBase.updateData(user);
+
                     Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Register.this, MainActivity.class));
                 } else {

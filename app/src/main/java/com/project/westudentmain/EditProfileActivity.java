@@ -31,7 +31,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         fire_base = FireBase.getInstance();
-        if (!fire_base.loggedIn()) {
+        if (!fire_base.userIsLoggedIn()) {
             finish();
             startActivity(new Intent(getApplicationContext(), Login.class));
         }
@@ -52,6 +52,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 t[0] = snapshot.getValue(t[0].getClass());
 
+//                UserInformation as = snapshot.getValue(UserInformation.class);
+//                update screen (as)
             }
 
             @Override
@@ -66,7 +68,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         String surname = editTextSurname.getText().toString().trim();
         String phoneno = editTextPhoneNo.getText().toString().trim();
         UserInformation userinformation = new UserInformation(name, surname, phoneno);
-        boolean res = fire_base.sendData(userinformation);
+        boolean res = fire_base.updateData(userinformation);
         if (res)
             Toast.makeText(getApplicationContext(), "User information updated", Toast.LENGTH_LONG).show();
         else

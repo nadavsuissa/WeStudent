@@ -12,11 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.project.westudentmain.classes.User;
 
 public class Login extends AppCompatActivity {
     private EditText user_name, pass_word;
     private Button btn_login, btn_sign;
-    FirebaseAuth mAuth; // private?
     private static final String TAG = "Login";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,6 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         connect_items_by_id();
 
-        mAuth = FirebaseAuth.getInstance();
 
         btn_login.setOnClickListener(var -> {
             String email = user_name.getText().toString().trim();
@@ -52,11 +51,13 @@ public class Login extends AppCompatActivity {
                 pass_word.requestFocus();
                 return;
             }
+
             //TODO: check if user already logged in
             //TODO: show progress bar
             //TODO: close this page when login successful
             //TODO: check network fail
            FireBase.emailLogin(email,password,task -> {
+               // TODO: start loading fragment before the last line and close in here
                 if (task.isSuccessful()) {
                     startActivity(new Intent(Login.this, MainActivity.class));
                 } else {
