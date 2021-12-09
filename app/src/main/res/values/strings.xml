@@ -32,4 +32,9 @@
     <string name="add_friend">Add Friend</string>
     <string name="delete_friend">Delete Friend</string>
     <string name="your_groups">Your Groups</string>
+    <string name="your_projects">Your Projects</string>
+    <string name="subject">Subject</string>
+    <string name="participants">Participants</string>
+    <string name="description">Description</string>
+    <string name="project_type">Project Type</string>
 </resources>
