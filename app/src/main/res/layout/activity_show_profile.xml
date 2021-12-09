@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/profilepicview"
         android:layout_width="248dp"
         android:layout_height="157dp"
         android:layout_marginTop="16dp"
@@ -37,7 +37,7 @@
         android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        app:layout_constraintTop_toBottomOf="@+id/profilepicview">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +83,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btn_settings"
         android:layout_width="121dp"
         android:layout_height="69dp"
         android:layout_marginEnd="8dp"
@@ -92,17 +92,17 @@
         app:layout_constraintTop_toBottomOf="@+id/nestedScrollView" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btn_apposted"
         android:layout_width="197dp"
         android:layout_height="69dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/all_posted_projects"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_ptilfpartners" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btn_ptilfpartners"
         android:layout_width="197dp"
         android:layout_height="69dp"
         android:layout_marginStart="16dp"
@@ -112,13 +112,13 @@
         app:layout_constraintTop_toBottomOf="@+id/nestedScrollView" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/btn_chat"
         android:layout_width="121dp"
         android:layout_height="69dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="@string/chats"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_settings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

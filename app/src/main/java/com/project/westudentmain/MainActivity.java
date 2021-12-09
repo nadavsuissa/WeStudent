@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void connect_items_by_id() {
         btn_crt = findViewById(R.id.button5);
-        btn_vpf = findViewById(R.id.button3);
+        btn_vpf = findViewById(R.id.btn_apposted);
     }
 
 
