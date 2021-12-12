@@ -36,7 +36,11 @@
             android:layout_weight="1"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
+<<<<<<< HEAD
             <requestFocus/>
+=======
+            <requestFocus></requestFocus>
+>>>>>>> 0f235f11950e2d5777a3719dfbc59b9a2ecf644f
         </EditText>
 
         <Button
@@ -44,6 +48,10 @@
             android:layout_width="125dp"
             android:layout_height="45dp"
             android:text="Send"
+<<<<<<< HEAD
             tools:ignore="TouchTargetSizeCheck"/>
+=======
+            tools:ignore="TouchTargetSizeCheck"></Button>
+>>>>>>> 0f235f11950e2d5777a3719dfbc59b9a2ecf644f
     </LinearLayout>
 </LinearLayout>

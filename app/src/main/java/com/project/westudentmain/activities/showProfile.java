@@ -1,6 +1,8 @@
 package com.project.westudentmain.activities;
 
+
 import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -21,6 +23,7 @@ public class showProfile extends AppCompatActivity {
     private Button settingsbtn,appostedbtn,ptilfpartnersbtn,chatbtn;
     private User user;
     private FireBase fire_base;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class showProfile extends AppCompatActivity {
         txt_year = findViewById(R.id.yeartextview);
         txt_bio = findViewById(R.id.biotextview);
         txt_home_town=findViewById(R.id.fwaitextview); // FWAI - From Where Am I
+
         settingsbtn = findViewById(R.id.btn_settings);
         appostedbtn = findViewById(R.id.btn_apposted);
         ptilfpartnersbtn = findViewById(R.id.btn_ptilfpartners); // PTILF - Projects that i looked for partners
