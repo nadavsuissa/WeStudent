@@ -1,6 +1,8 @@
 package com.project.westudentmain;
 
-public class UserInformation implements FireBaseData{
+import com.project.westudentmain.util.FireBaseData;
+
+public class UserInformation implements FireBaseData {
 
     public String name;
     public String surname;

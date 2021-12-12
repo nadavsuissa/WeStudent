@@ -1,6 +1,6 @@
 package com.project.westudentmain.classes;
 
-import com.project.westudentmain.FireBaseData;
+import com.project.westudentmain.util.FireBaseData;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -10,8 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.project.westudentmain.classes.User;
+import com.project.westudentmain.util.FireBase;
 
 public class Register extends AppCompatActivity {
     private Button btn2_signup;
