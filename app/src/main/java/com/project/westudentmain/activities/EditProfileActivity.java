@@ -1,7 +1,8 @@
-package com.project.westudentmain;
+package com.project.westudentmain.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,41 +13,49 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.project.westudentmain.classes.User;
+import com.project.westudentmain.util.FireBase;
+import com.project.westudentmain.util.FireBaseData;
 
-public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditProfileActivity extends AppCompatActivity {
 
-    Button btnsave;
-    private EditText editTextName;
-    private EditText editTextSurname;
-    private EditText editTextPhoneNo;
+    private Button btn_save;
+    private EditText edt_name,edt_surname,edt_phone;
     private FireBase fire_base;
+    private TextView txt_email;
+    private User user;
 
-    public EditProfileActivity() {
-    }
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        initViews();
+        FillUser();
         fire_base = FireBase.getInstance();
         if (!fire_base.userIsLoggedIn()) {
             finish();
             startActivity(new Intent(getApplicationContext(), Login.class));
         }
+        Log.d("edit profile","fire base connected");
 
-        editTextName = findViewById(R.id.EditTextName);
-        editTextSurname = findViewById(R.id.EditTextSurname);
-        editTextPhoneNo = findViewById(R.id.EditTextPhoneNo);
-        btnsave = findViewById(R.id.btnSaveButton);
-        btnsave.setOnClickListener(this);
-        TextView textViewemailname = findViewById(R.id.textViewEmailAddress);
-        textViewemailname.setText(fire_base.getEmail());
+
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userInformation();
+                sendUserData();
+                finish();
+                startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
+            }
+        });
+
+        txt_email.setText(fire_base.getEmail());
 
         // TODO: check why it needs to be an array (probably because pointers)
         // get last data if data is empty it will stay null so add something to catch it in `onDataChange`
-        final UserInformation[] t = {new UserInformation()};
+        final User[] t = {new User()};
         fire_base.getData(t[0], new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -61,14 +70,33 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                //error
             }
         });
+
+        fire_base.updateData(user);
+
+
+    }
+
+    private void FillUser() {
+
+        String name = edt_name.getText().toString().trim();
+        String surname = edt_surname.getText().toString().trim();
+        String phone_number = edt_phone.getText().toString().trim();
+        user = new User("user name",name, surname, "mail",phone_number);
+    }
+
+    private void initViews() {
+        edt_name = findViewById(R.id.EditTextName);
+        edt_surname = findViewById(R.id.EditTextSurname);
+        edt_phone = findViewById(R.id.EditTextPhoneNo);
+        btn_save = findViewById(R.id.btnSaveButton);
+        txt_email = findViewById(R.id.textViewEmailAddress);
     }
 
     private void userInformation() {
-        String name = editTextName.getText().toString().trim();
-        String surname = editTextSurname.getText().toString().trim();
-        String phoneno = editTextPhoneNo.getText().toString().trim();
-        UserInformation userinformation = new UserInformation(name, surname, phoneno);
-        boolean res = fire_base.updateData(userinformation);
+
+        // TODO: add more fields
+        User user_information = new User();
+        boolean res = fire_base.updateData(user_information);
         if (res)
             Toast.makeText(getApplicationContext(), "User information updated", Toast.LENGTH_LONG).show();
         else
@@ -76,16 +104,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view == btnsave) {
-            userInformation();
-            sendUserData();
-            finish();
-            startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
-
-        }
-    }
     private void sendUserData() {
         // Get "User UID" from Firebase > Authentification > Users.
     }

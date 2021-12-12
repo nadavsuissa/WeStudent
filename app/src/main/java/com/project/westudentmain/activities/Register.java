@@ -1,4 +1,4 @@
-package com.project.westudentmain;
+package com.project.westudentmain.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
+import com.project.westudentmain.Validation;
+import com.project.westudentmain.util.FireBase;
 
 public class Register extends AppCompatActivity {
     private Button btn2_signup;
@@ -40,10 +42,10 @@ public class Register extends AppCompatActivity {
 //                    fireBase.updateData(user);
 
                     Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(Register.this, MainActivity.class));
+                    startActivity(new Intent(Register.this, EditProfileActivity.class));
                 } else {
                     Toast.makeText(Register.this, "Error in  Registration! Try again", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(Register.this, Login.class));
+                    //startActivity(new Intent(Register.this, Login.class));
                 }
             });
 

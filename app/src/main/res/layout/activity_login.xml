@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context="com.project.westudentmain.Login">
+    tools:context="com.project.westudentmain.activities.Login">
 
     <TextView
         android:id="@+id/textView"

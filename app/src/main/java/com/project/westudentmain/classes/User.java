@@ -1,6 +1,6 @@
 package com.project.westudentmain.classes;
 
-import com.project.westudentmain.FireBaseData;
+import com.project.westudentmain.util.FireBaseData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,10 @@ public class User implements FireBaseData {
     private String mail;
     private String phone;
     private Profile profile;
+    private String photo_path; // leave it to my implementation
+
     //TODO: student card
+    //TODO: fill profile in ctor.
 
     private final List<String> friends; // maybe split to a manager
     private final List<Integer> groups_participant; // maybe split to a manager
@@ -30,6 +33,18 @@ public class User implements FireBaseData {
         this.last_name = last_name;
         this.mail = mail;
         this.phone = phone;
+
+        this.friends = new ArrayList<String>();
+        this.groups_participant = new ArrayList<Integer>();
+        this.groups_manager = new ArrayList<Integer>();
+    }
+
+    public User(User other){
+        this.user_name = other.user_name;
+        this.name = other.name;
+        this.last_name = other.last_name;
+        this.mail = other.mail;
+        this.phone = other.phone;
 
         this.friends = new ArrayList<String>();
         this.groups_participant = new ArrayList<Integer>();

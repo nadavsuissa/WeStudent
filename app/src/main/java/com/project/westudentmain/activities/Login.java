@@ -1,4 +1,4 @@
-package com.project.westudentmain;
+package com.project.westudentmain.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.project.westudentmain.classes.User;
+import com.project.westudentmain.Validation;
+import com.project.westudentmain.util.FireBase;
 
 public class Login extends AppCompatActivity {
     private EditText user_name, pass_word;
@@ -38,10 +38,10 @@ public class Login extends AppCompatActivity {
             //TODO: show progress bar
             //TODO: close this page when login successful
             //TODO: check network fail
-           FireBase.emailLogin(email,password,task -> {
+           FireBase.emailLogin(email,password, task -> {
                // TODO: start loading fragment before the last line and close in here
                 if (task.isSuccessful()) {
-                    startActivity(new Intent(Login.this, MainActivity.class));
+                    startActivity(new Intent(Login.this, showProfile.class));
                 } else {
                     Toast.makeText(Login.this,
                             "email or password are not correct",

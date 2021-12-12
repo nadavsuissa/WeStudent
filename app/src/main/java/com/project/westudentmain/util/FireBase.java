@@ -1,4 +1,4 @@
-package com.project.westudentmain;
+package com.project.westudentmain.util;
 
 import androidx.annotation.NonNull;
 
@@ -10,7 +10,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.project.westudentmain.classes.User;
+
+
+//TODO this class contain:
+// - connection to firebase,add\\update\\remove\\withdraw users,
+// - communication with share preferences
+// - sign in with google and facebook (optional)
+
 
 public class FireBase {
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
