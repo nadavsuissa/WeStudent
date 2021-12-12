@@ -1,4 +1,4 @@
-package com.project.westudentmain;
+package com.project.westudentmain.activities;
 
 import android.content.Intent;
 import android.os.Bundle;

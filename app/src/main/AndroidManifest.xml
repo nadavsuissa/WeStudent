@@ -10,34 +10,34 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
         <activity
-            android:name="com.project.westudentmain.showProject"
+            android:name="com.project.westudentmain.activities.showProject"
             android:exported="false" />
         <activity
-            android:name="com.project.westudentmain.showGroup"
+            android:name="com.project.westudentmain.activities.showGroup"
             android:exported="false" />
         <activity
-            android:name="com.project.westudentmain.showFriends"
+            android:name="com.project.westudentmain.activities.showFriends"
             android:exported="false" />
         <activity
-            android:name="com.project.westudentmain.showChat"
+            android:name="com.project.westudentmain.activities.showChat"
             android:exported="true" />
         <activity
-            android:name="com.project.westudentmain.showSettings"
+            android:name="com.project.westudentmain.activities.showSettings"
             android:exported="false" />
         <activity
-            android:name="com.project.westudentmain.showProfile"
+            android:name="com.project.westudentmain.activities.showProfile"
             android:exported="false" />
         <activity
-            android:name="com.project.westudentmain.MainActivity"
+            android:name="com.project.westudentmain.activities.MainActivity"
             android:exported="true" />
         <activity
-            android:name="com.project.westudentmain.EditProfileActivity"
+            android:name="com.project.westudentmain.activities.EditProfileActivity"
             android:exported="true" />
         <activity
-            android:name="com.project.westudentmain.Register"
+            android:name="com.project.westudentmain.activities.Register"
             android:exported="true" />
         <activity
-            android:name="com.project.westudentmain.Login"
+            android:name="com.project.westudentmain.activities.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

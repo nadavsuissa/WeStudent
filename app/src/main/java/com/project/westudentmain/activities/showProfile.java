@@ -1,4 +1,4 @@
-package com.project.westudentmain;
+package com.project.westudentmain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;

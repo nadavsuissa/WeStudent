@@ -1,4 +1,4 @@
-package com.project.westudentmain;
+package com.project.westudentmain.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import com.example.androidproject.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.project.westudentmain.UserInformation;
 import com.project.westudentmain.util.FireBase;
 
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
