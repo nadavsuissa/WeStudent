@@ -29,28 +29,10 @@ public class Login extends AppCompatActivity {
             String email = user_name.getText().toString().trim();
             String password = pass_word.getText().toString().trim();
 
-            // or just email or password are not correct
-            if (email.isEmpty()) {
-                Log.d(TAG,"test");
-                user_name.setError("Email is empty");
-                user_name.requestFocus();
-                return;
-            }
-            else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                user_name.setError("Enter valid email");
-                user_name.requestFocus();
-                return;
-            }
-            else if (password.isEmpty()) {
-                pass_word.setError("Password is empty");
-                pass_word.requestFocus();
-                return;
-            }
-            else if (password.length() < 6) {
-                pass_word.setError("Password length needs to be at least 6");
-                pass_word.requestFocus();
-                return;
-            }
+            // check for wrong input from user
+            Validation validation =new Validation();
+            boolean flag = validation.RegisterLogin(user_name, pass_word,email,password);
+            if(!flag) return;
 
             //TODO: check if user already logged in
             //TODO: show progress bar
@@ -63,11 +45,16 @@ public class Login extends AppCompatActivity {
                 } else {
                     Toast.makeText(Login.this,
                             "email or password are not correct",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 }
             });
         });
         btn_sign.setOnClickListener(v -> startActivity(new Intent(Login.this, Register.class)));
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 
     private void connect_items_by_id() {

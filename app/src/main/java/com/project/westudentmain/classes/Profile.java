@@ -4,10 +4,10 @@ public class Profile {
     private String university;
     private String department;
     private String degree;
-    private int year; //TODO: make it date and calculate on the fly
+    private int year; //TODO: make it date and calculate on the fly  , ps. you can use Date object.
     private String BIO;
-    private String from_where_am_i;
-    //TODO: picture
+    private String from_where_am_i; // do you mean home_town?
+    //TODO: picture, form experience you will need to save String of photo path in your phone.
 
 
     public Profile(String university, String department, String degree, int year, String BIO, String from_where_am_i) {
