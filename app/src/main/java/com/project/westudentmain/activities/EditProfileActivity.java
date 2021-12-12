@@ -2,6 +2,7 @@ package com.project.westudentmain.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,12 +16,12 @@ import com.example.androidproject.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.project.westudentmain.UserInformation;
+import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.FireBase;
 
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btnsave;
+    private Button btnsave;
     private EditText editTextName;
     private EditText editTextSurname;
     private EditText editTextPhoneNo;
@@ -36,6 +37,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             finish();
             startActivity(new Intent(getApplicationContext(), Login.class));
         }
+        Log.d("edit profile","fire base connected");
 
         editTextName = findViewById(R.id.EditTextName);
         editTextSurname = findViewById(R.id.EditTextSurname);
@@ -47,7 +49,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
         // TODO: check why it needs to be an array (probably because pointers)
         // get last data if data is empty it will stay null so add something to catch it in `onDataChange`
-        final UserInformation[] t = {new UserInformation()};
+        final User[] t = {new User()};
         fire_base.getData(t[0], new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -67,9 +69,10 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private void userInformation() {
         String name = editTextName.getText().toString().trim();
         String surname = editTextSurname.getText().toString().trim();
-        String phoneno = editTextPhoneNo.getText().toString().trim();
-        UserInformation userinformation = new UserInformation(name, surname, phoneno);
-        boolean res = fire_base.updateData(userinformation);
+        String phone_number = editTextPhoneNo.getText().toString().trim();
+        // TODO: add more fields
+        User user_information = new User("user name",name, surname, "mail",phone_number);
+        boolean res = fire_base.updateData(user_information);
         if (res)
             Toast.makeText(getApplicationContext(), "User information updated", Toast.LENGTH_LONG).show();
         else
