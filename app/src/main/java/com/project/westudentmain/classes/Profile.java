@@ -6,17 +6,17 @@ public class Profile {
     private String degree;
     private int year; //TODO: make it date and calculate on the fly  , ps. you can use Date object.
     private String BIO;
-    private String from_where_am_i; // do you mean home_town?
+    private String home_town;
     //TODO: picture, form experience you will need to save String of photo path in your phone.
 
 
-    public Profile(String university, String department, String degree, int year, String BIO, String from_where_am_i) {
+    public Profile(String university, String department, String degree, int year, String BIO, String home_town) {
         this.university = university;
         this.department = department;
         this.degree = degree;
         this.year = year;
         this.BIO = BIO;
-        this.from_where_am_i = from_where_am_i;
+        this.home_town = home_town;
     }
 
     public Profile() {
@@ -62,11 +62,11 @@ public class Profile {
         this.BIO = BIO;
     }
 
-    public String getFrom_where_am_i() {
-        return from_where_am_i;
+    public String getHomeTown() {
+        return home_town;
     }
 
-    public void setFrom_where_am_i(String from_where_am_i) {
-        this.from_where_am_i = from_where_am_i;
+    public void setHomeTown(String home_town) {
+        this.home_town = home_town;
     }
 }

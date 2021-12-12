@@ -23,7 +23,7 @@ import com.project.westudentmain.util.FireBaseData;
 public class EditProfileActivity extends AppCompatActivity {
 
     private Button btn_save;
-    private EditText edt_name,edt_surname,edt_phone;
+    private EditText edt_name,edt_surname,edt_phone; //TODO:
     private FireBase fire_base;
     private TextView txt_email;
     private User user;
@@ -32,7 +32,6 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         initViews();
-        FillUser();
         fire_base = FireBase.getInstance();
         if (!fire_base.userIsLoggedIn()) {
             finish();
@@ -44,8 +43,7 @@ public class EditProfileActivity extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userInformation();
-                sendUserData();
+                UpdateUser();
                 finish();
                 startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
             }
@@ -60,14 +58,12 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 t[0] = snapshot.getValue(t[0].getClass());
-
-//                UserInformation as = snapshot.getValue(UserInformation.class);
-//                update screen (as)
+                FillUser();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-               //error
+               user = new User();
             }
         });
 
@@ -92,11 +88,10 @@ public class EditProfileActivity extends AppCompatActivity {
         txt_email = findViewById(R.id.textViewEmailAddress);
     }
 
-    private void userInformation() {
+    private void UpdateUser() {
 
         // TODO: add more fields
-        User user_information = new User();
-        boolean res = fire_base.updateData(user_information);
+        boolean res = fire_base.updateData(user);
         if (res)
             Toast.makeText(getApplicationContext(), "User information updated", Toast.LENGTH_LONG).show();
         else
@@ -104,7 +99,13 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    private void sendUserData() {
-        // Get "User UID" from Firebase > Authentification > Users.
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //TODO: need to know where did i came from? (register or profile)
     }
+
+    //    private void sendUserData() {
+//        // Get "User UID" from Firebase > Authentification > Users.
+//    }
 }

@@ -40,12 +40,13 @@ public class User implements FireBaseData {
     }
 
     public User(User other){
-        this.user_name = other.user_name;
-        this.name = other.name;
-        this.last_name = other.last_name;
-        this.mail = other.mail;
-        this.phone = other.phone;
-
+        if (other!=null) {
+            this.user_name = other.user_name;
+            this.name = other.name;
+            this.last_name = other.last_name;
+            this.mail = other.mail;
+            this.phone = other.phone;
+        }
         this.friends = new ArrayList<String>();
         this.groups_participant = new ArrayList<Integer>();
         this.groups_manager = new ArrayList<Integer>();
