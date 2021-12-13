@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidProject</string>
+    <string name="app_name">WeStudent</string>
     <string name="project_name">Android University Project</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -27,7 +27,7 @@
     <string name="send_password_reset_email">Send Password Reset Email</string>
     <string name="change_profile_pic">Change Profile Pic</string>
 
-    <string name="dissconect">Dissconect</string>
+    <string name="disconnect">Disconnect</string>
     <string name="your_friends">Your Friends</string>
     <string name="add_friend">Add Friend</string>
     <string name="delete_friend">Delete Friend</string>

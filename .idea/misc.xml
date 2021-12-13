@@ -3,17 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/1/Desktop/Android/student project/AndroidProject/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
-        <entry key="..\:/Users/1/Desktop/Android/student project/AndroidProject/app/src/main/res/layout/activity_edit_profile.xml" value="0.17384615384615384" />
-        <entry key="..\:/Users/1/Desktop/Android/student project/AndroidProject/app/src/main/res/layout/activity_login.xml" value="0.1765625" />
-        <entry key="..\:/Users/1/Desktop/Android/student project/AndroidProject/app/src/main/res/layout/activity_main.xml" value="0.167578125" />
-        <entry key="..\:/Users/1/Desktop/Android/student project/AndroidProject/app/src/main/res/layout/activity_register.xml" value="0.17890625" />
-        <entry key="..\:/Users/1/Desktop/Android/student project/AndroidProject/app/src/main/res/layout/activity_show_chat.xml" value="0.150390625" />
-        <entry key="..\:/Users/1/Desktop/Android/student project/AndroidProject/app/src/main/res/layout/activity_show_group.xml" value="0.2" />
-        <entry key="..\:/Users/1/Desktop/Android/student project/AndroidProject/app/src/main/res/layout/activity_show_profile.xml" value="0.2" />
-        <entry key="..\:/Users/1/Desktop/Android/student project/AndroidProject/app/src/main/res/layout/activity_show_project.xml" value="0.17890625" />
-        <entry key="..\:/Users/1/Desktop/Android/student project/AndroidProject/app/src/main/res/layout/activity_show_settings.xml" value="0.2" />
-        <entry key="..\:/Users/1/Desktop/Android/student project/AndroidProject/app/src/main/res/menu/navigation_menu.xml" value="0.2" />
+        <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_login.xml" value="0.19746376811594202" />
+        <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_main.xml" value="0.19746376811594202" />
+        <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_register.xml" value="0.19746376811594202" />
+        <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_show_friends.xml" value="0.19746376811594202" />
+        <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_show_group.xml" value="0.19746376811594202" />
+        <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_show_profile.xml" value="0.19746376811594202" />
+        <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_show_project.xml" value="0.19746376811594202" />
         <entry key="..\:/Users/97252/AndroidStudioProjects/AndroidProject/app/src/main/res/layout/activity_edit_profile.xml" value="0.25" />
         <entry key="..\:/Users/97252/AndroidStudioProjects/AndroidProject/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/97252/AndroidStudioProjects/AndroidProject/app/src/main/res/layout/activity_main.xml" value="0.25" />
