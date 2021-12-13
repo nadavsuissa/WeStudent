@@ -13,10 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.project.westudentmain.classes.User;
+import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FireBase;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -54,17 +52,19 @@ public class EditProfileActivity extends AppCompatActivity {
         // TODO: check why it needs to be an array (probably because pointers)
         // get last data if data is empty it will stay null so add something to catch it in `onDataChange`
 //        final User[] t = {new User()};
-        fire_base.getData(User.class, new ValueEventListener() {
+        fire_base.getUserData(User.class, new CustomDataListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                user = snapshot.getValue(User.class);
+            public void onDataChange(@NonNull Object data){
+                user = (User) data;
                 FillUser();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull String error) {
                 user = new User();
+                Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
             }
+
         });
 
 //        fire_base.updateData(user); its null!!!!!!!!!!
@@ -91,7 +91,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void UpdateUser() {
 
         // TODO: add more fields
-        boolean res = fire_base.updateData(user);
+        boolean res = fire_base.updateData(user,null);
         if (res)
             Toast.makeText(getApplicationContext(), "User information updated", Toast.LENGTH_LONG).show();
         else

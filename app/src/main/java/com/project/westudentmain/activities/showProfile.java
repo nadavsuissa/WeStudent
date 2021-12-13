@@ -7,25 +7,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidproject.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
+import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FireBase;
 
 public class showProfile extends AppCompatActivity {
     private ImageView profile_img;
     private TextView txt_university, txt_department, txt_degree, txt_year, txt_bio,txt_home_town;
     private Button btn_settings,appostedbtn,ptilfpartnersbtn,chatbtn;
-    private User user;
+//    private User user;
     private FireBase fire_base;
 
 
@@ -37,25 +34,28 @@ public class showProfile extends AppCompatActivity {
 
         fire_base = FireBase.getInstance();
 
-        fire_base.getData(User.class, new ValueEventListener() {
+//        User user =new User("user_name", "name", "last_name", fire_base.getEmail(), "2134568");
+//        fire_base.updateData(user,null);
+
+        fire_base.getUserData(User.class, new CustomDataListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                user = snapshot.getValue(User.class);
-                assert user != null;
+            public void onDataChange(@NonNull Object data) {
+                User user = (User) data;
                 //TODO: else ask to add profile and check if working
                 if(user.getProfile() != null)
-                    RenderText();
+                    RenderText(user);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                user = new User();
+            public void onCancelled(@NonNull String error) {
+//                user = new User();
+                Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
             }
         });
 
     }
 
-    private void RenderText() {
+    private void RenderText(User user) {
         Profile profile = user.getProfile();
         txt_degree.setText("Degree: "+profile.getDegree());
         txt_department.setText(profile.getDepartment());
