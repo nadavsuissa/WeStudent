@@ -4,6 +4,8 @@ package com.project.westudentmain.activities;
 import androidx.annotation.NonNull;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,7 +22,7 @@ import com.project.westudentmain.util.FireBase;
 public class showProfile extends AppCompatActivity {
     private ImageView profile_img;
     private TextView txt_university, txt_department, txt_degree, txt_year, txt_bio,txt_home_town;
-    private Button settingsbtn,appostedbtn,ptilfpartnersbtn,chatbtn;
+    private Button btn_settings,appostedbtn,ptilfpartnersbtn,chatbtn;
     private User user;
     private FireBase fire_base;
 
@@ -71,10 +73,15 @@ public class showProfile extends AppCompatActivity {
         txt_bio = findViewById(R.id.biotextview);
         txt_home_town=findViewById(R.id.fwaitextview); // FWAI - From Where Am I
 
-        settingsbtn = findViewById(R.id.btn_settings);
+        btn_settings = findViewById(R.id.btn_settings);
         appostedbtn = findViewById(R.id.btn_apposted);
         ptilfpartnersbtn = findViewById(R.id.btn_ptilfpartners); // PTILF - Projects that i looked for partners
         chatbtn = findViewById(R.id.btn_chat);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(showProfile.this,showSettings.class)); // this is how to move between screens
     }
 }
