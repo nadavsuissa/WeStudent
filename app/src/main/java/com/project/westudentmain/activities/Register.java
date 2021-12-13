@@ -9,10 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
-<<<<<<< HEAD:app/src/main/java/com/project/westudentmain/activities/Register.java
 import com.project.westudentmain.Validation;
-=======
->>>>>>> 0f235f11950e2d5777a3719dfbc59b9a2ecf644f:app/src/main/java/com/project/westudentmain/Register.java
 import com.project.westudentmain.util.FireBase;
 
 public class Register extends AppCompatActivity {
