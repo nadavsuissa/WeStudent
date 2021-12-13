@@ -7,9 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.androidproject.R;
 import com.google.firebase.database.DataSnapshot;
@@ -34,13 +36,12 @@ public class showProfile extends AppCompatActivity {
         connect_items_by_id();
 
         fire_base = FireBase.getInstance();
-        final User[] t = {new User()};
-        fire_base.getData(t[0], new ValueEventListener() {
+
+        fire_base.getData(User.class, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                t[0] = snapshot.getValue(t[0].getClass());
-                assert t[0] != null;
-                user = new User(t[0]);
+                user = snapshot.getValue(User.class);
+                assert user != null;
                 //TODO: else ask to add profile and check if working
                 if(user.getProfile() != null)
                     RenderText();
@@ -59,7 +60,7 @@ public class showProfile extends AppCompatActivity {
         txt_degree.setText("Degree: "+profile.getDegree());
         txt_department.setText(profile.getDepartment());
         txt_university.setText(profile.getUniversity());
-        txt_year.setText(profile.getYear());
+        txt_year.setText(""+profile.getYear());
         txt_bio.setText(profile.getBIO());
         txt_home_town.setText(profile.getHomeTown());
     }

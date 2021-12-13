@@ -28,15 +28,30 @@ public class FireBase {
     private FireBase() {
     }
 
+    /**
+     *
+     * @return user if connected and NULL if not
+     */
     public FirebaseUser getUser() {
         return user;
     }
 
+    /**
+     * login by email and password, and gets listener for completion
+     * @param email
+     * @param password
+     * @param var1
+     */
     public static void emailLogin(@NonNull String email, @NonNull String password, @NonNull OnCompleteListener<AuthResult> var1) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(var1);
-    }
+    }//TODO: replace return to listener
 
-    // TODO: add user name checking
+    /**
+     * login by email and password
+     * @param email
+     * @param password
+     * @return listener for completion
+     */
     public Task<AuthResult> createUserWithEmailAndPassword(String email, String password) {
         return mAuth.createUserWithEmailAndPassword(email, password);
     }
@@ -55,9 +70,10 @@ public class FireBase {
     }
 
     // TODO: FireBaseData replace with str
-    public void getData(@NonNull final FireBaseData object, ValueEventListener event_listener) {
+    //FIXME: its getting only stuff inside user
+    public void getData(@NonNull final Class<?> object, ValueEventListener event_listener) {
         assert user != null;
-        database_reference.child(object.getClassName()).child(user.getUid()).addListenerForSingleValueEvent(event_listener);
+        database_reference.child(object.getSimpleName()).child(user.getUid()).addListenerForSingleValueEvent(event_listener);
 
     }
 

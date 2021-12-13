@@ -33,6 +33,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         fire_base = FireBase.getInstance();
+        // TODO: if fail then the user is still inserted
         if (!fire_base.userIsLoggedIn()) {
             finish();
             startActivity(new Intent(getApplicationContext(), Login.class));
@@ -50,10 +51,10 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         // TODO: check why it needs to be an array (probably because pointers)
         // get last data if data is empty it will stay null so add something to catch it in `onDataChange`
         final User[] t = {new User()};
-        fire_base.getData(t[0], new ValueEventListener() {
+        fire_base.getData(User.class, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                t[0] = snapshot.getValue(t[0].getClass());
+                t[0] = snapshot.getValue(User.class);
 
 //                UserInformation as = snapshot.getValue(UserInformation.class);
 //                update screen (as)

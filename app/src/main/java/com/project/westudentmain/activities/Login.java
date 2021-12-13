@@ -19,12 +19,12 @@ public class Login extends AppCompatActivity {
     private EditText user_name, pass_word;
     private Button btn_login, btn_sign;
     private static final String TAG = "Login";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         connect_items_by_id();
-
 
         btn_login.setOnClickListener(var -> {
             String email = user_name.getText().toString().trim();
