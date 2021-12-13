@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 public class FireBase {
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static final DatabaseReference database_reference = FirebaseDatabase.getInstance().getReference();
-    private static final FirebaseUser user = mAuth.getCurrentUser();
+    private static FirebaseUser user = mAuth.getCurrentUser();
 
     private final static FireBase INSTANCE = new FireBase();
 
@@ -63,7 +63,7 @@ public class FireBase {
 
     // TODO:check for fails
     // TODO: replace bool with Task<AuthResult>
-    public boolean updateData(FireBaseData data) {
+    public boolean updateData(@NonNull FireBaseData data) {
         assert user != null;
         database_reference.child(data.getClassName()).child(user.getUid()).setValue(data);
         return true;
@@ -82,6 +82,7 @@ public class FireBase {
     }
 
     public boolean userIsLoggedIn() {
+        user = mAuth.getCurrentUser();
         return user != null;
     }
 
