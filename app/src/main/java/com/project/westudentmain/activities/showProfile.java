@@ -39,7 +39,9 @@ public class showProfile extends AppCompatActivity {
                 t[0] = snapshot.getValue(t[0].getClass());
                 assert t[0] != null;
                 user = new User(t[0]);
-                RenderText();
+                //TODO: else ask to add profile and check if working
+                if(user.getProfile() != null)
+                    RenderText();
             }
 
             @Override
