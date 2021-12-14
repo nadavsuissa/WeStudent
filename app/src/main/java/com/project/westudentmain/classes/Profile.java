@@ -1,20 +1,23 @@
 package com.project.westudentmain.classes;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 public class Profile {
     private String university;
     private String department;
     private String degree;
-    private int year; //TODO: make it date and calculate on the fly  , ps. you can use Date object.
+    private Date date;
     private String BIO;
     private String home_town;
     //TODO: picture, form experience you will need to save String of photo path in your phone.
 
 
-    public Profile(String university, String department, String degree, int year, String BIO, String home_town) {
+    public Profile(String university, String department, String degree, Date date, String BIO, String home_town) {
         this.university = university;
         this.department = department;
         this.degree = degree;
-        this.year = year;
+        this.date = date;
         this.BIO = BIO;
         this.home_town = home_town;
     }
@@ -52,12 +55,21 @@ public class Profile {
         this.degree = degree;
     }
 
-    public int getYear() {
-        return year;
+    public Date getDate() {
+        return date;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    //TODO: date == null error
+    public int getYear() {
+        if(this.date == null)
+            return -1;
+        long days = TimeUnit.DAYS.convert(new Date().getTime() - this.date.getTime(), TimeUnit.MILLISECONDS);
+        int years = (int)days/365;
+        return years;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getBIO() {

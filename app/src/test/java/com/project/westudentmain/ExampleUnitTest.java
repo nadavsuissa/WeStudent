@@ -1,4 +1,4 @@
-package com.project.androidproject;
+package com.project.westudentmain;
 
 import org.junit.Test;
 

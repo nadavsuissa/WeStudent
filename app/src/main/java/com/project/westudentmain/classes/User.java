@@ -15,7 +15,6 @@ public class User implements FireBaseData {
     private String photo_path; // leave it to my implementation
 
     //TODO: student card
-    //TODO: fill profile in ctor.
 
     private final List<String> friends; // maybe split to a manager
     private final List<Integer> groups_participant; // maybe split to a manager
@@ -31,6 +30,7 @@ public class User implements FireBaseData {
         this.friends = new ArrayList<String>();
         this.groups_participant = new ArrayList<Integer>();
         this.groups_manager = new ArrayList<Integer>();
+        this.profile = new Profile();
     }
 
     public User(String user_name, String name, String last_name, String mail, String phone) {
@@ -43,6 +43,7 @@ public class User implements FireBaseData {
         this.friends = new ArrayList<String>();
         this.groups_participant = new ArrayList<Integer>();
         this.groups_manager = new ArrayList<Integer>();
+        this.profile = new Profile();
     }
 
     public User(User other){
