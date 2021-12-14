@@ -22,6 +22,12 @@ public class User implements FireBaseData {
     private final List<Integer> groups_manager; // maybe split to a manager
 
     public User() {
+        this.user_name = "user_name";
+        this.name = "name";
+        this.last_name = "last_name";
+        this.mail = "mail";
+        this.phone = "phone";
+        this.profile = new Profile();
         this.friends = new ArrayList<String>();
         this.groups_participant = new ArrayList<Integer>();
         this.groups_manager = new ArrayList<Integer>();

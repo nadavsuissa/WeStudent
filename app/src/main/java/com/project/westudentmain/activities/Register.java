@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
 import com.project.westudentmain.Validation;
+import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.FireBase;
 
 public class Register extends AppCompatActivity {
@@ -32,14 +33,13 @@ public class Register extends AppCompatActivity {
             Validation validation =new Validation();
             boolean flag = validation.RegisterLogin(user_name, pass_word,email,password);
             if(!flag) return;
-//            User user = new User("user_name", "name", "last_name", email, "0563214798");
+            User user = new User();
+            user.setMail(email);
 
             // TODO: add on fail listener
             fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-
-//                    FireBase fireBase = FireBase.getInstance();
-//                    fireBase.updateData(user);
+                    fire_base.updateData(user);
 
                     Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Register.this, EditProfileActivity.class));

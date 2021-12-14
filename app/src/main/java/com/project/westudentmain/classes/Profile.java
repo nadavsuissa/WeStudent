@@ -20,6 +20,12 @@ public class Profile {
     }
 
     public Profile() {
+        this.university = "university";
+        this.department = "department";
+        this.degree = "degree";
+        this.year = 0;
+        this.BIO = "BIO";
+        this.home_town = "home_town";
     }
 
     public String getUniversity() {
