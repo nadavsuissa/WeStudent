@@ -10,12 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
 import com.project.westudentmain.Validation;
-import com.project.westudentmain.util.FireBase;
+import com.project.westudentmain.util.FireBaseLogin;
 
 public class Register extends AppCompatActivity {
     private Button btn2_signup,btn_upload_photo;
     private EditText user_name, pass_word;
-    private FireBase fire_base;
+    private FireBaseLogin fire_base;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         connect_items_by_id();
 
-        fire_base = FireBase.getInstance();
+        fire_base = FireBaseLogin.getInstance();
 
         btn2_signup.setOnClickListener(v -> {
             String email = user_name.getText().toString().trim();
@@ -38,7 +38,7 @@ public class Register extends AppCompatActivity {
             fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
 
-//                    FireBase fireBase = FireBase.getInstance();
+//                    FireBaseLogin fireBase = FireBaseLogin.getInstance();
 //                    fireBase.updateData(user);
 
                     Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();

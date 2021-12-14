@@ -3,13 +3,15 @@ package com.project.westudentmain.classes;
 import java.util.ArrayList;
 
 public class Group {
-    //maybe add group id
+    // the id of the group is in firebase
+    private String group_id;
     private String group_name;
     private String description;
-    private ArrayList<User> users;
     private int max_capacity;
     //zoom/faceToFace:enum
     private String date;
+
+    private ArrayList<User> users;
     private final GroupActivityManager group_activity_manager;
 
     public Group(String group_name, String description, int max_capacity, String date) {
@@ -22,6 +24,14 @@ public class Group {
 
     public Group() {
         this.group_activity_manager = new GroupActivityManager();
+    }
+
+    public String getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
     }
 
     public String getGroupName() {
@@ -68,4 +78,5 @@ public class Group {
     public GroupActivityManager getGroupActivityManager() {
         return group_activity_manager;
     }
+
 }

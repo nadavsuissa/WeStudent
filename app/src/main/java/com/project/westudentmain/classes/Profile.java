@@ -1,10 +1,14 @@
 package com.project.westudentmain.classes;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 public class Profile {
     private String university;
     private String department;
     private String degree;
-    private int year; //TODO: make it date and calculate on the fly  , ps. you can use Date object.
+    private int starting_year;
     private String BIO;
     private String home_town;
     //TODO: picture, form experience you will need to save String of photo path in your phone.
@@ -14,12 +18,17 @@ public class Profile {
         this.university = university;
         this.department = department;
         this.degree = degree;
-        this.year = year;
         this.BIO = BIO;
         this.home_town = home_town;
+
+        int now_year = Calendar.getInstance().get(Calendar.YEAR);
+        this.starting_year = now_year - year;
     }
 
     public Profile() {
+        int now_year = Calendar.getInstance().get(Calendar.YEAR);
+        this.starting_year = now_year;
+
     }
 
     public String getUniversity() {
@@ -46,12 +55,18 @@ public class Profile {
         this.degree = degree;
     }
 
-    public int getYear() {
-        return year;
+    public int getStartingYear() {
+        return starting_year;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    //TODO: date == null error
+    public int getYear() {
+        int now_year = Calendar.getInstance().get(Calendar.YEAR);
+        return now_year - starting_year;
+    }
+
+    public void setStartingYear(int starting_year) {
+        this.starting_year = starting_year;
     }
 
     public String getBIO() {

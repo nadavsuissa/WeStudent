@@ -1,13 +1,17 @@
 package com.project.westudentmain.classes;
 
-import com.project.westudentmain.util.FireBaseData;
+import com.google.firebase.database.PropertyName;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class User implements FireBaseData {
+public class User {
+    @PropertyName("userName")
     private String user_name;
     private String name;
+    @PropertyName("lastName")
     private String last_name;
     private String mail;
     private String phone;
@@ -15,16 +19,18 @@ public class User implements FireBaseData {
     private String photo_path; // leave it to my implementation
 
     //TODO: student card
-    //TODO: fill profile in ctor.
 
     private final List<String> friends; // maybe split to a manager
-    private final List<Integer> groups_participant; // maybe split to a manager
-    private final List<Integer> groups_manager; // maybe split to a manager
+    @PropertyName("groupsParticipant")
+    private final Map<String,String> groups_participant; // maybe split to a manager
+    @PropertyName("groupsManager")
+    private final Map<String,String> groups_manager; // maybe split to a manager
 
     public User() {
         this.friends = new ArrayList<String>();
-        this.groups_participant = new ArrayList<Integer>();
-        this.groups_manager = new ArrayList<Integer>();
+        this.groups_participant = new HashMap<String,String>();
+        this.groups_manager = new HashMap<String,String>();
+        this.profile = new Profile();
     }
 
     public User(String user_name, String name, String last_name, String mail, String phone) {
@@ -35,8 +41,9 @@ public class User implements FireBaseData {
         this.phone = phone;
 
         this.friends = new ArrayList<String>();
-        this.groups_participant = new ArrayList<Integer>();
-        this.groups_manager = new ArrayList<Integer>();
+        this.groups_participant = new HashMap<String,String>();
+        this.groups_manager = new HashMap<String,String>();
+        this.profile = new Profile();
     }
 
     public User(User other){
@@ -48,8 +55,8 @@ public class User implements FireBaseData {
             this.phone = other.phone;
         }
         this.friends = new ArrayList<String>();
-        this.groups_participant = new ArrayList<Integer>();
-        this.groups_manager = new ArrayList<Integer>();
+        this.groups_participant = new HashMap<String,String>();
+        this.groups_manager = new HashMap<String,String>();
     }
 
     public void addFriend(String friend){ //TODO: check if already exist
@@ -60,20 +67,25 @@ public class User implements FireBaseData {
         return friends.removeIf(friend -> friend.equals(user_name));
     }
 
-    public void addGroupManage(int group){ //TODO: check if already exist
-        this.groups_manager.add(group);
+    public void addGroupManage(String group_id,String group_name){ //TODO: check if already exist
+        this.groups_manager.put(group_id,group_name);
     }
 
-    public boolean removeGroupManage(int group_name){
-        return groups_manager.remove((Integer)group_name);
+    /**
+     *
+     * @param group_id
+     * @return the name of the group it deleted
+     */
+    public String removeGroupManage(String group_id){
+        return groups_manager.remove(group_id);
     }
 
-    public void addGroupParticipant(int group){ //TODO: check if already exist
-        this.groups_participant.add(group);
+    public void addGroupParticipant(String group_id,String group_name){ //TODO: check if already exist
+        this.groups_participant.put(group_id,group_name);
     }
 
-    public boolean removeGroupParticipant(int group_name){
-        return groups_participant.remove((Integer)group_name);
+    public String removeGroupParticipant(String group_id){
+        return groups_participant.remove(group_id);
     }
 
     public String getUserName() {
@@ -128,16 +140,12 @@ public class User implements FireBaseData {
         this.profile = profile;
     }
 
-    public List<Integer> getGroupsParticipant() {
+    public Map<String,String> getGroupsParticipant() {
         return groups_participant;
     }
 
-    public List<Integer> getGroupsManager() {
+    public Map<String,String> getGroupsManager() {
         return groups_manager;
     }
 
-    @Override
-    public String getClassName() {
-        return "User";
-    }
 }
