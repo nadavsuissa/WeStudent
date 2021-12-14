@@ -17,6 +17,7 @@ import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
+import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
 
 public class showProfile extends AppCompatActivity {
@@ -35,12 +36,22 @@ public class showProfile extends AppCompatActivity {
 
         fire_base_data = FireBaseData.getInstance();
 
+//        add user example:
 //        User user = new User("user_name123", "name", "last_name", FireBaseData.getEmail(), "2134568");
-//        user.addGroupManage("1256789","me");
-//        user.addGroupManage("qwertyui","me and my friends");
 //        fire_base_data.updateData(user,null);
-        Group group = new Group("new group", "String description", 12, "1784");
-        fire_base_data.addNewGroup(group,null);
+
+//        add group example:
+//        Group group = new Group("new group", "String description", 12, "1784");
+//        fire_base_data.addNewGroup(group,null);
+
+
+//        remove group example:
+//        fire_base_data.removeGroup("-Mqu6r2OgiNGU1SBMAgG", new CustomOkListener() {
+//            @Override
+//            public void onComplete(@NonNull String what, Boolean ok) {
+//                Toast.makeText(getBaseContext(), what + ok, Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         fire_base_data.getUserData(User.class, new CustomDataListener() {
             @Override

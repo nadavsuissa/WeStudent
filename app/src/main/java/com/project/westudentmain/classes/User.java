@@ -1,13 +1,17 @@
 package com.project.westudentmain.classes;
 
+import com.google.firebase.database.PropertyName;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class User {
+    @PropertyName("userName")
     private String user_name;
     private String name;
+    @PropertyName("lastName")
     private String last_name;
     private String mail;
     private String phone;
@@ -17,7 +21,9 @@ public class User {
     //TODO: student card
 
     private final List<String> friends; // maybe split to a manager
+    @PropertyName("groupsParticipant")
     private final Map<String,String> groups_participant; // maybe split to a manager
+    @PropertyName("groupsManager")
     private final Map<String,String> groups_manager; // maybe split to a manager
 
     public User() {
