@@ -4,9 +4,12 @@ package com.project.westudentmain.activities;
 import androidx.annotation.NonNull;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +24,8 @@ import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
 
 public class showProfile extends AppCompatActivity {
+    private Toolbar mToolBar;
+
     private ImageView profile_img;
     private TextView txt_university, txt_department, txt_degree, txt_year, txt_bio,txt_home_town;
     private Button btn_settings,appostedbtn,ptilfpartnersbtn,chatbtn;
@@ -33,6 +38,8 @@ public class showProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_profile);
         connect_items_by_id();
+        mToolBar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(mToolBar);
 
         fire_base_data = FireBaseData.getInstance();
 
@@ -118,5 +125,37 @@ public class showProfile extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         startActivity(new Intent(showProfile.this,showSettings.class)); // this is how to move between screens
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.mi_allpostedprojects:
+                startActivity(new Intent(this, showProject.class));
+                return true;
+            case R.id.mi_yourgroups:
+                startActivity(new Intent(this, showGroup.class));
+                return true;
+            case R.id.mi_settings:
+                startActivity(new Intent(this, showSettings.class));
+                return true;
+            case R.id.mi_your_profile:
+                startActivity(new Intent(this, showProfile.class));
+                return true;
+            case R.id.mi_home:
+                startActivity(new Intent(this, MainActivity.class));
+                return true;
+            case R.id.mi_chat:
+                startActivity(new Intent(this, showChat.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
