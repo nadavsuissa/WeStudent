@@ -13,7 +13,7 @@ import com.project.westudentmain.Validation;
 import com.project.westudentmain.util.FireBase;
 
 public class Register extends AppCompatActivity {
-    private Button btn2_signup;
+    private Button btn2_signup,btn_upload_photo;
     private EditText user_name, pass_word;
     private FireBase fire_base;
 
@@ -62,6 +62,7 @@ public class Register extends AppCompatActivity {
         user_name = findViewById(R.id.registeremail);
         pass_word = findViewById(R.id.registerpassword);
         btn2_signup = findViewById(R.id.signup2);
+        btn_upload_photo=findViewById(R.id.uploadphoto);
     }
 
 }

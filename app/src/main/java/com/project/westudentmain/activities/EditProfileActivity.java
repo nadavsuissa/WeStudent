@@ -37,7 +37,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             finish();
             startActivity(new Intent(getApplicationContext(), Login.class));
         }
-        Log.d("edit profile","fire base connected");
+        Log.d("edit profile","fire base connected"); // PRINT
 
         editTextName = findViewById(R.id.EditTextName);
         editTextSurname = findViewById(R.id.EditTextSurname);
