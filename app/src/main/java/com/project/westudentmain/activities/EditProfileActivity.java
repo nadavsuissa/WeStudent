@@ -15,13 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidproject.R;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
-import com.project.westudentmain.util.FireBase;
+import com.project.westudentmain.util.FireBaseLogin;
+import com.project.westudentmain.util.FireBaseData;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     private Button btn_save;
     private EditText edt_name,edt_surname,edt_phone; //TODO:
-    private FireBase fire_base;
+    private FireBaseData fire_base_data;
     private TextView txt_email;
     private User user;
 
@@ -30,8 +31,8 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
         initViews();
         // TODO: if fail then the user is still inserted
-        fire_base = FireBase.getInstance();
-        if (!fire_base.userIsLoggedIn()) {
+        fire_base_data = FireBaseData.getInstance();
+        if (!FireBaseLogin.userIsLoggedIn()) {
             finish();
             startActivity(new Intent(getApplicationContext(), Login.class));
         }
@@ -47,12 +48,12 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        txt_email.setText(fire_base.getEmail());
+        txt_email.setText(FireBaseData.getEmail());
 
         // TODO: check why it needs to be an array (probably because pointers)
         // get last data if data is empty it will stay null so add something to catch it in `onDataChange`
 //        final User[] t = {new User()};
-        fire_base.getUserData(User.class, new CustomDataListener() {
+        fire_base_data.getUserData(User.class, new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data){
                 user = (User) data;
@@ -91,7 +92,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void UpdateUser() {
 
         // TODO: add more fields
-        boolean res = fire_base.updateData(user,null);
+        boolean res = fire_base_data.updateData(user,null);
         if (res)
             Toast.makeText(getApplicationContext(), "User information updated", Toast.LENGTH_LONG).show();
         else

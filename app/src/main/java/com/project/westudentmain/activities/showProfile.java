@@ -16,14 +16,14 @@ import com.example.androidproject.R;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
-import com.project.westudentmain.util.FireBase;
+import com.project.westudentmain.util.FireBaseData;
 
 public class showProfile extends AppCompatActivity {
     private ImageView profile_img;
     private TextView txt_university, txt_department, txt_degree, txt_year, txt_bio,txt_home_town;
     private Button btn_settings,appostedbtn,ptilfpartnersbtn,chatbtn;
 //    private User user;
-    private FireBase fire_base;
+    private FireBaseData fire_base_data;
 
 
     @Override
@@ -32,12 +32,12 @@ public class showProfile extends AppCompatActivity {
         setContentView(R.layout.activity_show_profile);
         connect_items_by_id();
 
-        fire_base = FireBase.getInstance();
+        fire_base_data = FireBaseData.getInstance();
+//
+//        User user = new User("user_name123", "name", "last_name", FireBaseData.getEmail(), "2134568");
+//        fire_base_data.updateData(user,null);
 
-//        User user =new User("user_name", "name", "last_name", fire_base.getEmail(), "2134568");
-//        fire_base.updateData(user,null);
-
-        fire_base.getUserData(User.class, new CustomDataListener() {
+        fire_base_data.getUserData(User.class, new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
                 User user = (User) data;
@@ -54,7 +54,7 @@ public class showProfile extends AppCompatActivity {
         });
 
 //        user deletion example:
-//        FireBase.deleteUser("user_name", new CustomDataListener() {
+//        FireBaseLogin.deleteUser("user_name", new CustomDataListener() {
 //            @Override
 //            public void onDataChange(@NonNull Object data) {
 //                if ((int)data<0){
