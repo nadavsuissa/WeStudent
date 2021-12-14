@@ -174,7 +174,7 @@ public class FireBaseData {
     }
 
     /**
-     *
+     * adding group to user, it add the group as manager
      * @param group
      * @param listener
      * @return true if can do it (user connected)
