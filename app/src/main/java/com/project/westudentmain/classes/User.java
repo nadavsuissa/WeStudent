@@ -1,7 +1,9 @@
 package com.project.westudentmain.classes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class User {
     private String user_name;
@@ -15,13 +17,13 @@ public class User {
     //TODO: student card
 
     private final List<String> friends; // maybe split to a manager
-    private final List<Integer> groups_participant; // maybe split to a manager
-    private final List<Integer> groups_manager; // maybe split to a manager
+    private final Map<String,String> groups_participant; // maybe split to a manager
+    private final Map<String,String> groups_manager; // maybe split to a manager
 
     public User() {
         this.friends = new ArrayList<String>();
-        this.groups_participant = new ArrayList<Integer>();
-        this.groups_manager = new ArrayList<Integer>();
+        this.groups_participant = new HashMap<String,String>();
+        this.groups_manager = new HashMap<String,String>();
         this.profile = new Profile();
     }
 
@@ -33,8 +35,8 @@ public class User {
         this.phone = phone;
 
         this.friends = new ArrayList<String>();
-        this.groups_participant = new ArrayList<Integer>();
-        this.groups_manager = new ArrayList<Integer>();
+        this.groups_participant = new HashMap<String,String>();
+        this.groups_manager = new HashMap<String,String>();
         this.profile = new Profile();
     }
 
@@ -47,8 +49,8 @@ public class User {
             this.phone = other.phone;
         }
         this.friends = new ArrayList<String>();
-        this.groups_participant = new ArrayList<Integer>();
-        this.groups_manager = new ArrayList<Integer>();
+        this.groups_participant = new HashMap<String,String>();
+        this.groups_manager = new HashMap<String,String>();
     }
 
     public void addFriend(String friend){ //TODO: check if already exist
@@ -59,20 +61,25 @@ public class User {
         return friends.removeIf(friend -> friend.equals(user_name));
     }
 
-    public void addGroupManage(int group){ //TODO: check if already exist
-        this.groups_manager.add(group);
+    public void addGroupManage(String group_id,String group_name){ //TODO: check if already exist
+        this.groups_manager.put(group_id,group_name);
     }
 
-    public boolean removeGroupManage(int group_name){
-        return groups_manager.remove((Integer)group_name);
+    /**
+     *
+     * @param group_id
+     * @return the name of the group it deleted
+     */
+    public String removeGroupManage(String group_id){
+        return groups_manager.remove(group_id);
     }
 
-    public void addGroupParticipant(int group){ //TODO: check if already exist
-        this.groups_participant.add(group);
+    public void addGroupParticipant(String group_id,String group_name){ //TODO: check if already exist
+        this.groups_participant.put(group_id,group_name);
     }
 
-    public boolean removeGroupParticipant(int group_name){
-        return groups_participant.remove((Integer)group_name);
+    public String removeGroupParticipant(String group_id){
+        return groups_participant.remove(group_id);
     }
 
     public String getUserName() {
@@ -127,11 +134,11 @@ public class User {
         this.profile = profile;
     }
 
-    public List<Integer> getGroupsParticipant() {
+    public Map<String,String> getGroupsParticipant() {
         return groups_participant;
     }
 
-    public List<Integer> getGroupsManager() {
+    public Map<String,String> getGroupsManager() {
         return groups_manager;
     }
 

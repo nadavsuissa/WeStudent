@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidproject.R;
+import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
@@ -33,9 +34,13 @@ public class showProfile extends AppCompatActivity {
         connect_items_by_id();
 
         fire_base_data = FireBaseData.getInstance();
-//
+
 //        User user = new User("user_name123", "name", "last_name", FireBaseData.getEmail(), "2134568");
+//        user.addGroupManage("1256789","me");
+//        user.addGroupManage("qwertyui","me and my friends");
 //        fire_base_data.updateData(user,null);
+        Group group = new Group("new group", "String description", 12, "1784");
+        fire_base_data.addNewGroup(group,null);
 
         fire_base_data.getUserData(User.class, new CustomDataListener() {
             @Override

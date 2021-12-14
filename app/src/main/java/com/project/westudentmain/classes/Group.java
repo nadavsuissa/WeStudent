@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Group {
     // the id of the group is in firebase
+    private String group_id;
     private String group_name;
     private String description;
     private int max_capacity;
@@ -23,6 +24,14 @@ public class Group {
 
     public Group() {
         this.group_activity_manager = new GroupActivityManager();
+    }
+
+    public String getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
     }
 
     public String getGroupName() {
@@ -69,4 +78,5 @@ public class Group {
     public GroupActivityManager getGroupActivityManager() {
         return group_activity_manager;
     }
+
 }
