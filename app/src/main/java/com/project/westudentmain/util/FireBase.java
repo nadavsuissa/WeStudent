@@ -142,8 +142,11 @@ public class FireBase {
         database_reference.child(object.getSimpleName()).child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //TODO: need checking
-                event_listener.onDataChange(Objects.requireNonNull(snapshot.getValue(object)));
+                Object data = snapshot.getValue(object);
+                if (data == null)
+                    event_listener.onCancelled("not connected");
+                else
+                    event_listener.onDataChange(data);
             }
 
             @Override
@@ -187,15 +190,21 @@ public class FireBase {
         mAuth.signOut();
     }
 
-    //TODO: remove also the mail and pass
     /**
-     * remove user data
+     * remove user data, user needs to be logged in
      * WARNING REMOVING DATA
      * @param user_name to remove
      * @param listener if you want to know about completion pass listener else pass null
-     *                and the listener pass the num of object that he deleted
+     *                 the listener called 2 times - one for data and second for auth deletion.
+     *                 data: the listener pass the num of object that he deleted
+     *                 auth: -1 when he delete the user, on error pass "user deletion error" in onCancelled function
+     *
+     * @return true if can do it (user connected)
      */
-    public static void deleteUser(String user_name,CustomDataListener listener){
+    public static boolean deleteUser(String user_name,CustomDataListener listener){
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user ==null)
+            return false;
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         Query applesQuery = ref.child("User").orderByChild("userName").equalTo(user_name);
 
@@ -216,5 +225,18 @@ public class FireBase {
                 listener.onCancelled(error.getMessage());
             }
         });
+
+        user.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            listener.onDataChange(-1);
+                        }else {
+                            listener.onCancelled("user deletion error");
+                        }
+                    }
+                });
+        return true;
     }
 }

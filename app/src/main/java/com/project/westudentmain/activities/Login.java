@@ -27,18 +27,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         connect_items_by_id();
-//        FireBase.deleteUser("user_name", new CustomDataListener() {
-//            @Override
-//            public void onDataChange(@NonNull Object data) {
-//                Toast.makeText(getBaseContext(), "num"+ data, Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull String error) {
-//
-//            }
-//        });
-
 
         btn_login.setOnClickListener(var -> {
             String email = user_name.getText().toString().trim();

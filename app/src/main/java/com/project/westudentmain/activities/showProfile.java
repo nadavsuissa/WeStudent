@@ -53,6 +53,24 @@ public class showProfile extends AppCompatActivity {
             }
         });
 
+//        user deletion example:
+//        FireBase.deleteUser("user_name", new CustomDataListener() {
+//            @Override
+//            public void onDataChange(@NonNull Object data) {
+//                if ((int)data<0){
+//
+//                    Toast.makeText(getBaseContext(), "user deletion code "+ data, Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(showProfile.this,Login.class));
+//                }else
+//                    Toast.makeText(getBaseContext(), "data deletion times "+ data, Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull String error) {
+//                Toast.makeText(getBaseContext(), error, Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
     }
 
     private void RenderText(User user) {
