@@ -1,5 +1,7 @@
 package com.project.westudentmain.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,6 +57,27 @@ public class Login extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+//set title
+                .setTitle("Are you sure to Exit?")
+//set positive button
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+                        finishAffinity();
+                        System.exit(0);
+                    }
+                })
+//set negative button
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what should happen when negative button is clicked
+                        Toast.makeText(getApplicationContext(),"Nothing Happened",Toast.LENGTH_LONG).show();
+                    }
+                })
+                .show();
 
     }
 
