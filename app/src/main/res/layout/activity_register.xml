@@ -5,50 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/registration_page"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/registeremail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22" />
-
-    <EditText
-        android:id="@+id/registeremail"
-        android:layout_width="247dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="12dp"
-        android:ems="10"
-        android:hint="@string/email"
-        android:importantForAutofill="no"
-        android:inputType="textEmailAddress"
-
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/registerpassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="TextContrastCheck" />
-
-    <EditText
-        android:id="@+id/registerpassword"
-        android:layout_width="247dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="12dp"
-        android:ems="10"
-        android:hint="@string/password"
-        android:importantForAutofill="no"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/signup2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/signup2"
@@ -68,4 +24,50 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup2" />
+
+    <EditText
+        android:id="@+id/registerpassword"
+        android:layout_width="247dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="12dp"
+        android:ems="10"
+        android:hint="@string/password"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/signup2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck" />
+
+    <EditText
+        android:id="@+id/registeremail"
+        android:layout_width="247dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="12dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:importantForAutofill="no"
+        android:inputType="textEmailAddress"
+
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/registerpassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/registration_page"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/registeremail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.22" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

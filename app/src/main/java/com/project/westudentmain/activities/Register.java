@@ -51,7 +51,7 @@ public class Register extends AppCompatActivity {
     private ActivityResultLauncher<String> request_permission_camera;
     private ActivityResultLauncher<Uri> open_camera;
     private ActivityResultLauncher<String> open_gallery;
-
+   // TODO: show imageView
 
 
     @Override
