@@ -6,66 +6,180 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/RgisterHeadLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/registration_page"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/registeremail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22" />
-
-    <EditText
-        android:id="@+id/registeremail"
-        android:layout_width="247dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="12dp"
-        android:ems="10"
-        android:hint="@string/email"
-        android:importantForAutofill="no"
-        android:inputType="textEmailAddress"
-
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/registerpassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="TextContrastCheck" />
-
-    <EditText
-        android:id="@+id/registerpassword"
-        android:layout_width="247dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="12dp"
-        android:ems="10"
-        android:hint="@string/password"
-        android:importantForAutofill="no"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/signup2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="TextContrastCheck" />
-
-    <Button
-        android:id="@+id/signup2"
-        android:layout_width="247dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="128dp"
-        android:text="@string/sign_up"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/uploadphoto"
-        android:layout_width="247dp"
+        android:layout_width="172dp"
         android:layout_height="60dp"
+        android:layout_marginTop="40dp"
         android:text="@string/upload_student_card"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewStudentCard"
+        app:layout_constraintHorizontal_bias="0.313"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RgisterHeadLine" />
+
+    <ImageView
+        android:id="@+id/imageViewStudentCard"
+        android:layout_width="188dp"
+        android:layout_height="91dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RgisterHeadLine"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ScrollView
+        android:id="@+id/scrollViewSignUp"
+        android:layout_width="398dp"
+        android:layout_height="563dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signup2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewStudentCard">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/registeremail"
+                android:layout_width="247dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:ems="10"
+                android:hint="@string/email"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+
+                android:minHeight="48dp"
+                tools:ignore="TextContrastCheck" />
+
+            <EditText
+                android:id="@+id/registerpassword"
+                android:layout_width="247dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:ems="10"
+                android:hint="@string/password"
+                android:importantForAutofill="no"
+                android:inputType="textPassword"
+                android:minHeight="48dp"
+                tools:ignore="TextContrastCheck" />
+
+            <EditText
+                android:id="@+id/registerName"
+                android:layout_width="250dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:ems="10"
+                android:hint="Name"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+
+                android:minHeight="48dp"
+                tools:ignore="TextContrastCheck" />
+
+            <EditText
+                android:id="@+id/registerLastName"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:ems="10"
+                android:hint="Last Name"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+
+                android:minHeight="48dp"
+                tools:ignore="TextContrastCheck" />
+
+            <EditText
+                android:id="@+id/registerUserName"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:ems="10"
+                android:hint="User Name"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+
+                android:minHeight="48dp"
+                tools:ignore="TextContrastCheck" />
+
+            <EditText
+                android:id="@+id/registerUniversity"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:ems="10"
+                android:hint="University"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+
+                android:minHeight="48dp"
+                tools:ignore="TextContrastCheck" />
+
+            <EditText
+                android:id="@+id/registerDegree"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:ems="10"
+                android:hint="Degree"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+
+                android:minHeight="48dp"
+                tools:ignore="TextContrastCheck" />
+
+            <EditText
+                android:id="@+id/registerHomeTown"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:ems="10"
+                android:hint="home town"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+
+                android:minHeight="48dp"
+                tools:ignore="TextContrastCheck" />
+
+            <EditText
+                android:id="@+id/registerStartingDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="starting year"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/registerBio"
+                android:layout_width="match_parent"
+                android:layout_height="204dp"
+                android:layout_marginBottom="12dp"
+                android:ems="10"
+                android:hint="Tell us about you"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+
+                android:minHeight="48dp"
+                tools:ignore="TextContrastCheck" />
+
+            <Button
+                android:id="@+id/signup2"
+                android:layout_width="247dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="128dp"
+                android:text="@string/sign_up" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

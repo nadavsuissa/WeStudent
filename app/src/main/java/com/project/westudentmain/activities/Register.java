@@ -6,23 +6,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -31,19 +25,18 @@ import com.example.androidproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.project.westudentmain.Validation;
+import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseLogin;
 
 import java.io.File;
-import java.net.URI;
-import java.util.Map;
 
 
 public class Register extends AppCompatActivity {
 
     private Button btn2_signup,btn_upload_photo;
-    private EditText user_name, pass_word;
+    private EditText user_email, user_password, user_firstName,user_lastName,user_userName, user_university, user_dgree, user_homeTown, user_startingDate,user_Bio;
     private FireBaseLogin fire_base;
     private FireBaseData base_data;
     private Context context = this;
@@ -63,14 +56,35 @@ public class Register extends AppCompatActivity {
         fire_base = FireBaseLogin.getInstance();
 
         btn2_signup.setOnClickListener(v -> {
-            String email = user_name.getText().toString().trim();
-            String password = pass_word.getText().toString().trim();
+            String email = user_email.getText().toString().trim();
+            String password = user_password.getText().toString().trim();
+            String firstName = user_firstName.getText().toString().trim();
+            String lastName = user_lastName.getText().toString().trim();
+            String userName = user_userName.getText().toString().trim();
+            String university = user_university.getText().toString().trim();
+            String dgree = user_dgree.getText().toString().trim();
+            String homeTown = user_homeTown.getText().toString().trim();
+            int startingYear = Integer.parseInt(user_startingDate.getText().toString().trim());
+            String bio = user_Bio.getText().toString().trim();
+
 
             Validation validation =new Validation();
-            boolean flag = validation.RegisterLogin(user_name, pass_word,email,password);
+            boolean flag = validation.Registersignin(user_email, user_password,user_firstName,user_lastName,user_userName,user_university,user_dgree
+                    ,email,password,firstName,lastName,userName,university,dgree);
             if(!flag) return;
             User user = new User();
             user.setMail(email);
+            user.setName(firstName);
+            user.setLastName(lastName);
+            user.setUserName(userName);
+            Profile profile =new Profile();
+            profile.setUniversity(university);
+            profile.setDegree(dgree);
+            profile.setHomeTown(homeTown);
+            profile.setStartingYear(startingYear);
+            profile.setBIO(bio);
+            user.setProfile(profile);
+
 
             // TODO: add on fail listener
             fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -183,10 +197,18 @@ public class Register extends AppCompatActivity {
     }
 
     private void connect_items_by_id() {
-        user_name = findViewById(R.id.registeremail);
-        pass_word = findViewById(R.id.registerpassword);
+        user_email = findViewById(R.id.registeremail);
+        user_password = findViewById(R.id.registerpassword);
         btn2_signup = findViewById(R.id.signup2);
         btn_upload_photo=findViewById(R.id.uploadphoto);
+        user_firstName = findViewById(R.id.registerName);
+        user_lastName = findViewById(R.id.registerLastName);
+        user_userName = findViewById(R.id.registerUserName);
+        user_university = findViewById(R.id.registerUniversity);
+        user_dgree = findViewById(R.id.registerDegree);
+        user_homeTown =findViewById(R.id.registerHomeTown);
+        user_startingDate =findViewById(R.id.registerStartingDate);
+        user_Bio =findViewById(R.id.registerBio);
     }
 
 }
