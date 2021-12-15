@@ -6,30 +6,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.example.androidproject.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.project.westudentmain.Validation;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomOkListener;
@@ -37,8 +29,6 @@ import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseLogin;
 
 import java.io.File;
-import java.net.URI;
-import java.util.Map;
 
 
 public class Register extends AppCompatActivity {
@@ -46,7 +36,7 @@ public class Register extends AppCompatActivity {
     private Button btn2_signup,btn_upload_photo;
     private EditText user_name, pass_word;
     private FireBaseLogin fire_base;
-    private FireBaseData base_data;
+    private FireBaseData fire_base_data;
     private Context context = this;
     private ActivityResultLauncher<String> request_permissions_gallery;
     private ActivityResultLauncher<String> request_permission_camera;
@@ -62,6 +52,7 @@ public class Register extends AppCompatActivity {
         connect_items_by_id();
 
         fire_base = FireBaseLogin.getInstance();
+        fire_base_data = FireBaseData.getInstance();
 
         btn2_signup.setOnClickListener(v -> {
             String email = user_name.getText().toString().trim();
@@ -76,7 +67,7 @@ public class Register extends AppCompatActivity {
             // TODO: add on fail listener
             fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    base_data.updateData(user, new CustomOkListener() {
+                    fire_base_data.updateData(user, new CustomOkListener() {
                         @Override
                         public void onComplete(@NonNull String what, Boolean ok) {
 
