@@ -112,7 +112,7 @@ public class showProfile extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(showProfile.this, showSettings.class)); // this is how to move between screens
+
     }
 
     @Override
@@ -137,9 +137,6 @@ public class showProfile extends AppCompatActivity {
                 return true;
             case R.id.mi_your_profile:
                 startActivity(new Intent(this, showProfile.class));
-                return true;
-            case R.id.mi_home:
-                startActivity(new Intent(this, MainActivity.class));
                 return true;
             case R.id.mi_chat:
                 startActivity(new Intent(this, showChat.class));

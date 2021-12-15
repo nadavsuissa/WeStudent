@@ -60,14 +60,15 @@ public class showSettings extends AppCompatActivity {
             case R.id.mi_your_profile:
                 startActivity(new Intent(this, showProfile.class));
                 return true;
-            case R.id.mi_home:
-                startActivity(new Intent(this, MainActivity.class));
-                return true;
             case R.id.mi_chat:
                 startActivity(new Intent(this, showChat.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(showSettings.this,showProfile.class)); // this is how to move between screens
     }
 }

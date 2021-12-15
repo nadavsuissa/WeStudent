@@ -25,6 +25,7 @@ import com.example.androidproject.R;
 import com.project.westudentmain.Validation;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
+import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseLogin;
@@ -39,11 +40,10 @@ public class Register extends AppCompatActivity {
     private FireBaseLogin fire_base;
     private FireBaseData fire_base_data;
     private Context context = this;
-    private ActivityResultLauncher<String> request_permissions_gallery;
-    private ActivityResultLauncher<String> request_permission_camera;
+    private ActivityResultLauncher<String> request_permissions_gallery,request_permission_camera,open_gallery;
     private ActivityResultLauncher<Uri> open_camera;
-    private ActivityResultLauncher<String> open_gallery;
-
+    private Uri uri;
+   // TODO: show imageView
 
 
     @Override
@@ -95,15 +95,16 @@ public class Register extends AppCompatActivity {
 
                         }
                     });
+                }
 
+                @Override
+                public void onCancelled(@NonNull String error) {
+                    //show to user that is already taken.
 
-                    Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(Register.this, EditProfileActivity.class));
-                } else {
-                    Toast.makeText(Register.this, "Error in  Registration! Try again", Toast.LENGTH_LONG).show();
-                    //startActivity(new Intent(Register.this, Login.class));
                 }
             });
+
+
 
         });
 
@@ -113,17 +114,17 @@ public class Register extends AppCompatActivity {
         request_permission_camera = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if(isGranted) {
                 File file = new File(getFilesDir(), "picFromCamera");
-                Uri uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName() + ".provider", file);
+                uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName() + ".provider", file);
                 open_camera.launch(uri);
             }
         });
-
 
         open_camera = registerForActivityResult(new ActivityResultContracts.TakePicture(), new ActivityResultCallback<Boolean>() {
                     @Override
                     public void onActivityResult(Boolean result) {
                         if(result){
                             Toast.makeText(context, "took photo", Toast.LENGTH_SHORT).show();
+                            // set imageView to uri
                         }
                         else Toast.makeText(context, "didn't took photo", Toast.LENGTH_SHORT).show();
                     }
@@ -167,7 +168,7 @@ public class Register extends AppCompatActivity {
                                 // You can use the API that requires the permission.
                                // Toast.makeText(context, "already has perm", Toast.LENGTH_SHORT).show();
                                 File file = new File(getFilesDir(), "picFromCamera");
-                                Uri uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName()+ ".provider",file);
+                                uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName()+ ".provider",file);
                                 open_camera.launch(uri);
                                 return;
                             }
@@ -193,7 +194,25 @@ public class Register extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(Register.this, Login.class));
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+//set title
+                .setTitle("Are you sure to exit?")
+//set positive button
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+                        finishAffinity();
+                        System.exit(0);
+                    }
+                })
+//set negative button
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .show();
     }
 
     private void connect_items_by_id() {

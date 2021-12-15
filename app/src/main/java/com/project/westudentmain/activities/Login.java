@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
 
             // check for wrong input from user
             Validation validation =new Validation();
-            boolean flag = validation.RegisterLogin(user_name, pass_word,email,password);
+            boolean flag = validation.Login(user_name, pass_word,email,password);
             if(!flag) return;
 
             //TODO: check if user already logged in
@@ -42,7 +42,7 @@ public class Login extends AppCompatActivity {
            FireBaseLogin.emailLogin(email,password, task -> {
                // TODO: start loading fragment before the last line and close in here
                 if (task.isSuccessful()) {
-                    startActivity(new Intent(Login.this, MainActivity.class));
+                    startActivity(new Intent(Login.this, showProfile.class));
                 } else {
                     Toast.makeText(Login.this,
                             "email or password are not correct",
@@ -56,9 +56,7 @@ public class Login extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
-//set title
-                .setTitle("Are you sure to Exit?")
-//set positive button
+                .setTitle("Are you sure to exit?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -66,13 +64,10 @@ public class Login extends AppCompatActivity {
                         finishAffinity();
                         System.exit(0);
                     }
-                })
-//set negative button
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //set what should happen when negative button is clicked
-                        Toast.makeText(getApplicationContext(),"Nothing Happened",Toast.LENGTH_LONG).show();
                     }
                 })
                 .show();
