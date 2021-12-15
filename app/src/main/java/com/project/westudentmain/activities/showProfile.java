@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,26 +24,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-
 import androidx.core.content.FileProvider;
 
-import com.bumptech.glide.Glide;
 import com.example.androidproject.R;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
-import com.project.westudentmain.util.FireBaseLogin;
-
-import java.io.File;
-import java.io.IOException;
 
 import java.io.File;
 
@@ -188,9 +175,6 @@ public class showProfile extends AppCompatActivity {
             txt_year.setText(String.format("Year: %s", profile.getYear()));
             txt_bio.setText(profile.getBIO());
         } // TODO: add else
-//        if(user.getPhoto_uri()!=null){
-//            img_profile.setImageURI(Uri.parse(user.getPhoto_uri()));
-//        }
 
     }
 
