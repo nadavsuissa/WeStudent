@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
 
             // check for wrong input from user
             Validation validation =new Validation();
-            boolean flag = validation.Login(user_name, pass_word,email,password);
+            boolean flag = validation.RegisterLogin(user_name, pass_word,email,password);
             if(!flag) return;
 
             //TODO: check if user already logged in

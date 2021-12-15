@@ -97,11 +97,6 @@ public class Register extends AppCompatActivity {
                     });
                 }
 
-                @Override
-                public void onCancelled(@NonNull String error) {
-                    //show to user that is already taken.
-
-                }
             });
 
 
