@@ -1,22 +1,20 @@
 package com.project.westudentmain.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.androidproject.R;
 import com.project.westudentmain.adapters.GroupRecycleViewAdapter;
-import com.project.westudentmain.adapters.UserRecyclerViewAdapter;
 import com.project.westudentmain.classes.Group;
-import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FireBaseData;
 
@@ -51,7 +49,7 @@ public class showGroup extends AppCompatActivity {
 
                 groups_rec_view.setAdapter(adapter);
 
-                groups_rec_view.setLayoutManager(new GridLayoutManager(context,1)); // splitting the contacts to 2 columns
+                groups_rec_view.setLayoutManager(new GridLayoutManager(context, 1)); // splitting the contacts to 2 columns
             }
 
             @Override
@@ -61,12 +59,14 @@ public class showGroup extends AppCompatActivity {
         });
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -93,6 +93,6 @@ public class showGroup extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(showGroup.this,showProfile.class)); // this is how to move between screens
+        startActivity(new Intent(showGroup.this, showProfile.class)); // this is how to move between screens
     }
 }

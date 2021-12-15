@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -30,7 +29,6 @@ import com.example.androidproject.R;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
-import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
 
 import java.io.File;
@@ -45,7 +43,7 @@ public class showProfile extends AppCompatActivity {
     private final Context context = this;
     private FireBaseData fire_base_data;
 
-    private ActivityResultLauncher<String> request_permissions_gallery,request_permission_camera,open_gallery;
+    private ActivityResultLauncher<String> request_permissions_gallery, request_permission_camera, open_gallery;
     private ActivityResultLauncher<Uri> open_camera;
     private Uri uri;
 
@@ -59,7 +57,8 @@ public class showProfile extends AppCompatActivity {
         setSupportActionBar(mToolBar);
 
         fire_base_data = FireBaseData.getInstance();
-        fire_base_data.downloadUserPhoto(this, img_profile, (what, ok) -> {});
+        fire_base_data.downloadUserPhoto(this, img_profile, (what, ok) -> {
+        });
         fire_base_data.getUserData(User.class, new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
@@ -95,7 +94,7 @@ public class showProfile extends AppCompatActivity {
             if (isGranted) open_gallery.launch("image/*");
         });
         request_permission_camera = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-            if(isGranted) {
+            if (isGranted) {
                 File file = new File(getFilesDir(), "picFromCamera");
                 uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName() + ".provider", file);
                 open_camera.launch(uri);
@@ -105,33 +104,32 @@ public class showProfile extends AppCompatActivity {
         open_camera = registerForActivityResult(new ActivityResultContracts.TakePicture(), new ActivityResultCallback<Boolean>() {
             @Override
             public void onActivityResult(Boolean result) {
-                if(result){
+                if (result) {
                     img_profile.setImageURI(uri);
-                    fire_base_data.uploadUserPhoto(uri,(what, ok) -> {
+                    fire_base_data.uploadUserPhoto(uri, (what, ok) -> {
                         if (what.contains("100") && ok)
                             Toast.makeText(getBaseContext(), "picture uploaded", Toast.LENGTH_SHORT).show();
                         else if (what.contains("failed") && !ok)
                             Toast.makeText(getBaseContext(), "picture failed to upload", Toast.LENGTH_SHORT).show();
                     });
-                }
-                else Toast.makeText(context, "didn't took photo", Toast.LENGTH_SHORT).show();
+                } else Toast.makeText(context, "didn't took photo", Toast.LENGTH_SHORT).show();
             }
         });
 
         open_gallery = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
             public void onActivityResult(Uri result) {
-                if(result!=null){
+                if (result != null) {
                     img_profile.setImageURI(result);
 
-                    fire_base_data.uploadUserPhoto(result,(what, ok) -> {
+                    fire_base_data.uploadUserPhoto(result, (what, ok) -> {
                         if (what.contains("100") && ok)
                             Toast.makeText(getBaseContext(), "picture uploaded", Toast.LENGTH_SHORT).show();
                         else if (what.contains("failed") && !ok)
                             Toast.makeText(getBaseContext(), "picture failed to upload", Toast.LENGTH_SHORT).show();
                     });
-                }
-                else Toast.makeText(context, "didn't took photo from gallery", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(context, "didn't took photo from gallery", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -182,19 +180,19 @@ public class showProfile extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item
-                        if(which==0) {
+                        if (which == 0) {
                             if (ContextCompat.checkSelfPermission(
                                     context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                                 // You can use the API that requires the permission.
                                 // Toast.makeText(context, "already has perm", Toast.LENGTH_SHORT).show();
                                 File file = new File(getFilesDir(), "picFromCamera");
-                                uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName()+ ".provider",file);
+                                uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName() + ".provider", file);
                                 open_camera.launch(uri);
                                 return;
                             }
                             request_permission_camera.launch(Manifest.permission.CAMERA);
                         }
-                        if(which==1) {
+                        if (which == 1) {
                             if (ContextCompat.checkSelfPermission(
                                     context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                                 // You can use the API that requires the permission.

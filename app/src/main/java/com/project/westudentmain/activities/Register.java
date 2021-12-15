@@ -32,7 +32,7 @@ import com.project.westudentmain.util.FireBaseLogin;
 
 import java.io.File;
 
-
+// TODO: swap dgree with degree
 public class Register extends AppCompatActivity {
     private ImageView student_card;
     private Button btn2_signup, btn_upload_photo;

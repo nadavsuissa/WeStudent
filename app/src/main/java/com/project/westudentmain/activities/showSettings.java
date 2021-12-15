@@ -1,13 +1,13 @@
 package com.project.westudentmain.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.androidproject.R;
 import com.project.westudentmain.util.FireBaseLogin;
@@ -15,7 +15,7 @@ import com.project.westudentmain.util.FireBaseLogin;
 public class showSettings extends AppCompatActivity {
     private Toolbar mToolBar;
 
-    private Button dissconnectbtn,changepassbtn,editprofilebtn,changepicbtn;
+    private Button dissconnectbtn, changepassbtn, editprofilebtn, changepicbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,7 @@ public class showSettings extends AppCompatActivity {
             startActivity(new Intent(showSettings.this, Login.class));
         });
     }
+
     private void connect_items_by_id() {
         dissconnectbtn = findViewById(R.id.btndissconect);
         changepassbtn = findViewById(R.id.btnchangepass);
@@ -38,12 +39,14 @@ public class showSettings extends AppCompatActivity {
 
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -67,8 +70,9 @@ public class showSettings extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(showSettings.this,showProfile.class)); // this is how to move between screens
+        startActivity(new Intent(showSettings.this, showProfile.class)); // this is how to move between screens
     }
 }

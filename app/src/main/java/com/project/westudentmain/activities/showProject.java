@@ -1,20 +1,20 @@
 package com.project.westudentmain.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.example.androidproject.R;
 
 public class showProject extends AppCompatActivity {
     private Toolbar mToolBar;
 
-    private TextView projecttypetview,subjecttview,participantstview,descriptiontview;
+    private TextView projecttypetview, subjecttview, participantstview, descriptiontview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,7 @@ public class showProject extends AppCompatActivity {
         mToolBar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolBar);
     }
+
     private void connect_items_by_id() {
         projecttypetview = findViewById(R.id.projecttextview);
         subjecttview = findViewById(R.id.subjecttextview);
@@ -32,12 +33,14 @@ public class showProject extends AppCompatActivity {
 
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection

@@ -1,11 +1,5 @@
 package com.project.westudentmain.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +7,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidproject.R;
 import com.project.westudentmain.adapters.UserRecyclerViewAdapter;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 
 public class showFriends extends AppCompatActivity {
     private Toolbar mToolBar;
-    private Button addfriendbtn,delfriendbtn;
+    private Button addfriendbtn, delfriendbtn;
     private RecyclerView user_friends_rec_view;
     private ArrayList<User> users;
     private FireBaseData fire_base_data;
@@ -54,7 +53,7 @@ public class showFriends extends AppCompatActivity {
 
                 user_friends_rec_view.setAdapter(adapter);
 
-                user_friends_rec_view.setLayoutManager(new GridLayoutManager(context,1)); // splitting the contacts to 2 columns
+                user_friends_rec_view.setLayoutManager(new GridLayoutManager(context, 1)); // splitting the contacts to 2 columns
             }
 
             @Override
@@ -64,24 +63,26 @@ public class showFriends extends AppCompatActivity {
         });
 
 
-
         addfriendbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-     }
+    }
+
     private void connect_items_by_id() {
         addfriendbtn = findViewById(R.id.btnaddfriend);
         delfriendbtn = findViewById(R.id.btndeletefriend);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -108,6 +109,6 @@ public class showFriends extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(showFriends.this,showProfile.class)); // this is how to move between screens
+        startActivity(new Intent(showFriends.this, showProfile.class)); // this is how to move between screens
     }
 }
