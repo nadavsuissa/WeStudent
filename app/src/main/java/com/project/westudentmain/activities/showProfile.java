@@ -124,7 +124,7 @@ public class showProfile extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //startActivity(new Intent(showProfile.this,showSettings.class)); // this is how to move between screens
+        startActivity(new Intent(showProfile.this,showFriends.class)); // this is how to move between screens
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

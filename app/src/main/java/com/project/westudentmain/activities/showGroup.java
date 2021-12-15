@@ -49,4 +49,9 @@ public class showGroup extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(showGroup.this,showProfile.class)); // this is how to move between screens
+    }
 }

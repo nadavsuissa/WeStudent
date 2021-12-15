@@ -66,4 +66,9 @@ public class showChat extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(showChat.this,showProfile.class)); // this is how to move between screens
+    }
 }

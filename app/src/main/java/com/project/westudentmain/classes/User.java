@@ -1,5 +1,7 @@
 package com.project.westudentmain.classes;
 
+import android.media.Image;
+
 import com.google.firebase.database.PropertyName;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class User {
     private String mail;
     private String phone;
     private Profile profile;
-    private String photo_path; // leave it to my implementation
+    private Image photo; // leave it to my implementation
 
     //TODO: student card
 
@@ -65,8 +67,19 @@ public class User {
         this.groups_manager = new HashMap<String,String>();
     }
 
-    public void addFriend(String friend){ //TODO: check if already exist
-        this.friends.add(friend);
+    public boolean addFriend(String friend){
+        if(!hasFriend(friend)){
+            this.friends.add(friend);
+            return true;
+        }
+        else return false;
+    }
+
+    private boolean hasFriend(String friend) {
+        for (String x: this.friends){
+            if (x.equals(friend)) return true;
+        }
+        return false;
     }
 
     public boolean removeFriend(String user_name){ // TODO: check if works
@@ -86,7 +99,11 @@ public class User {
         return groups_manager.remove(group_id);
     }
 
-    public void addGroupParticipant(String group_id,String group_name){ //TODO: check if already exist
+    public Image getPhoto() {
+        return photo;
+    }
+
+    public void addGroupParticipant(String group_id, String group_name){ //TODO: check if already exist
         this.groups_participant.put(group_id,group_name);
     }
 
