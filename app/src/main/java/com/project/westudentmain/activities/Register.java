@@ -32,6 +32,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.project.westudentmain.Validation;
 import com.project.westudentmain.classes.User;
+import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseLogin;
 
@@ -75,9 +76,9 @@ public class Register extends AppCompatActivity {
             // TODO: add on fail listener
             fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    base_data.updateData(user, new OnCompleteListener<Void>() {
+                    base_data.updateData(user, new CustomOkListener() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                        public void onComplete(@NonNull String what, Boolean ok) {
 
                         }
                     });
