@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#2AF5FF">
 
     <TextView
         android:id="@+id/RgisterHeadLine"
@@ -39,6 +40,7 @@
         android:id="@+id/scrollViewSignUp"
         android:layout_width="398dp"
         android:layout_height="563dp"
+        android:background="#EFE9F4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewStudentCard">
@@ -152,11 +154,11 @@
                 tools:ignore="TextContrastCheck" />
 
             <EditText
-                android:id="@+id/registerStartingDate"
+                android:id="@+id/registerYearOfStudying"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="starting year"
+                android:hint="year of studying"
                 android:inputType="number" />
 
             <EditText

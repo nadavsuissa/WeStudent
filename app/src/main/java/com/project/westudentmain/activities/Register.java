@@ -25,7 +25,6 @@ import com.example.androidproject.R;
 import com.project.westudentmain.Validation;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
-import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseLogin;
@@ -36,7 +35,7 @@ import java.io.File;
 public class Register extends AppCompatActivity {
 
     private Button btn2_signup,btn_upload_photo;
-    private EditText user_email, user_password, user_firstName,user_lastName,user_userName, user_university, user_dgree, user_homeTown, user_startingDate,user_Bio;
+    private EditText user_email, user_password, user_firstName,user_lastName,user_userName, user_university, user_dgree, user_homeTown, user_yearOfStudying,user_Bio;
     private FireBaseLogin fire_base;
     private FireBaseData fire_base_data;
     private Context context = this;
@@ -47,7 +46,8 @@ public class Register extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         connect_items_by_id();
@@ -55,7 +55,8 @@ public class Register extends AppCompatActivity {
         fire_base = FireBaseLogin.getInstance();
         fire_base_data = FireBaseData.getInstance();
 
-        btn2_signup.setOnClickListener(v -> {
+        btn2_signup.setOnClickListener(v ->
+        {
             String email = user_email.getText().toString().trim();
             String password = user_password.getText().toString().trim();
             String firstName = user_firstName.getText().toString().trim();
@@ -64,46 +65,58 @@ public class Register extends AppCompatActivity {
             String university = user_university.getText().toString().trim();
             String dgree = user_dgree.getText().toString().trim();
             String homeTown = user_homeTown.getText().toString().trim();
-            int startingYear = Integer.parseInt(user_startingDate.getText().toString().trim());
+            int yearOfStudying = Integer.parseInt(user_yearOfStudying.getText().toString().trim());
             String bio = user_Bio.getText().toString().trim();
 
 
-            Validation validation =new Validation();
-            boolean flag = validation.Registersignin(user_email, user_password,user_firstName,user_lastName,user_userName,user_university,user_dgree
-                    ,email,password,firstName,lastName,userName,university,dgree);
-            if(!flag) return;
-            User user = new User();
-            user.setMail(email);
-            user.setName(firstName);
-            user.setLastName(lastName);
-            user.setUserName(userName);
-            Profile profile =new Profile();
-            profile.setUniversity(university);
-            profile.setDegree(dgree);
-            profile.setHomeTown(homeTown);
-            profile.setStartingYear(startingYear);
-            profile.setBIO(bio);
-            user.setProfile(profile);
+            FireBaseLogin.isUserFree(userName, new CustomOkListener()
+            {
+                @Override
+                public void onComplete(@NonNull String what, Boolean ok) {
+                    Validation validation = new Validation();
+                    boolean flag = validation.Register(user_email, user_password, user_firstName, user_lastName, user_userName, user_university, user_dgree
+                            , email, password, firstName, lastName, userName, university, dgree);
+                    if (!flag) return;
+                    User user = new User();
+                    user.setMail(email);
+                    user.setName(firstName);
+                    user.setLastName(lastName);
+                    user.setUserName(userName);
+                    Profile profile = new Profile();
+                    profile.setUniversity(university);
+                    profile.setDegree(dgree);
+                    profile.setHomeTown(homeTown);
+                    profile.setStartingYear(yearOfStudying);
+                    profile.setBIO(bio);
+                    user.setProfile(profile);
 
+                    // TODO: add on fail listener
+                    fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+                    {
+                        if (task.isSuccessful()) {
+                            fire_base_data.updateData(user, new CustomOkListener() {
+                                @Override
+                                public void onComplete(@NonNull String what, Boolean ok) {
+                                    Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(Register.this, showProfile.class));
+                                }
+                            });
 
-            //TODO: check if user is uniqe
-            // TODO: add on fail listener
-            fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    fire_base_data.updateData(user, new CustomOkListener() {
-                        @Override
-                        public void onComplete(@NonNull String what, Boolean ok) {
-                            if(ok){
-                                startActivity(new Intent(Register.this, showProfile.class));
-                            }
+                        } else {
+                            Toast.makeText(Register.this, "Error in  Registration! Try again", Toast.LENGTH_LONG).show();
+                            //startActivity(new Intent(Register.this, Login.class));
+
                         }
                     });
                 }
+
             });
-
-
-
         });
+
+
+
+
+//                });
 
          request_permissions_gallery = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
              if (isGranted) open_gallery.launch("image/*");
@@ -223,7 +236,7 @@ public class Register extends AppCompatActivity {
         user_university = findViewById(R.id.registerUniversity);
         user_dgree = findViewById(R.id.registerDegree);
         user_homeTown =findViewById(R.id.registerHomeTown);
-        user_startingDate =findViewById(R.id.registerStartingDate);
+        user_yearOfStudying =findViewById(R.id.registerYearOfStudying);
         user_Bio =findViewById(R.id.registerBio);
     }
 
