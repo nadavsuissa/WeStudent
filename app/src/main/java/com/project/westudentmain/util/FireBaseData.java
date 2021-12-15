@@ -14,6 +14,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class FireBaseData {
@@ -118,6 +120,54 @@ public class FireBaseData {
             }
         });
         return true;
+    }
+
+    /**
+     * function that get all the users
+     * @param listener that gives List<User> or error
+     */
+    public void getAllUsers(@NonNull CustomDataListener listener){
+        database_reference.child(User.class.getSimpleName()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<User> user_list = new ArrayList<User>();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    User user = ds.getValue(User.class);
+                    user_list.add(user);
+                }
+
+                listener.onDataChange(user_list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onCancelled(error.getMessage());
+            }
+        });
+    }
+
+    /**
+     * function that get all the groups
+     * @param listener that gives List<Group> or error
+     */
+    public void getAllGroups(@NonNull CustomDataListener listener){
+        database_reference.child(Group.class.getSimpleName()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Group> group_list = new ArrayList<Group>();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Group group = ds.getValue(Group.class);
+                    group_list.add(group);
+                }
+
+                listener.onDataChange(group_list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onCancelled(error.getMessage());
+            }
+        });
     }
 
     /**
