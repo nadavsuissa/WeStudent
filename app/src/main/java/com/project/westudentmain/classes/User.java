@@ -1,11 +1,9 @@
 package com.project.westudentmain.classes;
 
-import com.project.westudentmain.util.FireBaseData;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class User implements FireBaseData {
+public class User {
     private String user_name;
     private String name;
     private String last_name;
@@ -143,8 +141,4 @@ public class User implements FireBaseData {
         return groups_manager;
     }
 
-    @Override
-    public String getClassName() {
-        return "User";
-    }
 }

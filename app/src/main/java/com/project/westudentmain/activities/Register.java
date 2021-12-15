@@ -1,27 +1,57 @@
 package com.project.westudentmain.activities;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import com.example.androidproject.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.project.westudentmain.Validation;
 import com.project.westudentmain.classes.User;
-import com.project.westudentmain.util.FireBase;
+import com.project.westudentmain.util.FireBaseData;
+import com.project.westudentmain.util.FireBaseLogin;
 
+import java.io.File;
+import java.net.URI;
+import java.util.Map;
 
 
 public class Register extends AppCompatActivity {
     private Button btn2_signup,btn_upload;
     private EditText user_name, pass_word;
-    private FireBase fire_base;
+    private FireBaseLogin fire_base;
+    private FireBaseData base_data;
+    private Context context = this;
+    private ActivityResultLauncher<String> request_permissions_gallery;
+    private ActivityResultLauncher<String> request_permission_camera;
+    private ActivityResultLauncher<Uri> open_camera;
+    private ActivityResultLauncher<String> open_gallery;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +59,7 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         connect_items_by_id();
 
-        fire_base = FireBase.getInstance();
+        fire_base = FireBaseLogin.getInstance();
 
         btn2_signup.setOnClickListener(v -> {
             String email = user_name.getText().toString().trim();
@@ -44,7 +74,13 @@ public class Register extends AppCompatActivity {
             // TODO: add on fail listener
             fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    fire_base.updateData(user);
+                    base_data.updateData(user, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                        }
+                    });
+
 
                     Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Register.this, EditProfileActivity.class));
@@ -56,43 +92,88 @@ public class Register extends AppCompatActivity {
 
         });
 
-//        btn_upload.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // learn to use in here - https://github.com/jrvansuita/PickImage
-//                // setup for UI of the dialog
-//                PickSetup setup = new PickSetup().setSystemDialog(true);
-//                // the result of dialog
-//                PickImageDialog.build(setup)
-//                        .setOnPickResult(new IPickResult() {
-//                            @Override
-//                            public void onPickResult(PickResult r) {
-//                                profile_picture.setImageURI(r.getUri());
-//                                BitmapDrawable drawable = (BitmapDrawable) profile_picture.getDrawable();
-//                                Bitmap bitmap = drawable.getBitmap();
-//                                photo_path = saveToInternalStorage(bitmap);
-//                                p.setPhoto_path(photo_path);
-//                                base.UpdateProfile(p);
-//                            }
-//                        })
-//                        .setOnPickCancel(new IPickCancel() {
-//                            @Override
-//                            public void onCancelClick() {
-//                                //TODO: do what you have to if user clicked cancel
-//                                Toast.makeText(ProfileActivity.this, "cancel clicked", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }).show(getSupportFragmentManager());
-//            }
-//        });
-
-        /*
+         request_permissions_gallery = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+             if (isGranted) open_gallery.launch("image/*");
+         });
+        request_permission_camera = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if(isGranted) {
+                File file = new File(getFilesDir(), "picFromCamera");
+                Uri uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName() + ".provider", file);
+                open_camera.launch(uri);
+            }
+        });
 
 
-         */
+        open_camera = registerForActivityResult(new ActivityResultContracts.TakePicture(), new ActivityResultCallback<Boolean>() {
+                    @Override
+                    public void onActivityResult(Boolean result) {
+                        if(result){
+                            Toast.makeText(context, "took photo", Toast.LENGTH_SHORT).show();
+                        }
+                        else Toast.makeText(context, "didn't took photo", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        open_gallery = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri result) {
+                if(result!=null){
+                    Toast.makeText(context, "took from gallery", Toast.LENGTH_SHORT).show();
+                }
+                else Toast.makeText(context, "didn't took photo from gallery", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+                btn_upload.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                       CameraGalleryDialog();
+                    }
+                });
+
 
 
 
     }
+
+    private void CameraGalleryDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Choose location:");
+        builder.setItems(new CharSequence[]
+                        {"camera", "gallery"},
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        if(which==0) {
+                            if (ContextCompat.checkSelfPermission(
+                                    context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                                // You can use the API that requires the permission.
+                               // Toast.makeText(context, "already has perm", Toast.LENGTH_SHORT).show();
+                                File file = new File(getFilesDir(), "picFromCamera");
+                                Uri uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName()+ ".provider",file);
+                                open_camera.launch(uri);
+                                return;
+                            }
+                            request_permission_camera.launch(Manifest.permission.CAMERA);
+                        }
+                        if(which==1) {
+                            if (ContextCompat.checkSelfPermission(
+                                    context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                // You can use the API that requires the permission.
+                                //Toast.makeText(context, "already has perm", Toast.LENGTH_SHORT).show();
+                                open_gallery.launch("image/*");
+                                return;
+                            }
+                            request_permissions_gallery.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+                        }
+                    }
+                });
+        builder.create().show();
+    }
+
+
 
 
     @Override

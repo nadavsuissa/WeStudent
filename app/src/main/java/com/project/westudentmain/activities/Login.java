@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidproject.R;
 import com.project.westudentmain.Validation;
 
-import com.project.westudentmain.util.FireBase;
+import com.project.westudentmain.util.FireBaseLogin;
 
 public class Login extends AppCompatActivity {
     private EditText user_name, pass_word;
@@ -41,7 +39,7 @@ public class Login extends AppCompatActivity {
             //TODO: show progress bar
             //TODO: close this page when login successful
             //TODO: check network fail
-           FireBase.emailLogin(email,password, task -> {
+           FireBaseLogin.emailLogin(email,password, task -> {
                // TODO: start loading fragment before the last line and close in here
                 if (task.isSuccessful()) {
                     startActivity(new Intent(Login.this, showProfile.class));
