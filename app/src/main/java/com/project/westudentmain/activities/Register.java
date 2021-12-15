@@ -97,8 +97,11 @@ public class Register extends AppCompatActivity {
                             fire_base_data.updateData(user, new CustomOkListener() {
                                 @Override
                                 public void onComplete(@NonNull String what, Boolean ok) {
-                                    Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(Register.this, showProfile.class));
+                                    fire_base_data.uploadUserPhoto(uri,(what1, ok1) -> {
+                                        Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(Register.this, showProfile.class));
+                                    });
+
                                 }
                             });
 
