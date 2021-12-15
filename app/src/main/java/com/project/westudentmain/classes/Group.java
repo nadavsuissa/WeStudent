@@ -23,6 +23,10 @@ public class Group {
     }
 
     public Group() {
+        this.group_name = "group_name";
+        this.description = "description";
+        this.max_capacity = 0;
+        this.date = "date";
         this.group_activity_manager = new GroupActivityManager();
     }
 

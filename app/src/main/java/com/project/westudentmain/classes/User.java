@@ -1,6 +1,6 @@
 package com.project.westudentmain.classes;
 
-import android.media.Image;
+import android.net.Uri;
 
 import com.google.firebase.database.PropertyName;
 
@@ -18,7 +18,7 @@ public class User {
     private String mail;
     private String phone;
     private Profile profile;
-    private Image photo; // leave it to my implementation
+    private String photo_uri;
 
     //TODO: student card
 
@@ -39,6 +39,7 @@ public class User {
         this.groups_participant = new HashMap<String,String>();
         this.groups_manager = new HashMap<String,String>();
         this.profile = new Profile();
+        this.photo_uri = null;
     }
 
     public User(String user_name, String name, String last_name, String mail, String phone) {
@@ -52,6 +53,7 @@ public class User {
         this.groups_participant = new HashMap<String,String>();
         this.groups_manager = new HashMap<String,String>();
         this.profile = new Profile();
+        this.photo_uri = null;
     }
 
     public User(User other){
@@ -61,6 +63,7 @@ public class User {
             this.last_name = other.last_name;
             this.mail = other.mail;
             this.phone = other.phone;
+            this.photo_uri = other.photo_uri;
         }
         this.friends = new ArrayList<String>();
         this.groups_participant = new HashMap<String,String>();
@@ -99,8 +102,12 @@ public class User {
         return groups_manager.remove(group_id);
     }
 
-    public Image getPhoto() {
-        return photo;
+    public String getPhoto_uri() {
+        return photo_uri;
+    }
+
+    public void setPhoto_uri(String photo_uri) {
+        this.photo_uri = photo_uri;
     }
 
     public void addGroupParticipant(String group_id, String group_name){ //TODO: check if already exist

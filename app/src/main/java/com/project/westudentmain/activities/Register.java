@@ -180,6 +180,7 @@ public class Register extends AppCompatActivity {
                                 return;
                             }
                             request_permissions_gallery.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+
                         }
                     }
                 });

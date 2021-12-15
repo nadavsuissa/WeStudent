@@ -1,8 +1,15 @@
 package com.project.westudentmain.activities;
 
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -10,15 +17,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import com.example.androidproject.R;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
+import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
+
+import java.io.File;
 
 public class showProfile extends AppCompatActivity {
     private Toolbar mToolBar; // WTF is that
@@ -26,8 +41,11 @@ public class showProfile extends AppCompatActivity {
     private ImageView img_profile; //TODO: show the pic
     private TextView txt_user_name, txt_name, txt_university, txt_department, txt_degree, txt_year, txt_bio;
     private Button btn_all_groups, btn_my_groups, btn_friends, btn_users, btn_edit_photo;
-
+    private final Context context = this;
     private FireBaseData fire_base_data;
+    private ActivityResultLauncher<String> request_permissions_gallery,request_permission_camera,open_gallery;
+    private ActivityResultLauncher<Uri> open_camera;
+    private Uri uri;
 
 
     @Override
@@ -71,7 +89,77 @@ public class showProfile extends AppCompatActivity {
             startActivity(new Intent(this, showFriends.class));
         });
         btn_edit_photo.setOnClickListener(view -> {
+            CameraGalleryDialog();
+        });
 
+        request_permissions_gallery = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) open_gallery.launch("image/*");
+        });
+        request_permission_camera = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if(isGranted) {
+                File file = new File(getFilesDir(), "picFromCamera");
+                uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName() + ".provider", file);
+                open_camera.launch(uri);
+            }
+        });
+
+        open_camera = registerForActivityResult(new ActivityResultContracts.TakePicture(), new ActivityResultCallback<Boolean>() {
+            @Override
+            public void onActivityResult(Boolean result) {
+                if(result){
+                    Toast.makeText(context, "took photo", Toast.LENGTH_SHORT).show();
+                    img_profile.setImageURI(uri);
+                    fire_base_data.getUserData(User.class, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+                            User my_user = (User) data;
+                            my_user.setPhoto_uri(uri.toString());
+                            fire_base_data.updateData(my_user, new CustomOkListener() {
+                                @Override
+                                public void onComplete(@NonNull String what, Boolean ok) {
+                                    if(!ok) Toast.makeText(context, "didn't update", Toast.LENGTH_SHORT).show();
+                                    else  Log.d("check Uri",uri.toString());
+                                }
+                            });
+                        }
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
+                            //TODO: jump back to login
+                        }
+                    });
+
+                }
+                else Toast.makeText(context, "didn't took photo", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        open_gallery = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri result) {
+                if(result!=null){
+                    Toast.makeText(context, "took from gallery", Toast.LENGTH_SHORT).show();
+                    img_profile.setImageURI(result);
+                    fire_base_data.getUserData(User.class, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+                            User my_user = (User) data;
+                            my_user.setPhoto_uri(result.toString());
+                            fire_base_data.updateData(my_user, new CustomOkListener() {
+                                @Override
+                                public void onComplete(@NonNull String what, Boolean ok) {
+                                }
+                            });
+                        }
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
+                            //TODO: jump back to login
+                        }
+                    });
+                }
+                else Toast.makeText(context, "didn't took photo from gallery", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -87,6 +175,9 @@ public class showProfile extends AppCompatActivity {
             txt_year.setText(String.format("Year: %s", profile.getYear()));
             txt_bio.setText(profile.getBIO());
         } // TODO: add else
+        if(user.getPhoto_uri()!=null){
+            img_profile.setImageURI(Uri.parse(user.getPhoto_uri()));
+        }
 
     }
 
@@ -108,6 +199,44 @@ public class showProfile extends AppCompatActivity {
         btn_users = findViewById(R.id.buttonUsers);
         btn_edit_photo = findViewById(R.id.buttonUpdateUserData);
 
+    }
+
+
+    private void CameraGalleryDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Choose location:");
+        builder.setItems(new CharSequence[]
+                        {"camera", "gallery"},
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        if(which==0) {
+                            if (ContextCompat.checkSelfPermission(
+                                    context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                                // You can use the API that requires the permission.
+                                // Toast.makeText(context, "already has perm", Toast.LENGTH_SHORT).show();
+                                File file = new File(getFilesDir(), "picFromCamera");
+                                uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName()+ ".provider",file);
+                                open_camera.launch(uri);
+                                return;
+                            }
+                            request_permission_camera.launch(Manifest.permission.CAMERA);
+                        }
+                        if(which==1) {
+                            if (ContextCompat.checkSelfPermission(
+                                    context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                // You can use the API that requires the permission.
+                                //Toast.makeText(context, "already has perm", Toast.LENGTH_SHORT).show();
+                                open_gallery.launch("image/*");
+                                return;
+                            }
+                            request_permissions_gallery.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+                        }
+
+                    }
+                });
+        builder.create().show();
     }
 
     @Override

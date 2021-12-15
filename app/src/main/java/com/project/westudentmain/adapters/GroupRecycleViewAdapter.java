@@ -1,60 +1,55 @@
 package com.project.westudentmain.adapters;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
+import android.annotation.SuppressLint;
+        import android.app.AlertDialog;
+        import android.content.Context;
+        import android.content.DialogInterface;
+import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.ImageView;
+        import android.widget.TextView;
+        import android.widget.Toast;
+
+        import androidx.annotation.NonNull;
+        import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.androidproject.R;
+import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.User;
-import com.project.westudentmain.util.CustomDataListener;
-import com.project.westudentmain.util.CustomOkListener;
-import com.project.westudentmain.util.FireBaseData;
+        import com.project.westudentmain.util.CustomDataListener;
+        import com.project.westudentmain.util.CustomOkListener;
+        import com.project.westudentmain.util.FireBaseData;
 
-import java.io.File;
 import java.util.ArrayList;
 
-public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.ViewHolder> {
+public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleViewAdapter.ViewHolder> {
     private final FireBaseData fire_base_data = FireBaseData.getInstance();
-    private ArrayList<User> users = new ArrayList<>();
+    private ArrayList<Group> groups = new ArrayList<>();
     Context context;
-    public UserRecyclerViewAdapter(Context context) {
+    public GroupRecycleViewAdapter(Context context) {
         this.context = context;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_friends_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_group_item,parent,false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.txt_name.setText(users.get(position).getName());
-        holder.txt_id.setText(users.get(position).getMail());
+        holder.txt_name.setText(groups.get(position).getGroupName());
+        holder.txt_id.setText(groups.get(position).getGroup_id());
         holder.card_root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OnPickUserDialog((String) holder.txt_id.getText());
-                //Toast.makeText(context, users.get(position).getName() + " Selected", Toast.LENGTH_SHORT).show();
+               // OnPickGroupDialog((String) holder.txt_id.getText());
+                Toast.makeText(context, groups.get(position).getGroupName() + " Selected", Toast.LENGTH_SHORT).show();
             }
         });
 //        String photo = users.get(position).getPhoto_uri();
@@ -67,7 +62,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 //                .into(holder.image);
 
     }
-    private void OnPickUserDialog(String friend_username) {
+    private void OnPickGroupDialog(String friend_username) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Choose option:");
         builder.setItems(new CharSequence[]
@@ -129,11 +124,11 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
     @Override
     public int getItemCount() {
-        return users.size();
+        return groups.size();
     }
 
-    public void setContacts(ArrayList<User> users) {
-        this.users = users;
+    public void setGroups(ArrayList<Group> groups) {
+        this.groups = groups;
         notifyDataSetChanged();  // when i change the list of contacts the adapter is notified to refresh the items list
     }
 
@@ -143,10 +138,11 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         private ImageView image;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txt_name = itemView.findViewById(R.id.username);
-            card_root = itemView.findViewById(R.id.card_root);
-            txt_id = itemView.findViewById(R.id.userid);
-            image = itemView.findViewById(R.id.profile);
+            txt_name = itemView.findViewById(R.id.groupname);
+            card_root = itemView.findViewById(R.id.group_card_view);
+            txt_id = itemView.findViewById(R.id.groupid);
+            image = itemView.findViewById(R.id.group_logo);
         }
     }
 }
+
