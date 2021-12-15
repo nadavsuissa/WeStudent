@@ -42,9 +42,6 @@ public class showGroup extends AppCompatActivity {
             case R.id.mi_your_profile:
                 startActivity(new Intent(this, showProfile.class));
                 return true;
-            case R.id.mi_home:
-                startActivity(new Intent(this, MainActivity.class));
-                return true;
             case R.id.mi_chat:
                 startActivity(new Intent(this, showChat.class));
                 return true;

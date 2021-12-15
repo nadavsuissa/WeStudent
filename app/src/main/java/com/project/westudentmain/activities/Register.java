@@ -32,6 +32,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.project.westudentmain.Validation;
 import com.project.westudentmain.classes.User;
+import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseLogin;
@@ -48,10 +49,9 @@ public class Register extends AppCompatActivity {
     private FireBaseLogin fire_base;
     private FireBaseData base_data;
     private Context context = this;
-    private ActivityResultLauncher<String> request_permissions_gallery;
-    private ActivityResultLauncher<String> request_permission_camera;
+    private ActivityResultLauncher<String> request_permissions_gallery,request_permission_camera,open_gallery;
     private ActivityResultLauncher<Uri> open_camera;
-    private ActivityResultLauncher<String> open_gallery;
+    private Uri uri;
    // TODO: show imageView
 
 
@@ -67,30 +67,43 @@ public class Register extends AppCompatActivity {
             String email = user_name.getText().toString().trim();
             String password = pass_word.getText().toString().trim();
 
-            Validation validation =new Validation();
-            boolean flag = validation.RegisterLogin(user_name, pass_word,email,password);
-            if(!flag) return;
-            User user = new User();
-            user.setMail(email);
+            FireBaseLogin.isUserFree("here is the username", new CustomDataListener() {
+                @Override
+                public void onDataChange(@NonNull Object data) {
+                    Validation validation =new Validation();
+                    boolean flag = validation.Register(user_name, pass_word,email,password);
+                    if(!flag) return;
+                    User user = new User();
+                    user.setMail(email);
 
-            // TODO: add on fail listener
-            fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    base_data.updateData(user, new CustomOkListener() {
-                        @Override
-                        public void onComplete(@NonNull String what, Boolean ok) {
+                    // TODO: add on fail listener
+                    fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            base_data.updateData(user, new CustomOkListener() {
+                                @Override
+                                public void onComplete(@NonNull String what, Boolean ok) {
 
+                                }
+                            });
+
+
+                            Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(Register.this, EditProfileActivity.class));
+                        } else {
+                            Toast.makeText(Register.this, "Error in  Registration! Try again", Toast.LENGTH_LONG).show();
+                            //startActivity(new Intent(Register.this, Login.class));
                         }
                     });
+                }
 
+                @Override
+                public void onCancelled(@NonNull String error) {
+                    //show to user that is already taken.
 
-                    Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(Register.this, EditProfileActivity.class));
-                } else {
-                    Toast.makeText(Register.this, "Error in  Registration! Try again", Toast.LENGTH_LONG).show();
-                    //startActivity(new Intent(Register.this, Login.class));
                 }
             });
+
+
 
         });
 
@@ -100,17 +113,17 @@ public class Register extends AppCompatActivity {
         request_permission_camera = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if(isGranted) {
                 File file = new File(getFilesDir(), "picFromCamera");
-                Uri uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName() + ".provider", file);
+                uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName() + ".provider", file);
                 open_camera.launch(uri);
             }
         });
-
 
         open_camera = registerForActivityResult(new ActivityResultContracts.TakePicture(), new ActivityResultCallback<Boolean>() {
                     @Override
                     public void onActivityResult(Boolean result) {
                         if(result){
                             Toast.makeText(context, "took photo", Toast.LENGTH_SHORT).show();
+                            // set imageView to uri
                         }
                         else Toast.makeText(context, "didn't took photo", Toast.LENGTH_SHORT).show();
                     }
@@ -154,7 +167,7 @@ public class Register extends AppCompatActivity {
                                 // You can use the API that requires the permission.
                                // Toast.makeText(context, "already has perm", Toast.LENGTH_SHORT).show();
                                 File file = new File(getFilesDir(), "picFromCamera");
-                                Uri uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName()+ ".provider",file);
+                                uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName()+ ".provider",file);
                                 open_camera.launch(uri);
                                 return;
                             }
@@ -180,7 +193,25 @@ public class Register extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(Register.this, Login.class));
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+//set title
+                .setTitle("Are you sure to exit?")
+//set positive button
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+                        finishAffinity();
+                        System.exit(0);
+                    }
+                })
+//set negative button
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .show();
     }
 
     private void connect_items_by_id() {

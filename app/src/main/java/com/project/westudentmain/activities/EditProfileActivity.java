@@ -50,7 +50,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 UpdateUser();
                 finish();
-                startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
+                startActivity(new Intent(EditProfileActivity.this, showProfile.class));
             }
         });
 
@@ -106,11 +106,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //TODO: need to know where did i came from? (register or profile)
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -133,9 +128,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 return true;
             case R.id.mi_your_profile:
                 startActivity(new Intent(this, showProfile.class));
-                return true;
-            case R.id.mi_home:
-                startActivity(new Intent(this, MainActivity.class));
                 return true;
             case R.id.mi_chat:
                 startActivity(new Intent(this, showChat.class));
