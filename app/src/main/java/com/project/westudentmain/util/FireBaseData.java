@@ -364,7 +364,7 @@ public class FireBaseData {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference mStorage = storage.getReference();
 
-        StorageReference filepath = mStorage.child("userProfile").child(user.getUid()).child(uri.getLastPathSegment());
+        StorageReference filepath = mStorage.child("userProfile").child(user.getUid()).child("profilePhoto");
         filepath.putFile(uri).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
@@ -402,7 +402,7 @@ public class FireBaseData {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
 
-        StorageReference file = storageRef.child("userProfile").child(user.getUid()).child("picFromCamera");
+        StorageReference file = storageRef.child("userProfile").child(user.getUid()).child("profilePhoto");
 
         file.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
         {
@@ -442,7 +442,7 @@ public class FireBaseData {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
 
-        StorageReference file = storageRef.child("userProfile").child(id).child("picFromCamera");
+        StorageReference file = storageRef.child("userProfile").child(id).child("profilePhoto");
 
         file.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
         {

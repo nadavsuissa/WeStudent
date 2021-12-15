@@ -38,11 +38,13 @@ import java.io.File;
 public class showProfile extends AppCompatActivity {
     private Toolbar mToolBar; // WTF is that
 
-    private ImageView img_profile; //TODO: show the pic
+    private ImageView img_profile;
     private TextView txt_user_name, txt_name, txt_university, txt_department, txt_degree, txt_year, txt_bio;
     private Button btn_all_groups, btn_my_groups, btn_friends, btn_users, btn_edit_photo;
+
     private final Context context = this;
     private FireBaseData fire_base_data;
+
     private ActivityResultLauncher<String> request_permissions_gallery,request_permission_camera,open_gallery;
     private ActivityResultLauncher<Uri> open_camera;
     private Uri uri;
@@ -57,10 +59,7 @@ public class showProfile extends AppCompatActivity {
         setSupportActionBar(mToolBar);
 
         fire_base_data = FireBaseData.getInstance();
-
         fire_base_data.downloadUserPhoto(this, img_profile, (what, ok) -> {});
-
-
         fire_base_data.getUserData(User.class, new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
@@ -107,28 +106,13 @@ public class showProfile extends AppCompatActivity {
             @Override
             public void onActivityResult(Boolean result) {
                 if(result){
-                    Toast.makeText(context, "took photo", Toast.LENGTH_SHORT).show();
                     img_profile.setImageURI(uri);
-                    fire_base_data.getUserData(User.class, new CustomDataListener() {
-                        @Override
-                        public void onDataChange(@NonNull Object data) {
-                            User my_user = (User) data;
-                            my_user.setPhoto_uri(uri.toString());
-                            fire_base_data.updateData(my_user, new CustomOkListener() {
-                                @Override
-                                public void onComplete(@NonNull String what, Boolean ok) {
-                                    if(!ok) Toast.makeText(context, "didn't update", Toast.LENGTH_SHORT).show();
-                                    else  Log.d("check Uri",uri.toString());
-                                }
-                            });
-                        }
-                        @Override
-                        public void onCancelled(@NonNull String error) {
-                            Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
-                            //TODO: jump back to login
-                        }
+                    fire_base_data.uploadUserPhoto(uri,(what, ok) -> {
+                        if (what.contains("100") && ok)
+                            Toast.makeText(getBaseContext(), "picture uploaded", Toast.LENGTH_SHORT).show();
+                        else if (what.contains("failed") && !ok)
+                            Toast.makeText(getBaseContext(), "picture failed to upload", Toast.LENGTH_SHORT).show();
                     });
-
                 }
                 else Toast.makeText(context, "didn't took photo", Toast.LENGTH_SHORT).show();
             }
@@ -138,24 +122,13 @@ public class showProfile extends AppCompatActivity {
             @Override
             public void onActivityResult(Uri result) {
                 if(result!=null){
-                    Toast.makeText(context, "took from gallery", Toast.LENGTH_SHORT).show();
                     img_profile.setImageURI(result);
-                    fire_base_data.getUserData(User.class, new CustomDataListener() {
-                        @Override
-                        public void onDataChange(@NonNull Object data) {
-                            User my_user = (User) data;
-                            my_user.setPhoto_uri(result.toString());
-                            fire_base_data.updateData(my_user, new CustomOkListener() {
-                                @Override
-                                public void onComplete(@NonNull String what, Boolean ok) {
-                                }
-                            });
-                        }
-                        @Override
-                        public void onCancelled(@NonNull String error) {
-                            Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
-                            //TODO: jump back to login
-                        }
+
+                    fire_base_data.uploadUserPhoto(result,(what, ok) -> {
+                        if (what.contains("100") && ok)
+                            Toast.makeText(getBaseContext(), "picture uploaded", Toast.LENGTH_SHORT).show();
+                        else if (what.contains("failed") && !ok)
+                            Toast.makeText(getBaseContext(), "picture failed to upload", Toast.LENGTH_SHORT).show();
                     });
                 }
                 else Toast.makeText(context, "didn't took photo from gallery", Toast.LENGTH_SHORT).show();

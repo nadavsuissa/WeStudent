@@ -37,8 +37,10 @@ public class Register extends AppCompatActivity {
     private ImageView student_card;
     private Button btn2_signup,btn_upload_photo;
     private EditText user_email, user_password, user_firstName,user_lastName,user_userName, user_university, user_dgree, user_homeTown, user_yearOfStudying,user_Bio;
+
     private FireBaseLogin fire_base;
     private FireBaseData fire_base_data;
+
     private Context context = this;
     private ActivityResultLauncher<String> request_permissions_gallery,request_permission_camera,open_gallery;
     private ActivityResultLauncher<Uri> open_camera;
