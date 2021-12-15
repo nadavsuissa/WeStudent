@@ -47,7 +47,8 @@ public class Register extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         connect_items_by_id();
@@ -55,7 +56,8 @@ public class Register extends AppCompatActivity {
         fire_base = FireBaseLogin.getInstance();
         fire_base_data = FireBaseData.getInstance();
 
-        btn2_signup.setOnClickListener(v -> {
+        btn2_signup.setOnClickListener(v ->
+        {
             String email = user_email.getText().toString().trim();
             String password = user_password.getText().toString().trim();
             String firstName = user_firstName.getText().toString().trim();
@@ -68,42 +70,54 @@ public class Register extends AppCompatActivity {
             String bio = user_Bio.getText().toString().trim();
 
 
-            Validation validation =new Validation();
-            boolean flag = validation.Registersignin(user_email, user_password,user_firstName,user_lastName,user_userName,user_university,user_dgree
-                    ,email,password,firstName,lastName,userName,university,dgree);
-            if(!flag) return;
-            User user = new User();
-            user.setMail(email);
-            user.setName(firstName);
-            user.setLastName(lastName);
-            user.setUserName(userName);
-            Profile profile =new Profile();
-            profile.setUniversity(university);
-            profile.setDegree(dgree);
-            profile.setHomeTown(homeTown);
-            profile.setStartingYear(startingYear);
-            profile.setBIO(bio);
-            user.setProfile(profile);
+            FireBaseLogin.isUserFree(userName, new CustomOkListener()
+            {
+                @Override
+                public void onComplete(@NonNull String what, Boolean ok) {
+                    Validation validation = new Validation();
+                    boolean flag = validation.Register(user_email, user_password, user_firstName, user_lastName, user_userName, user_university, user_dgree
+                            , email, password, firstName, lastName, userName, university, dgree);
+                    if (!flag) return;
+                    User user = new User();
+                    user.setMail(email);
+                    user.setName(firstName);
+                    user.setLastName(lastName);
+                    user.setUserName(userName);
+                    Profile profile = new Profile();
+                    profile.setUniversity(university);
+                    profile.setDegree(dgree);
+                    profile.setHomeTown(homeTown);
+                    profile.setStartingYear(startingYear);
+                    profile.setBIO(bio);
+                    user.setProfile(profile);
 
+                    // TODO: add on fail listener
+                    fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+                    {
+                        if (task.isSuccessful()) {
+                            fire_base_data.updateData(user, new CustomOkListener() {
+                                @Override
+                                public void onComplete(@NonNull String what, Boolean ok) {
+                                    Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(Register.this, showProfile.class));
+                                }
+                            });
 
-            //TODO: check if user is uniqe
-            // TODO: add on fail listener
-            fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    fire_base_data.updateData(user, new CustomOkListener() {
-                        @Override
-                        public void onComplete(@NonNull String what, Boolean ok) {
-                            if(ok){
-                                startActivity(new Intent(Register.this, showProfile.class));
-                            }
+                        } else {
+                            Toast.makeText(Register.this, "Error in  Registration! Try again", Toast.LENGTH_LONG).show();
+                            //startActivity(new Intent(Register.this, Login.class));
+
                         }
                     });
                 }
+
             });
-
-
-
         });
+
+
+
+
+//                });
 
          request_permissions_gallery = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
              if (isGranted) open_gallery.launch("image/*");
