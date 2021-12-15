@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -33,7 +34,7 @@ import java.io.File;
 
 
 public class Register extends AppCompatActivity {
-
+    private ImageView student_card;
     private Button btn2_signup,btn_upload_photo;
     private EditText user_email, user_password, user_firstName,user_lastName,user_userName, user_university, user_dgree, user_homeTown, user_yearOfStudying,user_Bio;
     private FireBaseLogin fire_base;
@@ -138,6 +139,7 @@ public class Register extends AppCompatActivity {
                         if(result){
                             Toast.makeText(context, "took photo", Toast.LENGTH_SHORT).show();
                             // set imageView to uri
+                            student_card.setImageURI(uri);
                         }
                         else Toast.makeText(context, "didn't took photo", Toast.LENGTH_SHORT).show();
                     }
@@ -148,6 +150,7 @@ public class Register extends AppCompatActivity {
             public void onActivityResult(Uri result) {
                 if(result!=null){
                     Toast.makeText(context, "took from gallery", Toast.LENGTH_SHORT).show();
+                    student_card.setImageURI(result);
                 }
                 else Toast.makeText(context, "didn't took photo from gallery", Toast.LENGTH_SHORT).show();
             }
@@ -242,6 +245,7 @@ public class Register extends AppCompatActivity {
         user_homeTown =findViewById(R.id.registerHomeTown);
         user_yearOfStudying =findViewById(R.id.registerYearOfStudying);
         user_Bio =findViewById(R.id.registerBio);
+        student_card = findViewById(R.id.imageViewStudentCard);
     }
 
 }
