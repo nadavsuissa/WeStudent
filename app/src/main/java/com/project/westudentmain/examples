@@ -1,0 +1,37 @@
+
+//        add user example:
+//        User user = new User("user_name123", "name", "last_name", FireBaseData.getEmail(), "2134568");
+//        fire_base_data.updateData(user,null);
+
+//        add group example:
+//        Group group = new Group("new group", "String description", 12, "1784");
+//        fire_base_data.addNewGroup(group,null);
+
+
+//        remove group example:
+//        fire_base_data.removeGroup("-Mqu6r2OgiNGU1SBMAgG", new CustomOkListener() {
+//            @Override
+//            public void onComplete(@NonNull String what, Boolean ok) {
+//                Toast.makeText(getBaseContext(), what + ok, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+
+//        user deletion example:
+//        FireBaseLogin.deleteUser("user_name", new CustomDataListener() {
+//            @Override
+//            public void onDataChange(@NonNull Object data) {
+//                if ((int)data<0){
+//
+//                    Toast.makeText(getBaseContext(), "user deletion code "+ data, Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(showProfile.this,Login.class));
+//                }else
+//                    Toast.makeText(getBaseContext(), "data deletion times "+ data, Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull String error) {
+//                Toast.makeText(getBaseContext(), error, Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
