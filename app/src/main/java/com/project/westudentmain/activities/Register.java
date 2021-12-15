@@ -86,17 +86,19 @@ public class Register extends AppCompatActivity {
             user.setProfile(profile);
 
 
+            //TODO: check if user is uniqe
             // TODO: add on fail listener
             fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     fire_base_data.updateData(user, new CustomOkListener() {
                         @Override
                         public void onComplete(@NonNull String what, Boolean ok) {
-
+                            if(ok){
+                                startActivity(new Intent(Register.this, showProfile.class));
+                            }
                         }
                     });
                 }
-
             });
 
 
