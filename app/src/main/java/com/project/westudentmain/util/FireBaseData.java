@@ -201,10 +201,10 @@ public class FireBaseData {
      * @param listener  if you want to know about completion pass listener else pass null
      *                  the listener called 2 times - one for data and second for auth deletion.
      *                  data: the listener pass the num of object that he deleted
-     *                  auth: -1 when he delete the user, on error pass "user deletion error" in onCancelled function
+     *                  auth: ok if successful, on error pass "user deletion error"
      * @return true if can do it (user connected)
      */
-    public static boolean deleteUser(String user_name, CustomDataListener listener) {
+    public static boolean deleteUser(String user_name, CustomOkListener listener) {
         FirebaseUser user = FireBaseLogin.getUser();
         if (user == null)
             return false;
@@ -220,12 +220,12 @@ public class FireBaseData {
                     remove_num++;
                 }
 
-                listener.onDataChange(remove_num);
+                listener.onComplete(String.format("removed %s remove_num"),remove_num != 0);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                listener.onCancelled(error.getMessage());
+                listener.onComplete(error.getMessage(),false);
             }
         });
 
@@ -234,9 +234,9 @@ public class FireBaseData {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            listener.onDataChange(-1);
+                            listener.onComplete("user deleted",true);
                         } else {
-                            listener.onCancelled("user deletion error");
+                            listener.onComplete("user deletion error",false);
                         }
                     }
                 });
