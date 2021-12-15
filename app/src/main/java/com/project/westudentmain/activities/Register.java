@@ -35,22 +35,19 @@ import java.io.File;
 
 public class Register extends AppCompatActivity {
     private ImageView student_card;
-    private Button btn2_signup,btn_upload_photo;
-    private EditText user_email, user_password, user_firstName,user_lastName,user_userName, user_university, user_dgree, user_homeTown, user_yearOfStudying,user_Bio;
+    private Button btn2_signup, btn_upload_photo;
+    private EditText user_email, user_password, user_firstName, user_lastName, user_userName, user_university, user_dgree, user_homeTown, user_yearOfStudying, user_Bio;
 
     private FireBaseLogin fire_base;
     private FireBaseData fire_base_data;
 
-    private Context context = this;
-    private ActivityResultLauncher<String> request_permissions_gallery,request_permission_camera,open_gallery;
+    private final Context context = this;
+    private ActivityResultLauncher<String> request_permissions_gallery, request_permission_camera, open_gallery;
     private ActivityResultLauncher<Uri> open_camera;
     private Uri uri;
-   // TODO: show imageView
-
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         connect_items_by_id();
@@ -72,8 +69,7 @@ public class Register extends AppCompatActivity {
             String bio = user_Bio.getText().toString().trim();
 
 
-            FireBaseLogin.isUserFree(userName, new CustomOkListener()
-            {
+            FireBaseLogin.isUserFree(userName, new CustomOkListener() {
                 @Override
                 public void onComplete(@NonNull String what, Boolean ok) {
                     Validation validation = new Validation();
@@ -93,14 +89,13 @@ public class Register extends AppCompatActivity {
                     profile.setBIO(bio);
                     user.setProfile(profile);
 
-                    // TODO: add on fail listener
                     fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task ->
                     {
                         if (task.isSuccessful()) {
                             fire_base_data.updateData(user, new CustomOkListener() {
                                 @Override
                                 public void onComplete(@NonNull String what, Boolean ok) {
-                                    fire_base_data.uploadUserPhoto(uri,(what1, ok1) -> {
+                                    fire_base_data.uploadUserPhoto(uri, (what1, ok1) -> {
                                         Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(Register.this, showProfile.class));
                                     });
@@ -110,8 +105,6 @@ public class Register extends AppCompatActivity {
 
                         } else {
                             Toast.makeText(Register.this, "Error in  Registration! Try again", Toast.LENGTH_LONG).show();
-                            //startActivity(new Intent(Register.this, Login.class));
-
                         }
                     });
                 }
@@ -120,15 +113,11 @@ public class Register extends AppCompatActivity {
         });
 
 
-
-
-//                });
-
-         request_permissions_gallery = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-             if (isGranted) open_gallery.launch("image/*");
-         });
+        request_permissions_gallery = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) open_gallery.launch("image/*");
+        });
         request_permission_camera = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-            if(isGranted) {
+            if (isGranted) {
                 File file = new File(getFilesDir(), "picFromCamera");
                 uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName() + ".provider", file);
                 open_camera.launch(uri);
@@ -136,37 +125,35 @@ public class Register extends AppCompatActivity {
         });
 
         open_camera = registerForActivityResult(new ActivityResultContracts.TakePicture(), new ActivityResultCallback<Boolean>() {
-                    @Override
-                    public void onActivityResult(Boolean result) {
-                        if(result){
-                            Toast.makeText(context, "took photo", Toast.LENGTH_SHORT).show();
-                            // set imageView to uri
-                            student_card.setImageURI(uri);
-                        }
-                        else Toast.makeText(context, "didn't took photo", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            @Override
+            public void onActivityResult(Boolean result) {
+                if (result) {
+                    Toast.makeText(context, "took photo", Toast.LENGTH_SHORT).show();
+                    // set imageView
+                    student_card.setImageURI(uri);
+                } else Toast.makeText(context, "didn't took photo", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         open_gallery = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
             public void onActivityResult(Uri result) {
-                if(result!=null){
+                if (result != null) {
                     Toast.makeText(context, "took from gallery", Toast.LENGTH_SHORT).show();
+                    // set imageView
                     student_card.setImageURI(result);
-                }
-                else Toast.makeText(context, "didn't took photo from gallery", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(context, "didn't took photo from gallery", Toast.LENGTH_SHORT).show();
             }
         });
 
 
-                btn_upload_photo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                       CameraGalleryDialog();
-                    }
-                });
-
-
+        btn_upload_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CameraGalleryDialog();
+            }
+        });
 
 
     }
@@ -180,19 +167,19 @@ public class Register extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item
-                        if(which==0) {
+                        if (which == 0) {
                             if (ContextCompat.checkSelfPermission(
                                     context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                                 // You can use the API that requires the permission.
-                               // Toast.makeText(context, "already has perm", Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(context, "already has perm", Toast.LENGTH_SHORT).show();
                                 File file = new File(getFilesDir(), "picFromCamera");
-                                uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName()+ ".provider",file);
+                                uri = FileProvider.getUriForFile(context, getApplicationContext().getPackageName() + ".provider", file);
                                 open_camera.launch(uri);
                                 return;
                             }
                             request_permission_camera.launch(Manifest.permission.CAMERA);
                         }
-                        if(which==1) {
+                        if (which == 1) {
                             if (ContextCompat.checkSelfPermission(
                                     context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                                 // You can use the API that requires the permission.
@@ -209,14 +196,12 @@ public class Register extends AppCompatActivity {
     }
 
 
-
-
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() { // TODO: go back to login
         AlertDialog alertDialog = new AlertDialog.Builder(this)
-//set title
+                //set title
                 .setTitle("Are you sure to exit?")
-//set positive button
+                //set positive button
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -225,7 +210,7 @@ public class Register extends AppCompatActivity {
                         System.exit(0);
                     }
                 })
-//set negative button
+                //set negative button
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -238,15 +223,15 @@ public class Register extends AppCompatActivity {
         user_email = findViewById(R.id.registeremail);
         user_password = findViewById(R.id.registerpassword);
         btn2_signup = findViewById(R.id.signup2);
-        btn_upload_photo=findViewById(R.id.uploadphoto);
+        btn_upload_photo = findViewById(R.id.uploadphoto);
         user_firstName = findViewById(R.id.registerName);
         user_lastName = findViewById(R.id.registerLastName);
         user_userName = findViewById(R.id.registerUserName);
         user_university = findViewById(R.id.registerUniversity);
         user_dgree = findViewById(R.id.registerDegree);
-        user_homeTown =findViewById(R.id.registerHomeTown);
-        user_yearOfStudying =findViewById(R.id.registerYearOfStudying);
-        user_Bio =findViewById(R.id.registerBio);
+        user_homeTown = findViewById(R.id.registerHomeTown);
+        user_yearOfStudying = findViewById(R.id.registerYearOfStudying);
+        user_Bio = findViewById(R.id.registerBio);
         student_card = findViewById(R.id.imageViewStudentCard);
     }
 
