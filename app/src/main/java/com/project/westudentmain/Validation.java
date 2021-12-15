@@ -9,54 +9,80 @@ import android.widget.EditText;
 
 public class Validation {
 
-    public boolean Login(EditText user_name, EditText pass_word, String email, String password){
-
+    public boolean Registersignin(EditText user_email, EditText user_password, EditText user_firstName,EditText user_lastName,EditText user_userName,EditText user_university,EditText user_dgree,
+                                 String email, String password, String firstName,String lastName,String userName,String university,String dgree)
+    {
         if (email.isEmpty()) {
-            user_name.setError("Email is empty");
-            user_name.requestFocus();
+            user_email.setError("Email is empty");
+            user_email.requestFocus();
             return false;
         }
         else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            user_name.setError("Enter the valid email address");
-            user_name.requestFocus();
+            user_email.setError("Enter the valid email address");
+            user_email.requestFocus();
             return false;
         }
         else if (password.isEmpty()) {
-            pass_word.setError("Enter a password");
-            pass_word.requestFocus();
+            user_password.setError("Enter a password");
+            user_password.requestFocus();
             return false;
         }
         else if (password.length() < 6) {
-            pass_word.setError("Password length needs to be at least 6");
-            pass_word.requestFocus();
+            user_password.setError("Password length needs to be at least 6");
+            user_password.requestFocus();
+            return false;
+        }
+        else if (firstName.isEmpty()) {
+            user_firstName.setError("Name is empty");
+            user_firstName.requestFocus();
+            return false;
+        }
+        else if (lastName.isEmpty()) {
+            user_lastName.setError("last name is empty");
+            user_lastName.requestFocus();
+            return false;
+        }
+        else if (userName.isEmpty()) {
+            user_userName.setError("username is empty");
+            user_userName.requestFocus();
+            return false;
+        }
+        else if (university.isEmpty()) {
+            user_university.setError("university is empty");
+            user_university.requestFocus();
+            return false;
+        }
+        else if (dgree.isEmpty()) {
+            user_dgree.setError("dgree is empty");
+            user_dgree.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean RegisterLogin(EditText user_email,EditText user_password,String email,String password)
+    {
+        if (email.isEmpty()) {
+            user_email.setError("Email is empty");
+            user_email.requestFocus();
+            return false;
+        }
+        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            user_email.setError("Enter the valid email address");
+            user_email.requestFocus();
+            return false;
+        }
+        else if (password.isEmpty()) {
+            user_password.setError("Enter a password");
+            user_password.requestFocus();
+            return false;
+        }
+        else if (password.length() < 6) {
+            user_password.setError("Password length needs to be at least 6");
+            user_password.requestFocus();
             return false;
         }
         return true;
     }
-
-    public boolean Register(EditText user_name, EditText pass_word, String email, String password){
-
-        if (email.isEmpty()) {
-            user_name.setError("Email is empty");
-            user_name.requestFocus();
-            return false;
-        }
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            user_name.setError("Enter the valid email address");
-            user_name.requestFocus();
-            return false;
-        }
-        else if (password.isEmpty()) {
-            pass_word.setError("Enter a password");
-            pass_word.requestFocus();
-            return false;
-        }
-        else if (password.length() < 6) {
-            pass_word.setError("Password length needs to be at least 6");
-            pass_word.requestFocus();
-            return false;
-        }
-        return true;
-    }
-
 }

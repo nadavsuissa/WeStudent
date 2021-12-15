@@ -23,6 +23,7 @@ import androidx.core.content.FileProvider;
 
 import com.example.androidproject.R;
 import com.project.westudentmain.Validation;
+import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.CustomOkListener;
@@ -35,7 +36,7 @@ import java.io.File;
 public class Register extends AppCompatActivity {
 
     private Button btn2_signup,btn_upload_photo;
-    private EditText user_name, pass_word;
+    private EditText user_email, user_password, user_firstName,user_lastName,user_userName, user_university, user_dgree, user_homeTown, user_startingDate,user_Bio;
     private FireBaseLogin fire_base;
     private FireBaseData fire_base_data;
     private Context context = this;
@@ -55,41 +56,48 @@ public class Register extends AppCompatActivity {
         fire_base_data = FireBaseData.getInstance();
 
         btn2_signup.setOnClickListener(v -> {
-            String email = user_name.getText().toString().trim();
-            String password = pass_word.getText().toString().trim();
+            String email = user_email.getText().toString().trim();
+            String password = user_password.getText().toString().trim();
+            String firstName = user_firstName.getText().toString().trim();
+            String lastName = user_lastName.getText().toString().trim();
+            String userName = user_userName.getText().toString().trim();
+            String university = user_university.getText().toString().trim();
+            String dgree = user_dgree.getText().toString().trim();
+            String homeTown = user_homeTown.getText().toString().trim();
+            int startingYear = Integer.parseInt(user_startingDate.getText().toString().trim());
+            String bio = user_Bio.getText().toString().trim();
 
-            FireBaseLogin.isUserFree("here is the username", new CustomDataListener() {
-                @Override
-                public void onDataChange(@NonNull Object data) {
-                    Validation validation =new Validation();
-                    boolean flag = validation.Register(user_name, pass_word,email,password);
-                    if(!flag) return;
-                    User user = new User();
-                    user.setMail(email);
 
-                    // TODO: add on fail listener
-                    fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            fire_base_data.updateData(user, new CustomOkListener() {
-                                @Override
-                                public void onComplete(@NonNull String what, Boolean ok) {
-                                    Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(Register.this, showProfile.class));
-                                }
-                            });
+            Validation validation =new Validation();
+            boolean flag = validation.Registersignin(user_email, user_password,user_firstName,user_lastName,user_userName,user_university,user_dgree
+                    ,email,password,firstName,lastName,userName,university,dgree);
+            if(!flag) return;
+            User user = new User();
+            user.setMail(email);
+            user.setName(firstName);
+            user.setLastName(lastName);
+            user.setUserName(userName);
+            Profile profile =new Profile();
+            profile.setUniversity(university);
+            profile.setDegree(dgree);
+            profile.setHomeTown(homeTown);
+            profile.setStartingYear(startingYear);
+            profile.setBIO(bio);
+            user.setProfile(profile);
 
-                        } else {
-                            Toast.makeText(Register.this, "Error in  Registration! Try again", Toast.LENGTH_LONG).show();
-                            //startActivity(new Intent(Register.this, Login.class));
 
+            //TODO: check if user is uniqe
+            // TODO: add on fail listener
+            fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    fire_base_data.updateData(user, new CustomOkListener() {
+                        @Override
+                        public void onComplete(@NonNull String what, Boolean ok) {
+                            if(ok){
+                                startActivity(new Intent(Register.this, showProfile.class));
+                            }
                         }
                     });
-                }
-
-                @Override
-                public void onCancelled(@NonNull String error) {
-                    //show to user that is already taken.
-
                 }
             });
 
@@ -205,10 +213,18 @@ public class Register extends AppCompatActivity {
     }
 
     private void connect_items_by_id() {
-        user_name = findViewById(R.id.registeremail);
-        pass_word = findViewById(R.id.registerpassword);
+        user_email = findViewById(R.id.registeremail);
+        user_password = findViewById(R.id.registerpassword);
         btn2_signup = findViewById(R.id.signup2);
         btn_upload_photo=findViewById(R.id.uploadphoto);
+        user_firstName = findViewById(R.id.registerName);
+        user_lastName = findViewById(R.id.registerLastName);
+        user_userName = findViewById(R.id.registerUserName);
+        user_university = findViewById(R.id.registerUniversity);
+        user_dgree = findViewById(R.id.registerDegree);
+        user_homeTown =findViewById(R.id.registerHomeTown);
+        user_startingDate =findViewById(R.id.registerStartingDate);
+        user_Bio =findViewById(R.id.registerBio);
     }
 
 }
