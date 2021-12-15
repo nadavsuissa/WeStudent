@@ -42,7 +42,7 @@ public class Login extends AppCompatActivity {
            FireBaseLogin.emailLogin(email,password, task -> {
                // TODO: start loading fragment before the last line and close in here
                 if (task.isSuccessful()) {
-                    startActivity(new Intent(Login.this, showProfile.class));
+                    startActivity(new Intent(Login.this, MainActivity.class));
                 } else {
                     Toast.makeText(Login.this,
                             "email or password are not correct",

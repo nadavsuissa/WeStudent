@@ -41,7 +41,8 @@ import java.util.Map;
 
 
 public class Register extends AppCompatActivity {
-    private Button btn2_signup,btn_upload;
+
+    private Button btn2_signup,btn_upload_photo;
     private EditText user_name, pass_word;
     private FireBaseLogin fire_base;
     private FireBaseData base_data;
@@ -125,7 +126,7 @@ public class Register extends AppCompatActivity {
         });
 
 
-                btn_upload.setOnClickListener(new View.OnClickListener() {
+                btn_upload_photo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                        CameraGalleryDialog();
@@ -185,7 +186,7 @@ public class Register extends AppCompatActivity {
         user_name = findViewById(R.id.registeremail);
         pass_word = findViewById(R.id.registerpassword);
         btn2_signup = findViewById(R.id.signup2);
-        btn_upload = findViewById(R.id.btn_upload);
+        btn_upload_photo=findViewById(R.id.uploadphoto);
     }
 
 }
