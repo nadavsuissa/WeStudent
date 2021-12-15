@@ -38,33 +38,27 @@ public class showGroup extends AppCompatActivity {
 
         groups_rec_view = findViewById(R.id.groupRV);
 
-        groups = new ArrayList<>();
-        groups.add(new Group());
-        groups.add(new Group("user_name2","name2", 3, "mail2"));
+//        groups = new ArrayList<>();
+//        groups.add(new Group());
+//        groups.add(new Group("user_name2","name2", 3, "mail2"));
         fire_base_data = FireBaseData.getInstance();
-//        fire_base_data.getAllUsers(new CustomDataListener() {
-//            @Override
-//            public void onDataChange(@NonNull Object data) {
-//                users = (ArrayList<User>) data;
-//                UserRecyclerViewAdapter adapter = new UserRecyclerViewAdapter(context);
-//                adapter.setContacts(users);
+        fire_base_data.getAllGroups(new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                groups = (ArrayList<Group>) data;
+                GroupRecycleViewAdapter adapter = new GroupRecycleViewAdapter(context);
+                adapter.setGroups(groups);
 
-//                user_friends_rec_view.setAdapter(adapter);
+                groups_rec_view.setAdapter(adapter);
 
-//                user_friends_rec_view.setLayoutManager(new GridLayoutManager(context,1)); // splitting the contacts to 2 columns
-//            }
+                groups_rec_view.setLayoutManager(new GridLayoutManager(context,1)); // splitting the contacts to 2 columns
+            }
 
-//            @Override
-//            public void onCancelled(@NonNull String error) {
+            @Override
+            public void onCancelled(@NonNull String error) {
 
-//            }
-//        });
-        GroupRecycleViewAdapter adapter = new GroupRecycleViewAdapter(context);
-        adapter.setGroups(groups);
-
-        groups_rec_view.setAdapter(adapter);
-
-        groups_rec_view.setLayoutManager(new GridLayoutManager(context,1)); // splitting the contacts to 2 columns
+            }
+        });
 
     }
     @Override

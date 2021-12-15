@@ -64,3 +64,14 @@
                 Toast.makeText(getBaseContext(), error, Toast.LENGTH_SHORT).show();
             }
         });
+
+
+//upload photo
+
+  fire_base_data.uploadUserPhoto(uri, new CustomOkListener() {
+                                @Override
+                                public void onComplete(@NonNull String what, Boolean ok) {
+
+                                }
+                            });
+

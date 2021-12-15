@@ -1,8 +1,16 @@
 package com.project.westudentmain.util;
 
+import android.content.Context;
+import android.net.Uri;
+import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+import com.example.androidproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -11,9 +19,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.OnPausedListener;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.User;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -125,9 +142,10 @@ public class FireBaseData {
 
     /**
      * function that get all the users
+     *
      * @param listener that gives List<User> or error
      */
-    public void getAllUsers(@NonNull CustomDataListener listener){
+    public void getAllUsers(@NonNull CustomDataListener listener) {
         database_reference.child(User.class.getSimpleName()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -149,9 +167,10 @@ public class FireBaseData {
 
     /**
      * function that get all the groups
+     *
      * @param listener that gives List<Group> or error
      */
-    public void getAllGroups(@NonNull CustomDataListener listener){
+    public void getAllGroups(@NonNull CustomDataListener listener) {
         database_reference.child(Group.class.getSimpleName()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -201,10 +220,10 @@ public class FireBaseData {
      * @param listener  if you want to know about completion pass listener else pass null
      *                  the listener called 2 times - one for data and second for auth deletion.
      *                  data: the listener pass the num of object that he deleted
-     *                  auth: -1 when he delete the user, on error pass "user deletion error" in onCancelled function
+     *                  auth: ok if successful, on error pass "user deletion error"
      * @return true if can do it (user connected)
      */
-    public static boolean deleteUser(String user_name, CustomDataListener listener) {
+    public static boolean deleteUser(String user_name, CustomOkListener listener) {
         FirebaseUser user = FireBaseLogin.getUser();
         if (user == null)
             return false;
@@ -220,12 +239,12 @@ public class FireBaseData {
                     remove_num++;
                 }
 
-                listener.onDataChange(remove_num);
+                listener.onComplete(String.format("removed %s remove_num"), remove_num != 0);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                listener.onCancelled(error.getMessage());
+                listener.onComplete(error.getMessage(), false);
             }
         });
 
@@ -234,9 +253,9 @@ public class FireBaseData {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            listener.onDataChange(-1);
+                            listener.onComplete("user deleted", true);
                         } else {
-                            listener.onCancelled("user deletion error");
+                            listener.onComplete("user deletion error", false);
                         }
                     }
                 });
@@ -296,6 +315,7 @@ public class FireBaseData {
 
     /**
      * removing group
+     *
      * @param group_id
      * @param listener
      * @return true if can do it (user connected)
@@ -323,6 +343,122 @@ public class FireBaseData {
             public void onCancelled(@NonNull String error) {
                 if (listener != null)
                     listener.onComplete(error, false);
+            }
+        });
+
+        return true;
+    }
+
+    /**
+     * function to upload the photo of user
+     *
+     * @param uri      the pic
+     * @param listener pass true + percentage if working great else pass false + explanation
+     * @return true if can do it (user connected)
+     */
+    public boolean uploadUserPhoto(Uri uri, CustomOkListener listener) {
+        FirebaseUser user = FireBaseLogin.getUser();
+        if (user == null)
+            return false;
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference mStorage = storage.getReference();
+
+        StorageReference filepath = mStorage.child("userProfile").child(user.getUid()).child(uri.getLastPathSegment());
+        filepath.putFile(uri).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                listener.onComplete("progress is: " + progress, true);
+            }
+        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+                listener.onComplete("Upload is paused", false);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                listener.onComplete("Upload failed", false);
+            }
+        });
+
+        return true;
+    }
+
+    /**
+     * function to download the photo of user to ImageView
+     *
+     * @param context the context of the screen
+     * @param img_profile the place to put the image
+     * @param listener
+     * @return true if can do it (user connected)
+     */
+    public boolean downloadUserPhoto(Context context, ImageView img_profile, CustomOkListener listener) {
+        FirebaseUser user = FireBaseLogin.getUser();
+        if (user == null)
+            return false;
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+
+        StorageReference file = storageRef.child("userProfile").child(user.getUid()).child("picFromCamera");
+
+        file.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+        {
+            @Override
+            public void onSuccess(Uri downloadUrl)
+            {
+                Glide.with(context)
+                        .load(downloadUrl.toString())
+                        .placeholder(R.drawable.image_placeholder)
+                        .into(img_profile);
+                listener.onComplete("success",true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onComplete("Failure: "+e.getMessage(),false);
+            }
+        });
+
+        return true;
+    }
+
+    /**
+     * function to download the photo of friend to ImageView
+     *
+     * @param context the context of the screen
+     * @param img_profile the place to put the image
+     * @param id of the friend
+     * @param listener
+     * @return true if can do it (user connected)
+     */
+    public boolean downloadFriendPhoto(Context context, ImageView img_profile,String id, CustomOkListener listener) {
+        FirebaseUser user = FireBaseLogin.getUser();
+        if (user == null)
+            return false;
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+
+        StorageReference file = storageRef.child("userProfile").child(id).child("picFromCamera");
+
+        file.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+        {
+            @Override
+            public void onSuccess(Uri downloadUrl)
+            {
+                Glide.with(context)
+                        .load(downloadUrl.toString())
+                        .placeholder(R.drawable.image_placeholder)
+                        .into(img_profile);
+                listener.onComplete("success",true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onComplete("Failure: "+e.getMessage(),false);
             }
         });
 

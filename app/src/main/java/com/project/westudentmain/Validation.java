@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 public class Validation {
 
-    public boolean Registersignin(EditText user_email, EditText user_password, EditText user_firstName,EditText user_lastName,EditText user_userName,EditText user_university,EditText user_dgree,
+    public boolean Register(EditText user_email, EditText user_password, EditText user_firstName,EditText user_lastName,EditText user_userName,EditText user_university,EditText user_dgree,
                                  String email, String password, String firstName,String lastName,String userName,String university,String dgree)
     {
         if (email.isEmpty()) {
@@ -61,7 +61,7 @@ public class Validation {
         return true;
     }
 
-    public boolean RegisterLogin(EditText user_email,EditText user_password,String email,String password)
+    public boolean Login(EditText user_email, EditText user_password, String email, String password)
     {
         if (email.isEmpty()) {
             user_email.setError("Email is empty");

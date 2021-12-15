@@ -61,18 +61,21 @@ public class FireBaseLogin {
      * @param user_name user to be check
      * @param listener if free pass true else pass false (if error pass error)
      */
-    public static void isUserFree(String user_name,CustomDataListener listener){
+    public static void isUserFree(String user_name,CustomOkListener listener){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         Query query = rootRef.child("User").orderByChild("userName").equalTo(user_name);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listener.onDataChange(!snapshot.exists());
+                if (!snapshot.exists())
+                    listener.onComplete("user is free",true);
+                else
+                    listener.onComplete("user is not free",false);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                listener.onCancelled(error.getMessage());
+                listener.onComplete(error.getMessage(),false);
             }
         });
     }

@@ -1,12 +1,9 @@
 package com.project.westudentmain.adapters;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +13,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.androidproject.R;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.ViewHolder> {
@@ -48,12 +41,14 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.txt_name.setText(users.get(position).getName());
-        holder.txt_id.setText(users.get(position).getMail());
+        String name = holder.txt_name.getText()+users.get(position).getName()+" "+users.get(position).getLastName();
+        holder.txt_name.setText(name);
+        String username = holder.txt_username.getText()+users.get(position).getLastName();
+        holder.txt_username.setText(username);
         holder.card_root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OnPickUserDialog((String) holder.txt_id.getText());
+                OnPickUserDialog((String) holder.txt_username.getText());
                 //Toast.makeText(context, users.get(position).getName() + " Selected", Toast.LENGTH_SHORT).show();
             }
         });
@@ -138,14 +133,14 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{ // this class holds all item inside the RecyclerView
-        private TextView txt_name,txt_id;
+        private TextView txt_name,txt_username;
         private CardView card_root;
         private ImageView image;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txt_name = itemView.findViewById(R.id.username);
+            txt_name = itemView.findViewById(R.id.Name);
             card_root = itemView.findViewById(R.id.card_root);
-            txt_id = itemView.findViewById(R.id.userid);
+            txt_username = itemView.findViewById(R.id.Username_adapter);
             image = itemView.findViewById(R.id.profile);
         }
     }
