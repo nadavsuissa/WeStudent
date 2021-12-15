@@ -22,11 +22,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.example.androidproject.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.project.westudentmain.Validation;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
+import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseLogin;
 
@@ -38,7 +37,7 @@ public class Register extends AppCompatActivity {
     private Button btn2_signup,btn_upload_photo;
     private EditText user_email, user_password, user_firstName,user_lastName,user_userName, user_university, user_dgree, user_homeTown, user_startingDate,user_Bio;
     private FireBaseLogin fire_base;
-    private FireBaseData base_data;
+    private FireBaseData fire_base_data;
     private Context context = this;
     private ActivityResultLauncher<String> request_permissions_gallery;
     private ActivityResultLauncher<String> request_permission_camera;
@@ -54,6 +53,7 @@ public class Register extends AppCompatActivity {
         connect_items_by_id();
 
         fire_base = FireBaseLogin.getInstance();
+        fire_base_data = FireBaseData.getInstance();
 
         btn2_signup.setOnClickListener(v -> {
             String email = user_email.getText().toString().trim();
@@ -89,9 +89,9 @@ public class Register extends AppCompatActivity {
             // TODO: add on fail listener
             fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    base_data.updateData(user, new OnCompleteListener<Void>() {
+                    fire_base_data.updateData(user, new CustomOkListener() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                        public void onComplete(@NonNull String what, Boolean ok) {
 
                         }
                     });
