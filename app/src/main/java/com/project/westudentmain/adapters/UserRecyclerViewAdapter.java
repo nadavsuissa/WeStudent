@@ -136,7 +136,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             super(itemView);
             txt_name = itemView.findViewById(R.id.firstName);
             card_root = itemView.findViewById(R.id.card_root);
-            txt_id = itemView.findViewById(R.id.userid);
             image = itemView.findViewById(R.id.profile);
         }
     }
