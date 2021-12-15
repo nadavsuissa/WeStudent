@@ -152,11 +152,11 @@
                 tools:ignore="TextContrastCheck" />
 
             <EditText
-                android:id="@+id/registerStartingDate"
+                android:id="@+id/registerYearOfStudying"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="starting year"
+                android:hint="year of studying"
                 android:inputType="number" />
 
             <EditText
