@@ -2,6 +2,7 @@ package com.project.westudentmain.activities;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,12 +14,24 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 
+import com.bumptech.glide.Glide;
 import com.example.androidproject.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FireBaseData;
+import com.project.westudentmain.util.FireBaseLogin;
+
+import java.io.File;
+import java.io.IOException;
 
 public class showProfile extends AppCompatActivity {
     private Toolbar mToolBar; // WTF is that
@@ -41,6 +54,8 @@ public class showProfile extends AppCompatActivity {
         setSupportActionBar(mToolBar);
 
         fire_base_data = FireBaseData.getInstance();
+
+        fire_base_data.downloadUserPhoto(this, img_profile, (what, ok) -> {});
 
 
         fire_base_data.getUserData(User.class, new CustomDataListener() {
