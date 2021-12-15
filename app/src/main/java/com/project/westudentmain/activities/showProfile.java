@@ -112,7 +112,6 @@ public class showProfile extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(showProfile.this,showFriends.class)); // this is how to move between screens
 
     }
 
