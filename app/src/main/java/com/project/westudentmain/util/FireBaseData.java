@@ -29,17 +29,24 @@ public class FireBaseData {
      * send data that linked to user
      *
      * @param data
-     * @param onCompleteListener if you want to know about completion pass listener else pass null
+     * @param listener if you want to know about completion pass listener else pass null
      * @return true if can do it
      */
-    public boolean updateData(@NonNull Object data, OnCompleteListener<Void> onCompleteListener) {
+    public boolean updateData(@NonNull Object data, CustomOkListener listener) {
         if (!FireBaseLogin.userIsLoggedIn())
             return false;
 
-        Task<Void> ref = database_reference.child(data.getClass().getSimpleName()).child(FireBaseLogin.getUser().getUid()).setValue(data);
-        if (onCompleteListener != null)
-            ref.addOnCompleteListener(onCompleteListener);
-
+        database_reference.child(data.getClass().getSimpleName()).child(FireBaseLogin.getUser().getUid()).setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (listener != null) {
+                    if (task.isSuccessful()) {
+                        listener.onComplete("uploaded successfully", true);
+                    } else
+                        listener.onComplete("upload failed", false);
+                }
+            }
+        });
         return true;
     }
 
@@ -47,12 +54,20 @@ public class FireBaseData {
      * send global data
      *
      * @param data
-     * @param onCompleteListener if you want to know about completion pass listener else pass null
+     * @param listener if you want to know about completion pass listener else pass null
      */
-    public void updateGlobalData(@NonNull Object data, OnCompleteListener<Void> onCompleteListener) {
-        Task<Void> ref = database_reference.child(data.getClass().getSimpleName()).setValue(data);
-        if (onCompleteListener != null)
-            ref.addOnCompleteListener(onCompleteListener);
+    public void updateGlobalData(@NonNull Object data, CustomOkListener listener) {
+        database_reference.child(data.getClass().getSimpleName()).setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (listener != null) {
+                    if (task.isSuccessful()) {
+                        listener.onComplete("uploaded successfully", true);
+                    } else
+                        listener.onComplete("upload failed", false);
+                }
+            }
+        });
     }
 
     /**
