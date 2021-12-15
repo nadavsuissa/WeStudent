@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,6 +28,8 @@ public class showFriends extends AppCompatActivity {
     private Button addfriendbtn,delfriendbtn;
     private RecyclerView user_friends_rec_view;
     private ArrayList<User> users;
+    private FireBaseData fire_base_data;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +41,29 @@ public class showFriends extends AppCompatActivity {
 
         user_friends_rec_view = findViewById(R.id.friendRV);
 
-        users = new ArrayList<>();
-        users.add(new User());
-        users.add(new User("user_name2","name2", "last_name2", "mail2", "phone2"));
+//        users = new ArrayList<>();
+//        users.add(new User());
+//        users.add(new User("user_name2","name2", "last_name2", "mail2", "phone2"));
+        fire_base_data = FireBaseData.getInstance();
+        fire_base_data.getAllUsers(new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                users = (ArrayList<User>) data;
+                UserRecyclerViewAdapter adapter = new UserRecyclerViewAdapter(context);
+                adapter.setContacts(users);
 
-        UserRecyclerViewAdapter adapter = new UserRecyclerViewAdapter(this);
-        adapter.setContacts(users);
+                user_friends_rec_view.setAdapter(adapter);
 
-        user_friends_rec_view.setAdapter(adapter);
+                user_friends_rec_view.setLayoutManager(new GridLayoutManager(context,1)); // splitting the contacts to 2 columns
+            }
 
-        user_friends_rec_view.setLayoutManager(new GridLayoutManager(this,1)); // splitting the contacts to 2 columns
+            @Override
+            public void onCancelled(@NonNull String error) {
+
+            }
+        });
+
+
 
         addfriendbtn.setOnClickListener(new View.OnClickListener() {
             @Override

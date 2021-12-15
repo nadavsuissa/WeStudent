@@ -25,6 +25,7 @@ public class FireBaseData {
 
     private FireBaseData() {
         fire_base = FireBaseLogin.getInstance();
+
     }
 
     /**

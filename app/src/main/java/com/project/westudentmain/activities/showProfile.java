@@ -25,7 +25,7 @@ public class showProfile extends AppCompatActivity {
 
     private ImageView img_profile; //TODO: show the pic
     private TextView txt_user_name, txt_name, txt_university, txt_department, txt_degree, txt_year, txt_bio;
-    private Button btn_all_groups, btn_my_groups, btn_friends, btn_users, btn_update_user_data;
+    private Button btn_all_groups, btn_my_groups, btn_friends, btn_users, btn_edit_photo;
 
     private FireBaseData fire_base_data;
 
@@ -70,8 +70,8 @@ public class showProfile extends AppCompatActivity {
         btn_users.setOnClickListener(view -> {
             startActivity(new Intent(this, showFriends.class));
         });
-        btn_update_user_data.setOnClickListener(view -> {
-            startActivity(new Intent(this, showSettings.class));
+        btn_edit_photo.setOnClickListener(view -> {
+
         });
     }
 
@@ -106,7 +106,7 @@ public class showProfile extends AppCompatActivity {
         btn_my_groups = findViewById(R.id.buttonMyGroup);
         btn_friends = findViewById(R.id.buttonFriends);
         btn_users = findViewById(R.id.buttonUsers);
-        btn_update_user_data = findViewById(R.id.buttonUpdateUserData);
+        btn_edit_photo = findViewById(R.id.buttonUpdateUserData);
 
     }
 

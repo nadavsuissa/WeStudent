@@ -30,7 +30,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.ViewHolder> {
-
+    private final FireBaseData fire_base_data = FireBaseData.getInstance();
     private ArrayList<User> users = new ArrayList<>();
     Context context;
     public UserRecyclerViewAdapter(Context context) {
@@ -73,49 +73,55 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                     public void onClick(DialogInterface dialog, int which) {
 
                         if(which==0) {
-                           // Toast.makeText(context, "add friend", Toast.LENGTH_SHORT).show();
-                            FireBaseData fire_base_data = FireBaseData.getInstance();
+                            // Toast.makeText(context, "add friend", Toast.LENGTH_SHORT).show();
+
                             fire_base_data.getUserData(User.class, new CustomDataListener() {
                                 @Override
                                 public void onDataChange(@NonNull Object data) {
                                     User my_user = (User) data;
                                     if(my_user.addFriend(friend_username)) Toast.makeText(context, "friend added", Toast.LENGTH_SHORT).show();
                                     else Toast.makeText(context, "friend already exist", Toast.LENGTH_SHORT).show();
-                                    fire_base_data.updateData(my_user, new CustomOkListener() {
-                                        @Override
-                                        public void onComplete(@NonNull String what, Boolean ok) {
-                                        }
-                                    });
+                                    updateData(my_user);
                                 }
                                 @Override
                                 public void onCancelled(@NonNull String error) {
-                                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                                    User my_user = new User();
+                                    my_user.addFriend(friend_username);
+                                    Toast.makeText(context, "friend added", Toast.LENGTH_SHORT).show();
+                                    updateData(my_user);
+                                    // Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                                 }
                             });
                         }
                         if(which==1) {
-                            FireBaseData fire_base_data = FireBaseData.getInstance();
                             fire_base_data.getUserData(User.class, new CustomDataListener() {
                                 @Override
                                 public void onDataChange(@NonNull Object data) {
                                     User my_user = (User) data;
                                     if(my_user.removeFriend(friend_username)) Toast.makeText(context, "friend deleted", Toast.LENGTH_SHORT).show();
                                     else Toast.makeText(context, "friend is not im my list", Toast.LENGTH_SHORT).show();
-                                    fire_base_data.updateData(my_user, new CustomOkListener() {
-                                        @Override
-                                        public void onComplete(@NonNull String what, Boolean ok) {
-                                        }
-                                    });
+                                    updateData(my_user);
                                 }
                                 @Override
                                 public void onCancelled(@NonNull String error) {
-                                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                                    User my_user = new User();
+                                    Toast.makeText(context, "friend is not im my list", Toast.LENGTH_SHORT).show();
+                                    updateData(my_user);
+                                    //Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                                 }
                             });
                         }
                     }
                 });
         builder.create().show();
+    }
+
+    private void updateData(User my_user) {
+        fire_base_data.updateData(my_user, new CustomOkListener() {
+            @Override
+            public void onComplete(@NonNull String what, Boolean ok) {
+            }
+        });
     }
 
     @Override
