@@ -8,18 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.androidproject.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.project.westudentmain.classes.Group;
-import com.project.westudentmain.util.CustomOkListener;
-import com.project.westudentmain.util.FireBaseData;
 
 public class createGroup extends AppCompatActivity {
     private Toolbar mToolBar;
-    private FireBaseData fire_base_data;
     private EditText edittext_group_name, edittext_group_description, edittext_group_capacity, edittext_group_date;
     private Button btn_create_group;
 
@@ -31,7 +29,9 @@ public class createGroup extends AppCompatActivity {
         connect_items_by_id();
         mToolBar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolBar);
-        fire_base_data = FireBaseData.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference();
+        DatabaseReference myRef = database.getReference();
 
 
         btn_create_group.setOnClickListener(v ->
@@ -47,15 +47,13 @@ public class createGroup extends AppCompatActivity {
             group.setDate(date);
             group.setMaxCapacity(maxcapacity);
             group.setDescription(description);
-            fire_base_data.updateData(group, new CustomOkListener() {
-                @Override
-                public void onComplete(@NonNull String what, Boolean ok) {
-                    Toast.makeText(createGroup.this, "Data saved!", Toast.LENGTH_SHORT).show();
+            // Need To Wrap With Checks
+            myRef.child("Groups").child(group.getGroup_id()).setValue(group);
+            Toast.makeText(createGroup.this, "Data saved!", Toast.LENGTH_SHORT).show();
 
-                }
-            });
 
         });
+
     }
 
     private void connect_items_by_id() {
@@ -99,4 +97,5 @@ public class createGroup extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }

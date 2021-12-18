@@ -1,10 +1,11 @@
 package com.project.westudentmain.classes;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Group {
     // the id of the group is in firebase
-    private String group_id;
+    private String group_id=randomKey();
     private String group_name;
     private String description;
     private int max_capacity;
@@ -76,6 +77,20 @@ public class Group {
 
     public void setDate(String date) {
         this.date = date;
+    }
+    public String randomKey() {
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        return generatedString;
     }
 
     //TODO: check if it is a pointer
