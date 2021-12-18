@@ -92,7 +92,7 @@ public class Register extends AppCompatActivity {
                     fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task ->
                     {
                         if (task.isSuccessful()) {
-                            fire_base_data.updateData(user, new CustomOkListener() {
+                            fire_base_data.updateUser(user, new CustomOkListener() {
                                 @Override
                                 public void onComplete(@NonNull String what, Boolean ok) {
                                     fire_base_data.uploadUserPhoto(uri, (what1, ok1) -> {

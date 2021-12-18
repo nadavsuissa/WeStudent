@@ -1,7 +1,5 @@
 package com.project.westudentmain.classes;
 
-import android.net.Uri;
-
 import com.google.firebase.database.PropertyName;
 
 import java.util.ArrayList;
@@ -22,6 +20,8 @@ public class User {
     //TODO: student card
 
     private final List<String> friends; // maybe split to a manager
+    @PropertyName("friendsWaitList")
+    private  Map<String,String> friends_wait_list;
     @PropertyName("groupsParticipant")
     private final Map<String,String> groups_participant; // maybe split to a manager
     @PropertyName("groupsManager")
@@ -35,6 +35,7 @@ public class User {
         this.phone = "phone";
         this.profile = new Profile();
         this.friends = new ArrayList<String>();
+        this.friends_wait_list = new HashMap<String,String>();
         this.groups_participant = new HashMap<String,String>();
         this.groups_manager = new HashMap<String,String>();
         this.profile = new Profile();
@@ -48,6 +49,7 @@ public class User {
         this.phone = phone;
 
         this.friends = new ArrayList<String>();
+        this.friends_wait_list = new HashMap<String,String>();
         this.groups_participant = new HashMap<String,String>();
         this.groups_manager = new HashMap<String,String>();
         this.profile = new Profile();
@@ -62,8 +64,18 @@ public class User {
             this.phone = other.phone;
         }
         this.friends = new ArrayList<String>();
+        this.friends_wait_list = new HashMap<String,String>();
         this.groups_participant = new HashMap<String,String>();
         this.groups_manager = new HashMap<String,String>();
+    }
+
+    public  boolean askToBeFriend(String friend,String friend_id){
+        if(!hasFriend(friend)){
+            this.friends_wait_list.put(friend,friend_id);
+            //TODO: send to the friend
+            return true;
+        }
+        else return false;
     }
 
     public boolean addFriend(String friend){

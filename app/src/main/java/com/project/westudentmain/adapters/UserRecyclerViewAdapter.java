@@ -73,7 +73,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                         if(which==0) {
                             // Toast.makeText(context, "add friend", Toast.LENGTH_SHORT).show();
 
-                            fire_base_data.getUserData(User.class, new CustomDataListener() {
+                            fire_base_data.getUser(new CustomDataListener() {
                                 @Override
                                 public void onDataChange(@NonNull Object data) {
                                     User my_user = (User) data;
@@ -92,7 +92,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                             });
                         }
                         if(which==1) {
-                            fire_base_data.getUserData(User.class, new CustomDataListener() {
+                            fire_base_data.getUser(new CustomDataListener() {
                                 @Override
                                 public void onDataChange(@NonNull Object data) {
                                     User my_user = (User) data;
@@ -115,7 +115,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     }
 
     private void updateData(User my_user) {
-        fire_base_data.updateData(my_user, new CustomOkListener() {
+        fire_base_data.updateUser(my_user, new CustomOkListener() {
             @Override
             public void onComplete(@NonNull String what, Boolean ok) {
             }

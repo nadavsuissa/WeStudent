@@ -59,7 +59,7 @@ public class showProfile extends AppCompatActivity {
         fire_base_data = FireBaseData.getInstance();
         fire_base_data.downloadUserPhoto(this, img_profile, (what, ok) -> {
         });
-        fire_base_data.getUserData(User.class, new CustomDataListener() {
+        fire_base_data.getUser(new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
                 User user = (User) data;
