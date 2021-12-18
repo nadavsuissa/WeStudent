@@ -1,79 +1,69 @@
 package com.project.westudentmain.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidproject.R;
-import com.project.westudentmain.adapters.UserRecyclerViewAdapter;
-import com.project.westudentmain.classes.User;
-import com.project.westudentmain.util.CustomDataListener;
+import com.project.westudentmain.classes.Group;
+import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
 
-import java.util.ArrayList;
-
-public class showFriends extends AppCompatActivity {
+public class createGroup extends AppCompatActivity {
     private Toolbar mToolBar;
-    private Button addfriendbtn, delfriendbtn;
-    private RecyclerView user_friends_rec_view;
-    private ArrayList<User> users;
     private FireBaseData fire_base_data;
-    private Context context = this;
+    private EditText edittext_group_name, edittext_group_description, edittext_group_capacity, edittext_group_date;
+    private Button btn_create_group;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_friends);
+        setContentView(R.layout.activity_create_group);
         connect_items_by_id();
         mToolBar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolBar);
-
-        user_friends_rec_view = findViewById(R.id.friendRV);
-
-//        users = new ArrayList<>();
-//        users.add(new User());
-//        users.add(new User("user_name2","name2", "last_name2", "mail2", "phone2"));
         fire_base_data = FireBaseData.getInstance();
-        fire_base_data.getAllUsers(new CustomDataListener() {
-            @Override
-            public void onDataChange(@NonNull Object data) {
-                users = (ArrayList<User>) data;
-                UserRecyclerViewAdapter adapter = new UserRecyclerViewAdapter(context);
-                adapter.setContacts(users);
-
-                user_friends_rec_view.setAdapter(adapter);
-
-                user_friends_rec_view.setLayoutManager(new GridLayoutManager(context, 1)); // splitting the contacts to 2 columns
-            }
-
-            @Override
-            public void onCancelled(@NonNull String error) {
-
-            }
-        });
 
 
-        addfriendbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btn_create_group.setOnClickListener(v ->
+        {
+            String name = edittext_group_name.getText().toString().trim();
+            String description = edittext_group_description.getText().toString().trim();
+            int maxcapacity = Integer.parseInt(edittext_group_capacity.getText().toString());
+            String date = edittext_group_date.getText().toString().trim();
 
-            }
+            Group group = new Group();
+
+            group.setGroupName(name);
+            group.setDate(date);
+            group.setMaxCapacity(maxcapacity);
+            group.setDescription(description);
+            fire_base_data.updateData(group, new CustomOkListener() {
+                @Override
+                public void onComplete(@NonNull String what, Boolean ok) {
+                    Toast.makeText(createGroup.this, "Data saved!", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
         });
     }
 
     private void connect_items_by_id() {
-        addfriendbtn = findViewById(R.id.btnaddfriend);
-        delfriendbtn = findViewById(R.id.btndeletefriend);
+        edittext_group_date = findViewById(R.id.date);
+        edittext_group_capacity = findViewById(R.id.maxcapacity);
+        edittext_group_description = findViewById(R.id.groupdescription);
+        edittext_group_name = findViewById(R.id.groupnameinput);
+        btn_create_group = findViewById(R.id.creategroupbtn);
     }
 
     @Override
@@ -108,10 +98,5 @@ public class showFriends extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(showFriends.this, showProfile.class)); // this is how to move between screens
     }
 }

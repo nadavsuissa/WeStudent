@@ -62,6 +62,9 @@ public class showChat extends AppCompatActivity {
             case R.id.mi_chat:
                 startActivity(new Intent(this, showChat.class));
                 return true;
+            case R.id.mi_create_group:
+                startActivity(new Intent(this, createGroup.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

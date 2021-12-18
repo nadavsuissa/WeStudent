@@ -49,4 +49,10 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="upload_student_card">Upload Student Card</string>
     <string name="main_screen">Main Screen</string>
+    <string name="create_group">Create Group</string>
+    <string name="group_name">Group Name</string>
+    <string name="date">Date</string>
+    <string name="group_description">Group Description</string>
+    <string name="max_capacity">Max Capacity</string>
+    <string name="create">Create</string>
 </resources>

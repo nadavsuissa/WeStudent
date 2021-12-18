@@ -18,4 +18,7 @@
     <item android:title="Your Profile"
         android:id="@+id/mi_your_profile"
         />
+    <item android:title="Create Group"
+        android:id="@+id/mi_create_group"
+        />
 </menu>
