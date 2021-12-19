@@ -75,3 +75,17 @@
                                 }
                             });
 
+// ask friend to be friend
+        fire_base_data.askToBeFriend("nadav64",(what, ok) -> {
+            Toast.makeText(this, what+ok, Toast.LENGTH_SHORT).show();
+        });
+
+        // accept friend
+        fire_base_data.acceptFriendRequest("nadav64",(what, ok) -> {
+            Toast.makeText(this, what+ok, Toast.LENGTH_SHORT).show();
+        });
+
+        // cancel friend
+        fire_base_data.cancelFriendRequest("nadav64",(what, ok) -> {
+            Toast.makeText(this, what+ok, Toast.LENGTH_SHORT).show();
+        });

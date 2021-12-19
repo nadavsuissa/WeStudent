@@ -59,7 +59,7 @@ public class EditProfileActivity extends AppCompatActivity {
         // TODO: check why it needs to be an array (probably because pointers)
         // get last data if data is empty it will stay null so add something to catch it in `onDataChange`
 //        final User[] t = {new User()};
-        fire_base_data.getUserData(User.class, new CustomDataListener() {
+        fire_base_data.getUser(new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data){
                 user = (User) data;
@@ -98,7 +98,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void UpdateUser() {
 
         // TODO: add more fields
-        boolean res = fire_base_data.updateData(user,null);
+        boolean res = fire_base_data.updateUser(user,null);
         if (res)
             Toast.makeText(getApplicationContext(), "User information updated", Toast.LENGTH_LONG).show();
         else

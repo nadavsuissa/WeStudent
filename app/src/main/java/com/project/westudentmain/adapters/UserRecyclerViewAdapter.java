@@ -27,6 +27,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     private final FireBaseData fire_base_data = FireBaseData.getInstance();
     private ArrayList<User> users = new ArrayList<>();
     Context context;
+
     public UserRecyclerViewAdapter(Context context) {
         this.context = context;
     }
@@ -34,21 +35,35 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_friends_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_friends_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        String name = holder.txt_name.getText()+users.get(position).getName()+" "+users.get(position).getLastName();
+        String name = holder.txt_name.getText() + users.get(position).getName() + " " + users.get(position).getLastName();
         holder.txt_name.setText(name);
-        String username = holder.txt_username.getText()+users.get(position).getLastName();
+        String username = holder.txt_username.getText() + users.get(position).getUserName();
         holder.txt_username.setText(username);
+
+        fire_base_data.getIdByUserName(users.get(position).getUserName(), new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                String user_id = (String) data;
+                fire_base_data.downloadFriendPhoto(context, holder.image, user_id, (what, ok) -> {});
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+
+            }
+        });
+
         holder.card_root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OnPickUserDialog((String) holder.txt_username.getText());
+                OnPickUserDialog(users.get(position).getUserName());
                 //Toast.makeText(context, users.get(position).getName() + " Selected", Toast.LENGTH_SHORT).show();
             }
         });
@@ -62,6 +77,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 //                .into(holder.image);
 
     }
+
     private void OnPickUserDialog(String friend_username) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Choose option:");
@@ -70,44 +86,56 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        if(which==0) {
+                        if (which == 0) {
+                            fire_base_data.askToBeFriend(friend_username,(what, ok) -> {
+                                Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                            });
                             // Toast.makeText(context, "add friend", Toast.LENGTH_SHORT).show();
 
-                            fire_base_data.getUserData(User.class, new CustomDataListener() {
-                                @Override
-                                public void onDataChange(@NonNull Object data) {
-                                    User my_user = (User) data;
-                                    if(my_user.addFriend(friend_username)) Toast.makeText(context, "friend added", Toast.LENGTH_SHORT).show();
-                                    else Toast.makeText(context, "friend already exist", Toast.LENGTH_SHORT).show();
-                                    updateData(my_user);
-                                }
-                                @Override
-                                public void onCancelled(@NonNull String error) {
-                                    User my_user = new User();
-                                    my_user.addFriend(friend_username);
-                                    Toast.makeText(context, "friend added", Toast.LENGTH_SHORT).show();
-                                    updateData(my_user);
-                                    // Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                                }
-                            });
+//                            fire_base_data.getUser(new CustomDataListener() {
+//                                @Override
+//                                public void onDataChange(@NonNull Object data) {
+//                                    User my_user = (User) data;
+//                                    if (my_user.addFriend(friend_username))
+//                                        Toast.makeText(context, "friend added", Toast.LENGTH_SHORT).show();
+//                                    else
+//                                        Toast.makeText(context, "friend already exist", Toast.LENGTH_SHORT).show();
+//                                    updateData(my_user);
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(@NonNull String error) {
+//                                    User my_user = new User();
+//                                    my_user.addFriend(friend_username);
+//                                    Toast.makeText(context, "friend added", Toast.LENGTH_SHORT).show();
+//                                    updateData(my_user);
+//                                    // Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+//                                }
+//                            });
                         }
-                        if(which==1) {
-                            fire_base_data.getUserData(User.class, new CustomDataListener() {
-                                @Override
-                                public void onDataChange(@NonNull Object data) {
-                                    User my_user = (User) data;
-                                    if(my_user.removeFriend(friend_username)) Toast.makeText(context, "friend deleted", Toast.LENGTH_SHORT).show();
-                                    else Toast.makeText(context, "friend is not im my list", Toast.LENGTH_SHORT).show();
-                                    updateData(my_user);
-                                }
-                                @Override
-                                public void onCancelled(@NonNull String error) {
-                                    User my_user = new User();
-                                    Toast.makeText(context, "friend is not im my list", Toast.LENGTH_SHORT).show();
-                                    updateData(my_user);
-                                    //Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                                }
+                        if (which == 1) {
+                            fire_base_data.removeFriend(friend_username,(what, ok) -> {
+                                Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
                             });
+//                            fire_base_data.getUser(new CustomDataListener() {
+//                                @Override
+//                                public void onDataChange(@NonNull Object data) {
+//                                    User my_user = (User) data;
+//                                    if (my_user.removeFriend(friend_username))
+//                                        Toast.makeText(context, "friend deleted", Toast.LENGTH_SHORT).show();
+//                                    else
+//                                        Toast.makeText(context, "friend is not im my list", Toast.LENGTH_SHORT).show();
+//                                    updateData(my_user);
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(@NonNull String error) {
+//                                    User my_user = new User();
+//                                    Toast.makeText(context, "friend is not im my list", Toast.LENGTH_SHORT).show();
+//                                    updateData(my_user);
+//                                    //Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+//                                }
+//                            });
                         }
                     }
                 });
@@ -115,7 +143,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     }
 
     private void updateData(User my_user) {
-        fire_base_data.updateData(my_user, new CustomOkListener() {
+        fire_base_data.updateUser(my_user, new CustomOkListener() {
             @Override
             public void onComplete(@NonNull String what, Boolean ok) {
             }
@@ -132,10 +160,11 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         notifyDataSetChanged();  // when i change the list of contacts the adapter is notified to refresh the items list
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{ // this class holds all item inside the RecyclerView
-        private TextView txt_name,txt_username;
+    public class ViewHolder extends RecyclerView.ViewHolder { // this class holds all item inside the RecyclerView
+        private TextView txt_name, txt_username;
         private CardView card_root;
         private ImageView image;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_name = itemView.findViewById(R.id.Name);
