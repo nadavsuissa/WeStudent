@@ -479,7 +479,7 @@ public class FireBaseData {
     }
 
     /**
-     * adding to wait list of current user and to friend wait list
+     * adding to friend request
      *
      * @param friend_user_name
      * @param listener
@@ -540,6 +540,13 @@ public class FireBaseData {
         return true;
     }
 
+    /**
+     * accept friend request to be friend
+     *
+     * @param friend_user_name
+     * @param listener
+     * @return if can even do it(user is logged in)
+     */
     public boolean acceptFriendRequest(String friend_user_name, CustomOkListener listener) {
         FirebaseUser firebaseUser = FireBaseLogin.getUser();
         if (firebaseUser == null)
@@ -596,6 +603,13 @@ public class FireBaseData {
         return true;
     }
 
+    /**
+     * cancel friend request or reject
+     *
+     * @param friend_user_name
+     * @param listener
+     * @return if can even do it(user is logged in)
+     */
     public boolean cancelFriendRequest(String friend_user_name, CustomOkListener listener) {
         FirebaseUser firebaseUser = FireBaseLogin.getUser();
         if (firebaseUser == null)
@@ -651,6 +665,70 @@ public class FireBaseData {
 
         return true;
     }
+
+    /**
+     * remove friend
+     *
+     * @param friend_user_name
+     * @param listener
+     * @return if can even do it(user is logged in)
+     */
+    public boolean removeFriend(String friend_user_name, CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+
+
+        getUser(new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                User user = (User) data;
+                String user_name = user.getUserName();
+
+                if (user.hasConnection(friend_user_name)) // not specifically friend
+                    getIdByUserName(friend_user_name, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {//TODO: change in User class
+                            database_reference.child(User.class.getSimpleName()).child((String) data).child("friends").child(user_name).removeValue().addOnCompleteListener(
+                                    new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                database_reference.child(User.class.getSimpleName()).child(firebaseUser.getUid()).child("friends").child(friend_user_name).removeValue().addOnCompleteListener(
+                                                        new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful())
+                                                                    listener.onComplete("friend removed", true);
+                                                                else
+                                                                    listener.onComplete("friend fail to be removed", false);
+                                                            }
+                                                        }
+                                                );
+                                                listener.onComplete("friend removed on their side", true);
+                                            } else
+                                                listener.onComplete("friend fail to be removed on their side", false);
+                                        }
+                                    }
+                            );
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            listener.onComplete(error, false);
+                        }
+                    });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onComplete(error + " in askToBeFriend", false);
+            }
+        });
+
+        return true;
+    }
+
     /**
      * get the user id by user name
      *
@@ -680,8 +758,5 @@ public class FireBaseData {
             }
         });
     }
-    // reject
-    // remove
-    // get wait list --- inside user
 
 }
