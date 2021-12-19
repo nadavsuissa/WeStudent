@@ -34,11 +34,8 @@ import java.util.Objects;
 public class FireBaseData {
     private static final DatabaseReference database_reference = FirebaseDatabase.getInstance().getReference();
     private final static FireBaseData INSTANCE = new FireBaseData();
-    private FireBaseLogin fire_base; // TODO:delete that
 
     private FireBaseData() {
-        fire_base = FireBaseLogin.getInstance();
-
     }
 
     /**
@@ -481,7 +478,14 @@ public class FireBaseData {
         return true;
     }
 
-    public boolean askToBeFriend(String friend_user_name,CustomOkListener listener){
+    /**
+     * adding to wait list of current user and to friend wait list
+     *
+     * @param friend_user_name
+     * @param listener
+     * @return if can even do it(user is logged in)
+     */
+    public boolean askToBeFriend(String friend_user_name, CustomOkListener listener) {
         FirebaseUser firebaseUser = FireBaseLogin.getUser();
         if (firebaseUser == null)
             return false;
@@ -492,7 +496,10 @@ public class FireBaseData {
                 User user = (User) data;
                 String user_name = user.getUserName();
 
-                getIdByUserName(friend_user_name,new CustomDataListener() {
+                if (user.hasConnection(friend_user_name)) {
+                    // cancel maybe cancel this checking
+                }
+                getIdByUserName(friend_user_name, new CustomDataListener() {
                     @Override
                     public void onDataChange(@NonNull Object data) {//TODO: change in User class
                         database_reference.child(User.class.getSimpleName()).child((String) data).child("friendsWaitList").child(user_name).setValue(firebaseUser.getUid()).addOnCompleteListener(
@@ -502,7 +509,7 @@ public class FireBaseData {
                                         if (task.isSuccessful())
                                             listener.onComplete("friend added to waiting list", true);
                                         else
-                                            listener.onComplete("friend fail to be added to waiting list",false);
+                                            listener.onComplete("friend fail to be added to waiting list", false);
                                     }
                                 }
                         );
@@ -510,21 +517,27 @@ public class FireBaseData {
 
                     @Override
                     public void onCancelled(@NonNull String error) {
-                        listener.onComplete(error,false);
+                        listener.onComplete(error, false);
                     }
                 });
             }
 
             @Override
             public void onCancelled(@NonNull String error) {
-                listener.onComplete(error+" in askToBeFriend",false);
+                listener.onComplete(error + " in askToBeFriend", false);
             }
         });
 
         return true;
     }
 
-    public static void getIdByUserName(@NonNull String user_name, CustomDataListener listener){
+    /**
+     * get the user id by user name
+     *
+     * @param user_name
+     * @param listener  pass String of the user id
+     */
+    public static void getIdByUserName(@NonNull String user_name, CustomDataListener listener) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         Query applesQuery = ref.child(User.class.getSimpleName()).orderByChild("userName").equalTo(user_name);
 
@@ -532,7 +545,7 @@ public class FireBaseData {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String user_key = null;
-                for (DataSnapshot child: snapshot.getChildren()) {
+                for (DataSnapshot child : snapshot.getChildren()) {
                     user_key = child.getKey();
                     listener.onDataChange(user_key);
                     break;

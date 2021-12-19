@@ -18,14 +18,18 @@ public class User {
     private Profile profile;
 
     //TODO: student card
+    enum friend_status {
+        asked, // asked them to accept
+        waiting, // waiting for me to accept
+        friend
+    }
 
-    private final List<String> friends; // maybe split to a manager
-    @PropertyName("friendsWaitList")
-    private  Map<String,String> friends_wait_list;
+    @PropertyName("friends")
+    private final Map<String, friend_status> friends; // user name | friend_status //  maybe split to a manager
     @PropertyName("groupsParticipant")
-    private final Map<String,String> groups_participant; // maybe split to a manager
+    private final Map<String, String> groups_participant; // group name | group id // maybe split to a manager
     @PropertyName("groupsManager")
-    private final Map<String,String> groups_manager; // maybe split to a manager
+    private final Map<String, String> groups_manager; // group name | group id // maybe split to a manager
 
     public User() {
         this.user_name = "user_name";
@@ -33,11 +37,11 @@ public class User {
         this.last_name = "last_name";
         this.mail = "mail";
         this.phone = "phone";
+
         this.profile = new Profile();
-        this.friends = new ArrayList<String>();
-        this.friends_wait_list = new HashMap<String,String>();
-        this.groups_participant = new HashMap<String,String>();
-        this.groups_manager = new HashMap<String,String>();
+        this.friends = new HashMap<String, friend_status>();
+        this.groups_participant = new HashMap<String, String>();
+        this.groups_manager = new HashMap<String, String>();
         this.profile = new Profile();
     }
 
@@ -48,73 +52,82 @@ public class User {
         this.mail = mail;
         this.phone = phone;
 
-        this.friends = new ArrayList<String>();
-        this.friends_wait_list = new HashMap<String,String>();
-        this.groups_participant = new HashMap<String,String>();
-        this.groups_manager = new HashMap<String,String>();
+        this.friends = new HashMap<String, friend_status>();
+        this.groups_participant = new HashMap<String, String>();
+        this.groups_manager = new HashMap<String, String>();
         this.profile = new Profile();
     }
 
-    public User(User other){
-        if (other!=null) {
+    public User(User other) {
+        if (other != null) {
             this.user_name = other.user_name;
             this.name = other.name;
             this.last_name = other.last_name;
             this.mail = other.mail;
             this.phone = other.phone;
         }
-        this.friends = new ArrayList<String>();
-        this.friends_wait_list = new HashMap<String,String>();
-        this.groups_participant = new HashMap<String,String>();
-        this.groups_manager = new HashMap<String,String>();
+        this.friends = new HashMap<String, friend_status>();
+        this.groups_participant = new HashMap<String, String>();
+        this.groups_manager = new HashMap<String, String>();
     }
 
-    public  boolean askToBeFriend(String friend,String friend_id){
-        if(!hasFriend(friend)){
-            this.friends_wait_list.put(friend,friend_id);
-            //TODO: send to the friend
+    private boolean addToFriendList(String friend, friend_status friend_id) {
+        if (!isFriend(friend)) {
+            friends.put(friend, friend_id);
             return true;
-        }
-        else return false;
-    }
-
-    public boolean addFriend(String friend){
-        if(!hasFriend(friend)){
-            this.friends.add(friend);
-            return true;
-        }
-        else return false;
-    }
-
-    private boolean hasFriend(String friend) {
-        for (String x: this.friends){
-            if (x.equals(friend)) return true;
         }
         return false;
     }
 
-    public boolean removeFriend(String user_name){ // TODO: check if works
-        return friends.removeIf(friend -> friend.equals(user_name));
+    public boolean addFriend(String friend) {
+        return addToFriendList(friend, friend_status.friend);
     }
 
-    public void addGroupManage(String group_id,String group_name){ //TODO: check if already exist
-        this.groups_manager.put(group_id,group_name);
+    public boolean addFriendToAsk(String friend) {
+        return addToFriendList(friend, friend_status.asked);
+    }
+
+    public boolean addFriendToWait(String friend) {
+        return addToFriendList(friend, friend_status.waiting);
+    }
+
+    public boolean hasConnection(String friend) {
+        return friends.containsKey(friend);
+    }
+
+    public boolean isFriend(String user_name) {
+        return friends.get(user_name) == friend_status.friend;
+    }
+
+    public boolean isOnAskedList(String user_name) {
+        return friends.get(user_name) == friend_status.asked;
+    }
+
+    public boolean isOnWaitList(String user_name) {
+        return friends.get(user_name) == friend_status.waiting;
+    }
+
+    public boolean removeFriend(String user_name) { // TODO: check if works
+        return friends.remove(user_name) != null;
+    }
+
+    public void addGroupManage(String group_id, String group_name) { //TODO: check if already exist
+        this.groups_manager.put(group_id, group_name);
     }
 
     /**
-     *
      * @param group_id
      * @return the name of the group it deleted
      */
-    public String removeGroupManage(String group_id){
+    public String removeGroupManage(String group_id) {
         return groups_manager.remove(group_id);
     }
 
-    public void addGroupParticipant(String group_id, String group_name){ //TODO: check if already exist
-        this.groups_participant.put(group_id,group_name);
+    public void addGroupParticipant(String group_id, String group_name) { //TODO: check if already exist
+        this.groups_participant.put(group_id, group_name);
     }
 
-    public String removeGroupParticipant(String group_id){
+    public String removeGroupParticipant(String group_id) {
         return groups_participant.remove(group_id);
     }
 
@@ -127,8 +140,38 @@ public class User {
     }
 
     public List<String> getFriends() {
-        return friends;
+        List<String> real_friends = new ArrayList<>();
+        this.friends.forEach((s, s2) -> {
+            if (s2 == friend_status.friend) {
+                real_friends.add(s);
+            }
+        });
+
+        return real_friends;
     }
+
+    public List<String> getAskedFriends() {
+        List<String> wait_friends = new ArrayList<>();
+        this.friends.forEach((s, s2) -> {
+            if (s2 == friend_status.asked) {
+                wait_friends.add(s);
+            }
+        });
+
+        return wait_friends;
+    }
+
+    public List<String> getWaitingFriends() {
+        List<String> wait_friends = new ArrayList<>();
+        this.friends.forEach((s, s2) -> {
+            if (s2 == friend_status.waiting) {
+                wait_friends.add(s);
+            }
+        });
+
+        return wait_friends;
+    }
+
 
     public String getName() {
         return name;
@@ -170,11 +213,11 @@ public class User {
         this.profile = profile;
     }
 
-    public Map<String,String> getGroupsParticipant() {
+    public Map<String, String> getGroupsParticipant() {
         return groups_participant;
     }
 
-    public Map<String,String> getGroupsManager() {
+    public Map<String, String> getGroupsManager() {
         return groups_manager;
     }
 
