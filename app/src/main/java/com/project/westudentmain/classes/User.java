@@ -139,6 +139,15 @@ public class User {
         this.user_name = user_name;
     }
 
+    public List<String> getAllConnectedFriends() {
+        List<String> real_friends = new ArrayList<>();
+        this.friends.forEach((s, s2) -> {
+                real_friends.add(s);
+        });
+
+        return real_friends;
+    }
+
     public List<String> getFriends() {
         List<String> real_friends = new ArrayList<>();
         this.friends.forEach((s, s2) -> {

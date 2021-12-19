@@ -440,7 +440,7 @@ public class FireBaseData {
         return true;
     }
 
-    /**
+    /**TODO: switch to user name
      * function to download the photo of friend to ImageView
      *
      * @param context     the context of the screen
