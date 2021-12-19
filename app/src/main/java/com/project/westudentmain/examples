@@ -75,3 +75,7 @@
                                 }
                             });
 
+// ask friend to be friend
+        fire_base_data.askToBeFriend("nadav64",(what, ok) -> {
+            Toast.makeText(this, what+ok, Toast.LENGTH_SHORT).show();
+        });

@@ -188,7 +188,7 @@ public class FireBaseData {
         database_reference.child(User.class.getSimpleName()).child(FireBaseLogin.getUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Object data = snapshot.getValue(User.class);
+                User data = snapshot.getValue(User.class);
 
                 if (data == null)
                     listener.onCancelled("no user data");
@@ -496,30 +496,40 @@ public class FireBaseData {
                 User user = (User) data;
                 String user_name = user.getUserName();
 
-                if (user.hasConnection(friend_user_name)) {
-                    // cancel maybe cancel this checking
-                }
-                getIdByUserName(friend_user_name, new CustomDataListener() {
-                    @Override
-                    public void onDataChange(@NonNull Object data) {//TODO: change in User class
-                        database_reference.child(User.class.getSimpleName()).child((String) data).child("friendsWaitList").child(user_name).setValue(firebaseUser.getUid()).addOnCompleteListener(
-                                new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful())
-                                            listener.onComplete("friend added to waiting list", true);
-                                        else
-                                            listener.onComplete("friend fail to be added to waiting list", false);
+                if (!user.hasConnection(friend_user_name))
+                    getIdByUserName(friend_user_name, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {//TODO: change in User class
+                            database_reference.child(User.class.getSimpleName()).child((String) data).child("friends").child(user_name).setValue(User.friend_status.waiting).addOnCompleteListener(
+                                    new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                database_reference.child(User.class.getSimpleName()).child(firebaseUser.getUid()).child("friends").child(friend_user_name).setValue(User.friend_status.asked).addOnCompleteListener(
+                                                        new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful())
+                                                                    listener.onComplete("friend added to your asking list", true);
+                                                                else
+                                                                    listener.onComplete("friend fail to be added to your asking list", false);
+                                                            }
+                                                        }
+                                                );
+                                                listener.onComplete("friend added to waiting list", true);
+                                            }
+                                            else
+                                                listener.onComplete("friend fail to be added to waiting list", false);
+                                        }
                                     }
-                                }
-                        );
-                    }
+                            );
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull String error) {
-                        listener.onComplete(error, false);
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            listener.onComplete(error, false);
+                        }
+                    });
             }
 
             @Override
@@ -528,6 +538,10 @@ public class FireBaseData {
             }
         });
 
+        return true;
+    }
+
+    public boolean applyFriend(String user_name) {
         return true;
     }
 

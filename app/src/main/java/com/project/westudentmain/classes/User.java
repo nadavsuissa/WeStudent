@@ -18,7 +18,7 @@ public class User {
     private Profile profile;
 
     //TODO: student card
-    enum friend_status {
+    public enum friend_status {
         asked, // asked them to accept
         waiting, // waiting for me to accept
         friend
