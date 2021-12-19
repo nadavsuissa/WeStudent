@@ -517,8 +517,7 @@ public class FireBaseData {
                                                         }
                                                 );
                                                 listener.onComplete("friend added to waiting list", true);
-                                            }
-                                            else
+                                            } else
                                                 listener.onComplete("friend fail to be added to waiting list", false);
                                         }
                                     }
@@ -541,7 +540,59 @@ public class FireBaseData {
         return true;
     }
 
-    public boolean applyFriend(String user_name) {
+    public boolean acceptFriendRequest(String friend_user_name, CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+
+
+        getUser(new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                User user = (User) data;
+                String user_name = user.getUserName();
+
+                if (user.isOnWaitList(friend_user_name))
+                    getIdByUserName(friend_user_name, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {//TODO: change in User class
+                            database_reference.child(User.class.getSimpleName()).child((String) data).child("friends").child(user_name).setValue(User.friend_status.friend).addOnCompleteListener(
+                                    new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                database_reference.child(User.class.getSimpleName()).child(firebaseUser.getUid()).child("friends").child(friend_user_name).setValue(User.friend_status.friend).addOnCompleteListener(
+                                                        new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful())
+                                                                    listener.onComplete("friend accepted", true);
+                                                                else
+                                                                    listener.onComplete("friend fail to be accepted", false);
+                                                            }
+                                                        }
+                                                );
+                                                listener.onComplete("friend accepted on their side", true);
+                                            } else
+                                                listener.onComplete("friend fail to be accepted on their side", false);
+                                        }
+                                    }
+                            );
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            listener.onComplete(error, false);
+                        }
+                    });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onComplete(error + " in askToBeFriend", false);
+            }
+        });
+
         return true;
     }
 
