@@ -55,4 +55,9 @@
     <string name="group_description">Group Description</string>
     <string name="max_capacity">Max Capacity</string>
     <string name="create">Create</string>
+    <string name="enter_a_bio">Enter A Bio</string>
+    <string name="bio">BIO</string>
+    <string name="user_name">User Name</string>
+    <string name="address">Address</string>
+    <string name="enter_an_address">Enter An Address</string>
 </resources>

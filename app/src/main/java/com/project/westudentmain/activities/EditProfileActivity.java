@@ -27,7 +27,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private Button btn_save;
     private EditText edt_name,edt_surname,edt_phone; //TODO:
     private FireBaseData fire_base_data;
-    private TextView txt_email;
+
     private User user;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        txt_email.setText(FireBaseData.getEmail());
+
 
         // TODO: check why it needs to be an array (probably because pointers)
         // get last data if data is empty it will stay null so add something to catch it in `onDataChange`
@@ -92,7 +92,7 @@ public class EditProfileActivity extends AppCompatActivity {
         edt_surname = findViewById(R.id.EditTextSurname);
         edt_phone = findViewById(R.id.EditTextPhoneNo);
         btn_save = findViewById(R.id.btnSaveButton);
-        txt_email = findViewById(R.id.textViewEmailAddress);
+
     }
 
     private void UpdateUser() {
