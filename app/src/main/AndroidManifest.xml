@@ -30,7 +30,7 @@
             android:exported="true" />
         <activity
             android:name="com.project.westudentmain.activities.showSettings"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.project.westudentmain.activities.showProfile"
             android:exported="false" />

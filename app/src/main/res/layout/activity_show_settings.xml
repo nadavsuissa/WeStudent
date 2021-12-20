@@ -22,54 +22,73 @@
 
     <Button
         android:id="@+id/btndissconect"
-        android:layout_width="269dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="344dp"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/rounded_corner"
         android:gravity="center"
         android:text="@string/disconnect"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingview" />
+        app:layout_constraintTop_toBottomOf="@+id/settingview"
+        tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
     <Button
         android:id="@+id/btneditprofile"
-        android:layout_width="269dp"
-        android:layout_height="49dp"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/rounded_corner"
         android:gravity="center"
         android:text="@string/edit_profile"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btndissconect" />
+        app:layout_constraintTop_toBottomOf="@+id/btndissconect"
+        tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
     <Button
-        android:id="@+id/btnchangeprofpic"
-        android:layout_width="269dp"
-        android:layout_height="49dp"
+        android:id="@+id/btnnotifications"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/rounded_corner"
         android:gravity="center"
-        android:text="@string/change_profile_pic"
+        android:text="@string/notifications"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btneditprofile" />
+        app:layout_constraintTop_toBottomOf="@+id/btneditprofile"
+        tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
     <TextView
         android:id="@+id/settingview"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:background="@drawable/rounded_corner"
         android:gravity="center"
         android:text="@string/settings"
+        android:textColor="@color/black"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnchangepass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/btndeleteuser"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/rounded_corner"
         android:gravity="center"
-        android:text="@string/send_password_reset_email"
+        android:text="@string/delete_user"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnchangeprofpic" />
+        app:layout_constraintTop_toBottomOf="@+id/btnnotifications"
+        tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
