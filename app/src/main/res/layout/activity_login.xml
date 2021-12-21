@@ -9,13 +9,14 @@
     tools:context="com.project.westudentmain.activities.Login">
 
     <EditText
-        android:background="@drawable/rounded_corner"
-
         android:id="@+id/loginemail"
+
         android:layout_width="247dp"
         android:layout_height="60dp"
         android:layout_marginBottom="28dp"
+        android:background="@drawable/rounded_corner"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/email"
         android:importantForAutofill="no"
         android:inputType="textEmailAddress"
@@ -25,12 +26,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:background="@drawable/rounded_corner"
         android:id="@+id/loginPassword"
         android:layout_width="247dp"
         android:layout_height="60dp"
         android:layout_marginBottom="188dp"
+        android:background="@drawable/rounded_corner"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/password"
         android:importantForAutofill="no"
         android:inputType="textPassword"
