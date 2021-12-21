@@ -26,11 +26,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.User;
-import com.project.westudentmain.classes.UserData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 // TODO: clean up CustomOkListener to 1 OK only many fails is OK
 public class FireBaseData {
     private static final DatabaseReference database_reference = FirebaseDatabase.getInstance().getReference();
@@ -57,6 +56,40 @@ public class FireBaseData {
         if (!FireBaseLogin.userIsLoggedIn())
             return null;
         return FireBaseLogin.getUser().getEmail();
+    }
+
+    /**
+     * get the email of the user by user name
+     *
+     * @param user_name
+     * @param listener pass the mail
+     */
+    public static void getEmailByUserName(String user_name, CustomDataListener listener) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query applesQuery = ref.child(User.class.getSimpleName()).orderByChild("userName").equalTo(user_name);
+
+        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String mail = null;
+                for (DataSnapshot appleSnapshot : snapshot.getChildren()) {
+                    mail = appleSnapshot.getValue(User.class).getMail();
+                    if (mail != null) {
+                        listener.onDataChange(mail);
+                        break;
+                    }
+                }
+                if (mail == null){
+                    listener.onCancelled("user not found");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onCancelled(error.getMessage());
+            }
+        });
+
     }
 
     /**
@@ -166,7 +199,7 @@ public class FireBaseData {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //TODO: need checking
                 Object tmp = snapshot.getValue(object);
-                if (tmp !=null)
+                if (tmp != null)
                     event_listener.onDataChange(tmp);
                 else
                     event_listener.onCancelled("no object in database");
@@ -444,7 +477,8 @@ public class FireBaseData {
         return true;
     }
 
-    /**TODO: switch to user name
+    /**
+     * TODO: switch to user name
      * function to download the photo of friend to ImageView
      *
      * @param context     the context of the screen

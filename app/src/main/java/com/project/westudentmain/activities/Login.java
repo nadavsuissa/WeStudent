@@ -8,10 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
 import com.project.westudentmain.Validation;
+import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseLogin;
 
 public class Login extends AppCompatActivity {
@@ -30,24 +32,33 @@ public class Login extends AppCompatActivity {
             String password = pass_word.getText().toString().trim();
 
             // check for wrong input from user
-            Validation validation =new Validation();
-            boolean flag = validation.Login(user_name, pass_word,email,password);
-            if(!flag) return;
-
-            //TODO: check if user already logged in
-            //TODO: show progress bar
-            //TODO: close this page when login successful
-            //TODO: check network fail
-           FireBaseLogin.emailLogin(email,password, task -> {
-               // TODO: start loading fragment before the last line and close in here
-                if (task.isSuccessful()) {
-                    startActivity(new Intent(Login.this, showProfile.class));
-                } else {
-                    Toast.makeText(Login.this,
-                            "email or password are not correct",
-                            Toast.LENGTH_LONG).show();
+            Validation validation = new Validation();
+            boolean flag = validation.LoginPassword(pass_word, password);
+            if (!flag) return;
+            validation.LoginEmailOrUser(user_name, email, new CustomOkListener() {
+                @Override
+                public void onComplete(@NonNull String what, Boolean ok) {
+                    if (ok) {
+                        //TODO: check if user already logged in
+                        //TODO: show progress bar
+                        //TODO: close this page when login successful
+                        //TODO: check network fail
+                        FireBaseLogin.emailLogin(what, password, task -> {
+                            // TODO: start loading fragment before the last line and close in here
+                            if (task.isSuccessful()) {
+                                startActivity(new Intent(Login.this, showProfile.class));
+                                //TODO:close this activity?
+                            } else {
+                                Toast.makeText(Login.this,
+                                        "email or password are not correct" + what,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    } else
+                        Toast.makeText(Login.this, what, Toast.LENGTH_SHORT).show();
                 }
             });
+
         });
         btn_sign.setOnClickListener(v -> startActivity(new Intent(Login.this, Register.class)));
     }
