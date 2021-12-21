@@ -4,184 +4,317 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2AF5FF">
-
-    <TextView
-        android:id="@+id/RgisterHeadLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/registration_page"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/uploadphoto"
-        android:layout_width="172dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/upload_student_card"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewStudentCard"
-        app:layout_constraintHorizontal_bias="0.313"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RgisterHeadLine" />
-
-    <ImageView
-        android:id="@+id/imageViewStudentCard"
-        android:layout_width="188dp"
-        android:layout_height="91dp"
-        android:layout_marginTop="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RgisterHeadLine"
-        tools:srcCompat="@tools:sample/avatars" />
+    >
 
     <ScrollView
         android:id="@+id/scrollViewSignUp"
         android:layout_width="398dp"
         android:layout_height="563dp"
-        android:background="#EFE9F4"
+        android:layout_marginTop="152dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewStudentCard">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageViewStudentCard"
+                android:layout_width="152dp"
+                android:layout_height="128dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <EditText
                 android:id="@+id/registeremail"
-                android:layout_width="247dp"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="160dp"
+
                 android:ems="10"
                 android:hint="@string/email"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
-
                 android:minHeight="48dp"
-                tools:ignore="TextContrastCheck" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/registerpassword"
-                android:layout_width="247dp"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="232dp"
                 android:ems="10"
                 android:hint="@string/password"
                 android:importantForAutofill="no"
                 android:inputType="textPassword"
                 android:minHeight="48dp"
-                tools:ignore="TextContrastCheck" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/registerName"
-                android:layout_width="250dp"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="304dp"
                 android:ems="10"
+
                 android:hint="Name"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
-
                 android:minHeight="48dp"
-                tools:ignore="TextContrastCheck" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/registerLastName"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="384dp"
                 android:ems="10"
+
                 android:hint="Last Name"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
-
                 android:minHeight="48dp"
-                tools:ignore="TextContrastCheck" />
-
-            <EditText
-                android:id="@+id/registerUserName"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
-                android:ems="10"
-                android:hint="User Name"
-                android:importantForAutofill="no"
-                android:inputType="textEmailAddress"
-
-                android:minHeight="48dp"
-                tools:ignore="TextContrastCheck" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/registerUniversity"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="524dp"
                 android:ems="10"
+
                 android:hint="University"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
-
                 android:minHeight="48dp"
-                tools:ignore="TextContrastCheck" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/registerDegree"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="600dp"
                 android:ems="10"
+
                 android:hint="Degree"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
-
                 android:minHeight="48dp"
-                tools:ignore="TextContrastCheck" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/registerHomeTown"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="669dp"
                 android:ems="10"
                 android:hint="home town"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
-
                 android:minHeight="48dp"
-                tools:ignore="TextContrastCheck" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/registerYearOfStudying"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="742dp"
                 android:ems="10"
                 android:hint="year of studying"
-                android:inputType="number" />
+                android:inputType="number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/registerBio"
-                android:layout_width="match_parent"
-                android:layout_height="204dp"
-                android:layout_marginBottom="12dp"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="808dp"
                 android:ems="10"
                 android:hint="Tell us about you"
+
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
-
                 android:minHeight="48dp"
-                tools:ignore="TextContrastCheck" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/registerUserName"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="456dp"
+                android:ems="10"
+
+                android:hint="User Name"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+                android:minHeight="48dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/signup2"
-                android:layout_width="247dp"
-                android:layout_height="60dp"
-                android:layout_marginBottom="128dp"
-                android:text="@string/sign_up" />
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="124dp"
+                android:text="@string/sign_up"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registerBio" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/imageView9"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="160dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/email" />
+
+            <ImageView
+                android:id="@+id/imageView10"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="235dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/padlock" />
+
+            <ImageView
+                android:id="@+id/imageView11"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="307dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/name" />
+
+            <ImageView
+                android:id="@+id/imageView12"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="380dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/name" />
+
+            <ImageView
+                android:id="@+id/imageView13"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="452dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/name" />
+
+            <ImageView
+                android:id="@+id/imageView14"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="530dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/school" />
+
+            <ImageView
+                android:id="@+id/imageView15"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="596dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/degrees" />
+
+            <ImageView
+                android:id="@+id/imageView16"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView15"
+                app:srcCompat="@drawable/town" />
+
+            <ImageView
+                android:id="@+id/imageView18"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView19"
+                app:srcCompat="@drawable/biography" />
+
+            <Button
+                android:id="@+id/uploadphoto"
+                android:layout_width="152dp"
+                android:layout_height="128dp"
+
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/upload_student_card"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView19"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView16"
+                app:srcCompat="@drawable/calendar" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="278dp"
+        android:layout_height="189dp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollViewSignUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/westudentlogo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
