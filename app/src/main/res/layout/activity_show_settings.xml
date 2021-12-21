@@ -22,49 +22,55 @@
 
     <Button
         android:id="@+id/btndissconect"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/rounded_corner"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:text="@string/disconnect"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.383"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settingview"
         tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
     <Button
         android:id="@+id/btneditprofile"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/rounded_corner"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:text="@string/edit_profile"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.367"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btndissconect"
         tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
     <Button
         android:id="@+id/btnnotifications"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/rounded_corner"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:text="@string/notifications"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.306"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btneditprofile"
         tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
     <TextView
         android:id="@+id/settingview"
-        android:layout_width="300dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
         android:background="@drawable/rounded_corner"
@@ -79,16 +85,70 @@
 
     <Button
         android:id="@+id/btndeleteuser"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/rounded_corner"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:text="@string/delete_user"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.377"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnnotifications"
         tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingview"
+        app:srcCompat="@drawable/logout" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:srcCompat="@drawable/editprofile" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/notifications" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:srcCompat="@drawable/deleteuser" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btndeleteuser"
+        app:srcCompat="@drawable/westudentlogo" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

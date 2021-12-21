@@ -13,6 +13,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
     <style name="Theme.AndroidProject.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.AndroidProject.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
