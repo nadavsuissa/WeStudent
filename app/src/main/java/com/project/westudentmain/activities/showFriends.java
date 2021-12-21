@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -74,7 +73,7 @@ public class showFriends extends AppCompatActivity {
     }
 
     private void connect_items_by_id() {
-        addfriendbtn = findViewById(R.id.btndeletefriend);
+        addfriendbtn = findViewById(R.id.btnaddfriend);
         delfriendbtn = findViewById(R.id.btndeletefriend);
     }
 
