@@ -26,10 +26,7 @@ public class showProject extends AppCompatActivity {
     }
 
     private void connect_items_by_id() {
-        projecttypetview = findViewById(R.id.projecttextview);
-        subjecttview = findViewById(R.id.subjecttextview);
-        participantstview = findViewById(R.id.participantstextview);
-        descriptiontview = findViewById(R.id.descriptiontextview);
+
 
 
     }

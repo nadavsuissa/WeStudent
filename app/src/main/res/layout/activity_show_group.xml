@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EFE9F4"
+    android:background="@color/white"
     tools:context="com.project.westudentmain.activities.showGroup">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -31,31 +31,46 @@
         android:id="@+id/yourgroupstextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/your_groups"
         android:textSize="34sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/createGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="create Group"
-        app:layout_constraintBottom_toTopOf="@+id/groupRV"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/groupRV"
-        android:layout_width="380dp"
-        android:layout_height="500dp"
-        android:layout_marginTop="112dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.483"
+        android:layout_width="405dp"
+        android:layout_height="248dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yourgroupstextview" />
+        app:layout_constraintTop_toBottomOf="@+id/createGroup" />
+
+
+    <ImageView
+        android:id="@+id/imageView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groupRV"
+        app:srcCompat="@drawable/westudentlogo" />
+
+    <ImageButton
+        android:id="@+id/createGroup"
+        android:layout_width="179dp"
+        android:layout_height="146dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:background="#0000"
+        android:padding="20dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yourgroupstextview"
+        app:srcCompat="@drawable/creategroupicon"
+        tools:ignore="SpeakableTextPresentCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
