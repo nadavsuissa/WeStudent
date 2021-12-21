@@ -90,13 +90,13 @@
     });
 
 // add new group
-    Group g = new Group();
-    g.setGroupName("testin123");
-    g.setDescription("its testing");
-    FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
-    fireBaseGroup.pushNewGroup(g,(what, ok) -> {
-        Toast.makeText(this, what + ok, Toast.LENGTH_SHORT).show();
-    });
+        Group g = new Group();
+        g.setGroupName("the dumb one");
+        g.setDescription("its testing");
+        FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
+        fireBaseGroup.pushNewGroup(g,(what, ok) -> {
+            Toast.makeText(this, what + ok, Toast.LENGTH_SHORT).show();
+        });
 
 // get group
         FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();

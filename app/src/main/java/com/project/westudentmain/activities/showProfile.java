@@ -29,6 +29,7 @@ import com.example.androidproject.R;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
+import com.project.westudentmain.classes.UserData;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseGroup;
@@ -58,18 +59,7 @@ public class showProfile extends AppCompatActivity {
 
         setSupportActionBar(mToolBar);
 
-//        Group g = new Group();
-//        g.setGroupName("the dumb one");
-//        g.setDescription("its testing");
-//        FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
-//        fireBaseGroup.pushNewGroup(g,(what, ok) -> {
-//            Toast.makeText(this, what + ok, Toast.LENGTH_SHORT).show();
-//        });
 
-        FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
-        fireBaseGroup.removeGroup("-MrSmtR3Hh6t0HV8t9DY",(what, ok) -> {
-            Toast.makeText(getBaseContext(), what+ok, Toast.LENGTH_SHORT).show();
-        });
 
         fire_base_data = FireBaseData.getInstance();
         fire_base_data.downloadUserPhoto(this, img_profile, (what, ok) -> {
@@ -79,23 +69,6 @@ public class showProfile extends AppCompatActivity {
             public void onDataChange(@NonNull Object data) {
                 User user = (User) data;
                 RenderText(user);
-                user.addGroupManage("-MrSmtR3Hh6t0HV8t9DY");
-                fire_base_data.updateUser(user,(what, ok) -> {
-                   fire_base_data.getUser(new CustomDataListener() {
-                       @Override
-                       public void onDataChange(@NonNull Object data) {
-                           User user2 = (User) data;
-                            if (user2 == null){
-
-                            }
-                       }
-
-                       @Override
-                       public void onCancelled(@NonNull String error) {
-
-                       }
-                   });
-                });
             }
 
             @Override

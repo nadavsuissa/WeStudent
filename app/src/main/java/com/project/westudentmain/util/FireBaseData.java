@@ -26,6 +26,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.User;
+import com.project.westudentmain.classes.UserData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +120,6 @@ public class FireBaseData {
     public boolean updateUser(@NonNull User user, CustomOkListener listener) {
         if (!FireBaseLogin.userIsLoggedIn())
             return false;
-
         database_reference.child(User.class.getSimpleName()).child(FireBaseLogin.getUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -347,7 +347,7 @@ public class FireBaseData {
             @Override
             public void onDataChange(@NonNull Object data) {
                 User user_data = (User) data;
-                if (user_data.getManageGroups().contains(group_id)) {
+                if (user_data.ManageGroupsList().contains(group_id)) {
                     database_reference.child("User").child(user.getUid()).child("groupsManager").child(group_id).getRef().removeValue();
                     database_reference.child("Group").child(group_id).getRef().removeValue();
                     if (listener != null)

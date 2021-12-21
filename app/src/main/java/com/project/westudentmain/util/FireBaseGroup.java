@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
+//TODO: use username instead of id
 public class FireBaseGroup {
     private static final DatabaseReference database_reference = FirebaseDatabase.getInstance().getReference();
     private final static FireBaseGroup INSTANCE = new FireBaseGroup();
@@ -102,7 +103,7 @@ public class FireBaseGroup {
                 Group group = (Group) data;
                 // check if manager
                 if (group.isOnManagerList(firebaseUser.getUid())) {
-                    List<String> user_list = group.getAllUsers();
+                    List<String> user_list = group.allUsersList();
 
                     //reduce the OK in the listener
                     CustomOkListener super_listener = new CustomOkListener() {
@@ -172,7 +173,6 @@ public class FireBaseGroup {
 
         return true;
     }
-
 
 
     /**

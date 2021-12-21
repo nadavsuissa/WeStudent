@@ -1,37 +1,14 @@
 package com.project.westudentmain.classes;
 
-import com.google.firebase.database.PropertyName;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class Group {
-    // the id of the group is in firebase
-    @PropertyName("groupId")
-    private String group_id;
-    @PropertyName("groupName")
-    private String group_name;
-    private String description;
-    @PropertyName("groupPublic")
-    private boolean group_public;
-    @PropertyName("maxCapacity")
-    private int max_capacity;
-    //zoom/faceToFace:enum
-    @PropertyName("creationDate")
-    private String creation_date;
+public class Group extends GroupData {
 
-    public enum user_status {
-        asking,  // asked them to accept
-        waiting, // waiting for the group to accept
-        friend,
-        manager
+    public Group() {
+        super();
     }
-
-    @PropertyName("users")
-    private Map<String, user_status> users;
-    private final GroupActivityManager group_activity_manager;
 
     public Group(String group_name, String description, int max_capacity, String creation_date) {
         this.group_name = group_name;
@@ -43,53 +20,7 @@ public class Group {
         group_public = true;
     }
 
-    public Group() {
-        this.group_name = "default group name";
-        this.description = "";
-        this.max_capacity = 10;
-        this.creation_date = "";
-        this.group_activity_manager = new GroupActivityManager();
-        this.users = new HashMap<>();
-        group_public = true;
-    }
-
-    public boolean isGroupPublic() {
-        return group_public;
-    }
-
-    public void setGroupPublic(boolean group_public) {
-        this.group_public = group_public;
-    }
-
-    public String getGroupId() {
-        return group_id;
-    }
-
-    public void setGroupId(String group_id) {
-        this.group_id = group_id;
-    }
-
-    public String getGroupName() {
-        return group_name;
-    }
-
-    public void setGroupName(String group_name) {
-        this.group_name = group_name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setUsers(Map<String, user_status> users) {
-        this.users = users;
-    }
-
-    public List<String> getAllUsers() {
+    public List<String> allUsersList() {
         List<String> all_users = new ArrayList<>();
         this.users.forEach((s, s2) -> {
             all_users.add(s);
@@ -98,7 +29,7 @@ public class Group {
         return all_users;
     }
 
-    public List<String> getAskingUsers() {
+    public List<String> askingUsersList() {
         List<String> all_users = new ArrayList<>();
         this.users.forEach((s, s2) -> {
             if (s2 == user_status.asking) {
@@ -109,7 +40,7 @@ public class Group {
         return all_users;
     }
 
-    public List<String> getFriendsUsers() {
+    public List<String> friendsUsersList() {
         List<String> all_users = new ArrayList<>();
         this.users.forEach((s, s2) -> {
             if (s2 == user_status.friend) {
@@ -120,7 +51,7 @@ public class Group {
         return all_users;
     }
 
-    public List<String> getWaitingUsers() {
+    public List<String> waitingUsersList() {
         List<String> all_users = new ArrayList<>();
         this.users.forEach((s, s2) -> {
             if (s2 == user_status.waiting) {
@@ -131,7 +62,7 @@ public class Group {
         return all_users;
     }
 
-    public List<String> getManagerUsers() {
+    public List<String> managerUsersList() {
         List<String> all_users = new ArrayList<>();
         this.users.forEach((s, s2) -> {
             if (s2 == user_status.manager) {
@@ -162,15 +93,8 @@ public class Group {
         return users.get(user_name) == user_status.manager;
     }
 
-    public int getMaxCapacity() {
-        return max_capacity;
-    }
 
-    public void setMaxCapacity(int max_capacity) {
-        this.max_capacity = max_capacity;
-    }
-
-    public String getDate() {
+    public String date() {
         return creation_date.toString();
     }
 
@@ -180,8 +104,5 @@ public class Group {
 
     //TODO: check if it is a pointer
     //TODO: decide if remove
-    public GroupActivityManager getGroupActivityManager() {
-        return group_activity_manager;
-    }
 
 }

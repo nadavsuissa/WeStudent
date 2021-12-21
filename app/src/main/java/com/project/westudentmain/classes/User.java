@@ -1,45 +1,13 @@
 package com.project.westudentmain.classes;
 
-import com.google.firebase.database.PropertyName;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class User {
-    @PropertyName("userName")
-    private String user_name;
-    private String name;
-    @PropertyName("lastName")
-    private String last_name;
-    private String mail;
-    private String phone;
-    private Profile profile;
-
-    //TODO: student card
-    public enum friend_status {
-        asked, // asked them to accept
-        waiting, // waiting for me to accept
-        friend
-    }
-
-    @PropertyName("friends")
-    private HashMap<String, String> friends; // user name | friend_status //  maybe split to a manager
-    @PropertyName("groups")
-    private HashMap<String, String> groups; // group name | group id // maybe split to a manager
+public class User extends UserData {
 
     public User() {
-        this.user_name = "user_name";
-        this.name = "name";
-        this.last_name = "last_name";
-        this.mail = "mail";
-        this.phone = "phone";
-
-        this.profile = new Profile();
-        this.friends = new HashMap<String, String>();
-        this.groups = new HashMap<String, String>();
-        this.profile = new Profile();
+        super();
     }
 
     public User(String user_name, String name, String last_name, String mail, String phone) {
@@ -130,19 +98,15 @@ public class User {
         return groups.remove(group_id) != null;
     }
 
-    public String getUserName() {
-        return user_name;
-    }
-
     public void setUserName(String user_name) {
         this.user_name = user_name;
     }
 
-    public void setGroups(HashMap<String,String> groups) {
+    public void setGroups(HashMap<String, String> groups) {
         this.groups = groups;
     }
 
-    public List<String> getAllConnectedFriends() {
+    public List<String> AllConnectedFriendsList() {
         List<String> real_friends = new ArrayList<>();
         this.friends.forEach((s, s2) -> {
             real_friends.add(s);
@@ -151,7 +115,7 @@ public class User {
         return real_friends;
     }
 
-    public List<String> getFriends() {
+    public List<String> FriendsListList() {
         List<String> real_friends = new ArrayList<>();
         this.friends.forEach((s, s2) -> {
             if (s2.equals(friend_status.friend.name())) {
@@ -162,7 +126,7 @@ public class User {
         return real_friends;
     }
 
-    public List<String> getAskedFriends() {
+    public List<String> AskedFriendsList() {
         List<String> wait_friends = new ArrayList<>();
         this.friends.forEach((s, s2) -> {
             if (s2.equals(friend_status.asked.name())) {
@@ -173,7 +137,7 @@ public class User {
         return wait_friends;
     }
 
-    public List<String> getWaitingFriends() {
+    public List<String> WaitingFriendsList() {
         List<String> wait_friends = new ArrayList<>();
         this.friends.forEach((s, s2) -> {
             if (s2.equals(friend_status.waiting.name())) {
@@ -185,51 +149,27 @@ public class User {
     }
 
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLastName() {
-        return last_name;
     }
 
     public void setLastName(String last_name) {
         this.last_name = last_name;
     }
 
-    public String getMail() {
-        return mail;
-    }
-
     public void setMail(String mail) {
         this.mail = mail;
-    }
-
-    public String getPhone() {
-        return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public Profile getProfile() {
-        return profile;
-    }
-
     public void setProfile(Profile profile) {
         this.profile = profile;
     }
 
-    public Map<String, String> getGroups() {
-        return groups;
-    }
-
-    public List<String> getParticipantGroupsList() {
+    public List<String> ParticipantGroupsList() {
         List<String> groups_with_status = new ArrayList<>();
         groups.forEach((s, s2) -> {
             groups_with_status.add(s);
@@ -237,7 +177,7 @@ public class User {
         return groups_with_status;
     }
 
-    public List<String> getAskingGroups() {
+    public List<String> AskingGroupsList() {
         List<String> groups_with_status = new ArrayList<>();
         groups.forEach((s, s2) -> {
             if (s2.equals(Group.user_status.asking.name())) {
@@ -248,7 +188,7 @@ public class User {
         return groups_with_status;
     }
 
-    public List<String> getFriendsGroups() {
+    public List<String> FriendsGroupsList() {
         List<String> groups_with_status = new ArrayList<>();
         groups.forEach((s, s2) -> {
             if (s2.equals(Group.user_status.friend.name())) {
@@ -259,7 +199,7 @@ public class User {
         return groups_with_status;
     }
 
-    public List<String> getWaitingGroups() {
+    public List<String> WaitingGroupsList() {
         List<String> groups_with_status = new ArrayList<>();
         groups.forEach((s, s2) -> {
             if (s2.equals(Group.user_status.waiting.name())) {
@@ -270,7 +210,7 @@ public class User {
         return groups_with_status;
     }
 
-    public List<String> getManageGroups() {
+    public List<String> ManageGroupsList() {
         List<String> groups_with_status = new ArrayList<>();
         groups.forEach((s, s2) -> {
             if (s2.equals(Group.user_status.manager.name())) {
