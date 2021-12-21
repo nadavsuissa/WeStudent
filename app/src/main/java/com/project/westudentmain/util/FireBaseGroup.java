@@ -16,7 +16,6 @@ import com.project.westudentmain.classes.User;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
 //TODO: use username instead of id
 public class FireBaseGroup {
@@ -178,21 +177,226 @@ public class FireBaseGroup {
     /**
      * gets group data
      *
-     * @param group_id       the group id to be getting
-     * @param event_listener the listener for the data or error
+     * @param group_id the group id to be getting
+     * @param listener the listener for the data or error
      */
-    public void getGroupData(@NonNull String group_id, CustomDataListener event_listener) {
+    public void getGroupData(@NonNull String group_id, CustomDataListener listener) {
         database_reference.child(Group.class.getSimpleName()).child(group_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                event_listener.onDataChange(Objects.requireNonNull(snapshot.getValue(Group.class)));
+                Group group = snapshot.getValue(Group.class);
+                if (group != null)
+                    listener.onDataChange(group);
+                else
+                    listener.onCancelled("no group in database");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                event_listener.onCancelled(error.getMessage());
+                listener.onCancelled(error.getMessage());
             }
         });
+    }
+
+
+    public boolean askGroup(String group_id, CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                Group group = (Group) data;
+                //check if member
+                if (!group.isConnectedToHim(firebaseUser.getUid())) {
+                    // add to the group
+                    database_reference.child(Group.class.getSimpleName()).child(group_id).child("users").child(firebaseUser.getUid()).setValue(Group.user_status.asking).addOnCompleteListener(
+                            task -> {
+                                if (task.isSuccessful()) {
+                                    // add to the user
+                                    database_reference.child(User.class.getSimpleName()).child(firebaseUser.getUid()).child("groups").child(group_id).setValue(Group.user_status.asking).addOnCompleteListener(
+                                            task1 -> {
+                                                if (task.isSuccessful()) {
+                                                    listener.onComplete("asked group successfully", true);
+                                                } else {
+                                                    listener.onComplete("failed adding to the user", false);
+                                                }
+
+                                            }
+                                    );
+
+                                } else {
+                                    listener.onComplete("failed asking the group", false);
+                                }
+                            });
+                } else {
+                    listener.onComplete("already connected to the group", false);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onComplete("there is no group", false);
+
+            }
+        });
+
+        return true;
+    }
+
+    public boolean acceptingGroup(String group_id, CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                Group group = (Group) data;
+                //check if waiting
+                if (group.isOnWaitList(firebaseUser.getUid())) {
+                    //change waiting to friend in group
+                    database_reference.child(Group.class.getSimpleName()).child(group_id).child("users").child(firebaseUser.getUid()).setValue(Group.user_status.friend).addOnCompleteListener(
+                            task -> {
+                                if (task.isSuccessful()) {
+                                    //change waiting to friend in user
+                                    database_reference.child(User.class.getSimpleName()).child(firebaseUser.getUid()).child("groups").child(group_id).setValue(Group.user_status.friend).addOnCompleteListener(
+                                            task1 -> {
+                                                if (task.isSuccessful()) {
+                                                    listener.onComplete("accepted group successfully", true);
+                                                } else {
+                                                    listener.onComplete("failed switching to friend in user", false);
+                                                }
+
+                                            }
+                                    );
+
+                                } else {
+                                    listener.onComplete("failed switching to friend in group", false);
+                                }
+                            });
+                } else {
+                    listener.onComplete("not waiting for the group", false);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onComplete("there is no group", false);
+
+            }
+        });
+
+        return true;
+    }
+
+    public boolean rejectGroup(String group_id, CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                Group group = (Group) data;
+                //check if waiting
+                if (group.isOnWaitList(firebaseUser.getUid())) {
+                    //remove waiting in group
+                    database_reference.child(Group.class.getSimpleName()).child(group_id).child("users").child(firebaseUser.getUid()).removeValue().addOnCompleteListener(
+                            task -> {
+                                if (task.isSuccessful()) {
+                                    //remove waiting in user
+                                    database_reference.child(User.class.getSimpleName()).child(firebaseUser.getUid()).child("groups").child(group_id).removeValue().addOnCompleteListener(
+                                            task1 -> {
+                                                if (task.isSuccessful()) {
+                                                    listener.onComplete("rejected group successfully", true);
+                                                } else {
+                                                    listener.onComplete("failed rejecting in user", false);
+                                                }
+
+                                            }
+                                    );
+
+                                } else {
+                                    listener.onComplete("failed rejecting in group", false);
+                                }
+                            });
+                } else {
+                    listener.onComplete("not waiting for the group", false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onComplete("there is no group", false);
+            }
+        });
+
+        return true;
+    }
+
+    //TODO: check if work
+    public boolean acceptByManagerGroup(String group_id, String user_name, CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+        if (user_name == null)
+            return false;
+
+        //get id of user
+        FireBaseData.getIdByUserName(user_name, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                String user_id = (String) data;
+
+                getGroupData(group_id, new CustomDataListener() {
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        Group group = (Group) data;
+                        //check if asking and main user is manager
+                        if (group.isOnManagerList(firebaseUser.getUid()) && group.isOnAskedList(user_id)) {
+                            //change asking to friend in group
+                            database_reference.child(Group.class.getSimpleName()).child(group_id).child("users").child(user_id).setValue(Group.user_status.friend).addOnCompleteListener(
+                                    task -> {
+                                        if (task.isSuccessful()) {
+                                            //change asking to friend in user
+                                            database_reference.child(User.class.getSimpleName()).child(user_id).child("groups").child(group_id).setValue(Group.user_status.friend).addOnCompleteListener(
+                                                    task1 -> {
+                                                        if (task.isSuccessful()) {
+                                                            listener.onComplete("accepted user to the group successfully", true);
+                                                        } else {
+                                                            listener.onComplete("failed switching to friend in user", false);
+                                                        }
+
+                                                    }
+                                            );
+
+                                        } else {
+                                            listener.onComplete("failed switching to friend in group", false);
+                                        }
+                                    });
+                        } else {
+                            listener.onComplete("not waiting for the group", false);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onComplete("there is no group", false);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onComplete("there is no user", false);
+            }
+        });
+
+        return true;
     }
 
 

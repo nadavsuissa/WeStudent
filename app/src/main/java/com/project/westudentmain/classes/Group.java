@@ -73,7 +73,7 @@ public class Group extends GroupData {
         return all_users;
     }
 
-    public boolean hasConnection(String friend) {
+    public boolean isConnectedToHim(String friend) {
         return users.containsKey(friend);
     }
 

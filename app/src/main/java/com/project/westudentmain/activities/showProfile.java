@@ -26,13 +26,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.example.androidproject.R;
-import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.Profile;
 import com.project.westudentmain.classes.User;
-import com.project.westudentmain.classes.UserData;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FireBaseData;
-import com.project.westudentmain.util.FireBaseGroup;
 
 import java.io.File;
 

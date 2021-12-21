@@ -165,7 +165,11 @@ public class FireBaseData {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //TODO: need checking
-                event_listener.onDataChange(Objects.requireNonNull(snapshot.getValue(object)));
+                Object tmp = snapshot.getValue(object);
+                if (tmp !=null)
+                    event_listener.onDataChange(tmp);
+                else
+                    event_listener.onCancelled("no object in database");
             }
 
             @Override
