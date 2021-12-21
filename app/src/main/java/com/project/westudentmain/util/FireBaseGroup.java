@@ -9,11 +9,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.User;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class FireBaseGroup {
@@ -39,7 +40,7 @@ public class FireBaseGroup {
      * @param listener if you want to know about completion pass listener else pass null
      * @return  if can even do it(user is logged in)
      */
-    public boolean pushNewGroup(Group group, CustomOkListener listener) { //TODO: in the making
+    public boolean pushNewGroup(Group group, CustomOkListener listener) {
         FirebaseUser firebaseUser = FireBaseLogin.getUser();
         if (firebaseUser == null)
             return false;
@@ -47,17 +48,30 @@ public class FireBaseGroup {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         String key = database.getReference(Group.class.getSimpleName()).push().getKey();
 
-        group.setGroup_id(key);
-        group.setDate(ServerValue.TIMESTAMP);
+        group.setGroupId(key);
 
+        //TODO: switch to server time
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formattedDate = myDateObj.format(myFormatObj);
+        group.setDate(formattedDate);
+
+        assert key != null;
         database_reference.child(Group.class.getSimpleName()).child(key).setValue(group).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (listener != null) {
                     if (task.isSuccessful()) {
-                        listener.onComplete("group uploaded successfully", true);
                         //TODO: add user as manager
-//                        database_reference.child(User.class.getSimpleName()).child(firebaseUser.getUid()).child()
+                        database_reference.child(User.class.getSimpleName()).child(firebaseUser.getUid()).child("groups").child(key).setValue("manager").addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    listener.onComplete("group added successfully",true);
+                                }else
+                                    listener.onComplete("group upload failed in adding to user", false);
+                            }
+                        });
                     } else
                         listener.onComplete("group upload failed", false);
                 }

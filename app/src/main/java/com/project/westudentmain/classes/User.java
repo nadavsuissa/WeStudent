@@ -26,10 +26,8 @@ public class User {
 
     @PropertyName("friends")
     private final Map<String, friend_status> friends; // user name | friend_status //  maybe split to a manager
-    @PropertyName("groupsParticipant")
-    private final Map<String, String> groups_participant; // group name | group id // maybe split to a manager
-    @PropertyName("groupsManager")
-    private final Map<String, String> groups_manager; // group name | group id // maybe split to a manager
+    @PropertyName("groups")
+    private final Map<String, Group.user_status> groups; // group name | group id // maybe split to a manager
 
     public User() {
         this.user_name = "user_name";
@@ -40,8 +38,7 @@ public class User {
 
         this.profile = new Profile();
         this.friends = new HashMap<String, friend_status>();
-        this.groups_participant = new HashMap<String, String>();
-        this.groups_manager = new HashMap<String, String>();
+        this.groups = new HashMap<String, Group.user_status>();
         this.profile = new Profile();
     }
 
@@ -53,8 +50,7 @@ public class User {
         this.phone = phone;
 
         this.friends = new HashMap<String, friend_status>();
-        this.groups_participant = new HashMap<String, String>();
-        this.groups_manager = new HashMap<String, String>();
+        this.groups = new HashMap<String, Group.user_status>();
         this.profile = new Profile();
     }
 
@@ -67,8 +63,7 @@ public class User {
             this.phone = other.phone;
         }
         this.friends = new HashMap<String, friend_status>();
-        this.groups_participant = new HashMap<String, String>();
-        this.groups_manager = new HashMap<String, String>();
+        this.groups = new HashMap<String, Group.user_status>();
     }
 
     private boolean addToFriendList(String friend, friend_status friend_id) {
@@ -111,24 +106,28 @@ public class User {
         return friends.remove(user_name) != null;
     }
 
-    public void addGroupManage(String group_id, String group_name) { //TODO: check if already exist
-        this.groups_manager.put(group_id, group_name);
+    public void addGroupManage(String group_id) {
+        this.groups.put(group_id, Group.user_status.manager);
+    }
+
+    public void addAskGroup(String group_id) {
+        this.groups.put(group_id, Group.user_status.asking);
+    }
+
+    public void addWaitForGroup(String group_id) {
+        this.groups.put(group_id, Group.user_status.waiting);
+    }
+
+    public void addFriendGroup(String group_id) {
+        this.groups.put(group_id, Group.user_status.friend);
     }
 
     /**
      * @param group_id
-     * @return the name of the group it deleted
+     * @return the name of the group to deleted
      */
-    public String removeGroupManage(String group_id) {
-        return groups_manager.remove(group_id);
-    }
-
-    public void addGroupParticipant(String group_id, String group_name) { //TODO: check if already exist
-        this.groups_participant.put(group_id, group_name);
-    }
-
-    public String removeGroupParticipant(String group_id) {
-        return groups_participant.remove(group_id);
+    public boolean removeGroup(String group_id) {
+        return groups.remove(group_id) != null;
     }
 
     public String getUserName() {
@@ -142,7 +141,7 @@ public class User {
     public List<String> getAllConnectedFriends() {
         List<String> real_friends = new ArrayList<>();
         this.friends.forEach((s, s2) -> {
-                real_friends.add(s);
+            real_friends.add(s);
         });
 
         return real_friends;
@@ -222,12 +221,60 @@ public class User {
         this.profile = profile;
     }
 
-    public Map<String, String> getGroupsParticipant() {
-        return groups_participant;
+    public Map<String, Group.user_status> getGroupsParticipant() {
+        return groups;
     }
 
-    public Map<String, String> getGroupsManager() {
-        return groups_manager;
+    public List<String> getGroupsParticipantList() {
+        List<String> groups_with_status = new ArrayList<>();
+        groups.forEach((s, s2) -> {
+            groups_with_status.add(s);
+        });
+        return groups_with_status;
+    }
+
+    public List<String> getAskingGroups() {
+        List<String> groups_with_status = new ArrayList<>();
+        groups.forEach((s, s2) -> {
+            if (s2 == Group.user_status.asking) {
+                groups_with_status.add(s);
+            }
+        });
+
+        return groups_with_status;
+    }
+
+    public List<String> getFriendsGroups() {
+        List<String> groups_with_status = new ArrayList<>();
+        groups.forEach((s, s2) -> {
+            if (s2 == Group.user_status.friend) {
+                groups_with_status.add(s);
+            }
+        });
+
+        return groups_with_status;
+    }
+
+    public List<String> getWaitingGroups() {
+        List<String> groups_with_status = new ArrayList<>();
+        groups.forEach((s, s2) -> {
+            if (s2 == Group.user_status.waiting) {
+                groups_with_status.add(s);
+            }
+        });
+
+        return groups_with_status;
+    }
+
+    public List<String> getManageGroups() {
+        List<String> groups_with_status = new ArrayList<>();
+        groups.forEach((s, s2) -> {
+            if (s2 == Group.user_status.manager) {
+                groups_with_status.add(s);
+            }
+        });
+
+        return groups_with_status;
     }
 
 }

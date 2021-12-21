@@ -44,7 +44,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.txt_name.setText(groups.get(position).getGroupName());
-        holder.txt_id.setText(groups.get(position).getGroup_id());
+        holder.txt_id.setText(groups.get(position).getGroupId());
         holder.card_root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

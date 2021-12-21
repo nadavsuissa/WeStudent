@@ -30,7 +30,7 @@ import com.project.westudentmain.classes.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+// TODO: clean up CustomOkListener to 1 OK only many fails is OK
 public class FireBaseData {
     private static final DatabaseReference database_reference = FirebaseDatabase.getInstance().getReference();
     private final static FireBaseData INSTANCE = new FireBaseData();
@@ -293,7 +293,7 @@ public class FireBaseData {
 
 
         String id = database_reference.child(group.getClass().getSimpleName()).push().getKey(); //TODO: check if the same as user ID
-        group.setGroup_id(id);
+        group.setGroupId(id);
 
         assert id != null;
         database_reference.child(group.getClass().getSimpleName()).child(id).setValue(group).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -347,7 +347,7 @@ public class FireBaseData {
             @Override
             public void onDataChange(@NonNull Object data) {
                 User user_data = (User) data;
-                if (user_data.getGroupsManager().containsKey(group_id)) {
+                if (user_data.getManageGroups().contains(group_id)) {
                     database_reference.child("User").child(user.getUid()).child("groupsManager").child(group_id).getRef().removeValue();
                     database_reference.child("Group").child(group_id).getRef().removeValue();
                     if (listener != null)
