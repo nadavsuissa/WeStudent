@@ -399,5 +399,64 @@ public class FireBaseGroup {
         return true;
     }
 
+    //TODO: check if work
+    public boolean askUserByManagerGroup(String group_id, String user_name, CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+        if (user_name == null)
+            return false;
+
+        //get id of user
+        FireBaseData.getIdByUserName(user_name, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                String user_id = (String) data;
+
+                getGroupData(group_id, new CustomDataListener() {
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        Group group = (Group) data;
+                        //check if user not connected and main user is manager
+                        if (group.isOnManagerList(firebaseUser.getUid()) && group.isConnectedToHim(user_id)) {
+                            //add waiting in group
+                            database_reference.child(Group.class.getSimpleName()).child(group_id).child("users").child(user_id).setValue(Group.user_status.waiting).addOnCompleteListener(
+                                    task -> {
+                                        if (task.isSuccessful()) {
+                                            //add waiting in user
+                                            database_reference.child(User.class.getSimpleName()).child(user_id).child("groups").child(group_id).setValue(Group.user_status.waiting).addOnCompleteListener(
+                                                    task1 -> {
+                                                        if (task.isSuccessful()) {
+                                                            listener.onComplete("added user to the group waiting list successfully", true);
+                                                        } else {
+                                                            listener.onComplete("failed adding user to the group waiting list in user", false);
+                                                        }
+                                                    }
+                                            );
+
+                                        } else {
+                                            listener.onComplete("failed adding user to the group waiting list in group", false);
+                                        }
+                                    });
+                        } else {
+                            listener.onComplete("user already connected or main user is not manager", false);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onComplete("there is no group", false);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onComplete("there is no user", false);
+            }
+        });
+
+        return true;
+    }
 
 }
