@@ -21,8 +21,9 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profilepicview"
+        android:src="@drawable/default_icon"
         android:layout_width="179dp"
         android:layout_height="165dp"
         android:contentDescription="@string/profile_picture"

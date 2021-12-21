@@ -140,7 +140,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
             super(itemView);
             txt_name = itemView.findViewById(R.id.groupname);
             card_root = itemView.findViewById(R.id.group_card_view);
-            txt_id = itemView.findViewById(R.id.groupid);
+            txt_id = itemView.findViewById(R.id.group_manager);
             image = itemView.findViewById(R.id.group_logo);
         }
     }
