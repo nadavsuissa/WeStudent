@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
 import com.project.westudentmain.Validation;
-
 import com.project.westudentmain.util.FireBaseLogin;
 
 public class Login extends AppCompatActivity {

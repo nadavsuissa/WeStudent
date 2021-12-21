@@ -26,11 +26,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.User;
+import com.project.westudentmain.classes.UserData;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+// TODO: clean up CustomOkListener to 1 OK only many fails is OK
 public class FireBaseData {
     private static final DatabaseReference database_reference = FirebaseDatabase.getInstance().getReference();
     private final static FireBaseData INSTANCE = new FireBaseData();
@@ -119,7 +120,6 @@ public class FireBaseData {
     public boolean updateUser(@NonNull User user, CustomOkListener listener) {
         if (!FireBaseLogin.userIsLoggedIn())
             return false;
-
         database_reference.child(User.class.getSimpleName()).child(FireBaseLogin.getUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -165,7 +165,11 @@ public class FireBaseData {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //TODO: need checking
-                event_listener.onDataChange(Objects.requireNonNull(snapshot.getValue(object)));
+                Object tmp = snapshot.getValue(object);
+                if (tmp !=null)
+                    event_listener.onDataChange(tmp);
+                else
+                    event_listener.onCancelled("no object in database");
             }
 
             @Override
@@ -293,7 +297,7 @@ public class FireBaseData {
 
 
         String id = database_reference.child(group.getClass().getSimpleName()).push().getKey(); //TODO: check if the same as user ID
-        group.setGroup_id(id);
+        group.setGroupId(id);
 
         assert id != null;
         database_reference.child(group.getClass().getSimpleName()).child(id).setValue(group).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -347,7 +351,7 @@ public class FireBaseData {
             @Override
             public void onDataChange(@NonNull Object data) {
                 User user_data = (User) data;
-                if (user_data.getGroupsManager().containsKey(group_id)) {
+                if (user_data.ManageGroupsList().contains(group_id)) {
                     database_reference.child("User").child(user.getUid()).child("groupsManager").child(group_id).getRef().removeValue();
                     database_reference.child("Group").child(group_id).getRef().removeValue();
                     if (listener != null)

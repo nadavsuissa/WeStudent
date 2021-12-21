@@ -56,6 +56,8 @@ public class showProfile extends AppCompatActivity {
 
         setSupportActionBar(mToolBar);
 
+
+
         fire_base_data = FireBaseData.getInstance();
         fire_base_data.downloadUserPhoto(this, img_profile, (what, ok) -> {
         });
