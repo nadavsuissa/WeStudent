@@ -22,7 +22,7 @@ public class Group {
     @PropertyName("creationDate")
     private String creation_date;
 
-    enum user_status {
+    public enum user_status {
         asking,  // asked them to accept
         waiting, // waiting for the group to accept
         friend,
@@ -30,7 +30,7 @@ public class Group {
     }
 
     @PropertyName("users")
-    private Map<String, user_status> all_users;
+    private Map<String, user_status> users;
     private final GroupActivityManager group_activity_manager;
 
     public Group(String group_name, String description, int max_capacity, String creation_date) {
@@ -39,7 +39,7 @@ public class Group {
         this.max_capacity = max_capacity;
         this.creation_date = creation_date;
         this.group_activity_manager = new GroupActivityManager();
-        this.all_users = new HashMap<>();
+        this.users = new HashMap<>();
         group_public = true;
     }
 
@@ -49,7 +49,7 @@ public class Group {
         this.max_capacity = 10;
         this.creation_date = "";
         this.group_activity_manager = new GroupActivityManager();
-        this.all_users = new HashMap<>();
+        this.users = new HashMap<>();
         group_public = true;
     }
 
@@ -85,9 +85,13 @@ public class Group {
         this.description = description;
     }
 
+    public void setUsers(Map<String, user_status> users) {
+        this.users = users;
+    }
+
     public List<String> getAllUsers() {
         List<String> all_users = new ArrayList<>();
-        this.all_users.forEach((s, s2) -> {
+        this.users.forEach((s, s2) -> {
             all_users.add(s);
         });
 
@@ -96,7 +100,7 @@ public class Group {
 
     public List<String> getAskingUsers() {
         List<String> all_users = new ArrayList<>();
-        this.all_users.forEach((s, s2) -> {
+        this.users.forEach((s, s2) -> {
             if (s2 == user_status.asking) {
                 all_users.add(s);
             }
@@ -107,7 +111,7 @@ public class Group {
 
     public List<String> getFriendsUsers() {
         List<String> all_users = new ArrayList<>();
-        this.all_users.forEach((s, s2) -> {
+        this.users.forEach((s, s2) -> {
             if (s2 == user_status.friend) {
                 all_users.add(s);
             }
@@ -118,7 +122,7 @@ public class Group {
 
     public List<String> getWaitingUsers() {
         List<String> all_users = new ArrayList<>();
-        this.all_users.forEach((s, s2) -> {
+        this.users.forEach((s, s2) -> {
             if (s2 == user_status.waiting) {
                 all_users.add(s);
             }
@@ -129,7 +133,7 @@ public class Group {
 
     public List<String> getManagerUsers() {
         List<String> all_users = new ArrayList<>();
-        this.all_users.forEach((s, s2) -> {
+        this.users.forEach((s, s2) -> {
             if (s2 == user_status.manager) {
                 all_users.add(s);
             }
@@ -139,23 +143,23 @@ public class Group {
     }
 
     public boolean hasConnection(String friend) {
-        return all_users.containsKey(friend);
+        return users.containsKey(friend);
     }
 
     public boolean isFriend(String user_name) {
-        return all_users.get(user_name) == user_status.friend;
+        return users.get(user_name) == user_status.friend;
     }
 
     public boolean isOnAskedList(String user_name) {
-        return all_users.get(user_name) == user_status.asking;
+        return users.get(user_name) == user_status.asking;
     }
 
     public boolean isOnWaitList(String user_name) {
-        return all_users.get(user_name) == user_status.waiting;
+        return users.get(user_name) == user_status.waiting;
     }
 
     public boolean isOnManagerList(String user_name) {
-        return all_users.get(user_name) == user_status.manager;
+        return users.get(user_name) == user_status.manager;
     }
 
     public int getMaxCapacity() {

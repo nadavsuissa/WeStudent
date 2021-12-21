@@ -25,9 +25,9 @@ public class User {
     }
 
     @PropertyName("friends")
-    private final Map<String, friend_status> friends; // user name | friend_status //  maybe split to a manager
+    private HashMap<String, String> friends; // user name | friend_status //  maybe split to a manager
     @PropertyName("groups")
-    private final Map<String, Group.user_status> groups; // group name | group id // maybe split to a manager
+    private HashMap<String, String> groups; // group name | group id // maybe split to a manager
 
     public User() {
         this.user_name = "user_name";
@@ -37,8 +37,8 @@ public class User {
         this.phone = "phone";
 
         this.profile = new Profile();
-        this.friends = new HashMap<String, friend_status>();
-        this.groups = new HashMap<String, Group.user_status>();
+        this.friends = new HashMap<String, String>();
+        this.groups = new HashMap<String, String>();
         this.profile = new Profile();
     }
 
@@ -49,8 +49,8 @@ public class User {
         this.mail = mail;
         this.phone = phone;
 
-        this.friends = new HashMap<String, friend_status>();
-        this.groups = new HashMap<String, Group.user_status>();
+        this.friends = new HashMap<String, String>();
+        this.groups = new HashMap<String, String>();
         this.profile = new Profile();
     }
 
@@ -62,13 +62,13 @@ public class User {
             this.mail = other.mail;
             this.phone = other.phone;
         }
-        this.friends = new HashMap<String, friend_status>();
-        this.groups = new HashMap<String, Group.user_status>();
+        this.friends = new HashMap<String, String>();
+        this.groups = new HashMap<String, String>();
     }
 
     private boolean addToFriendList(String friend, friend_status friend_id) {
         if (!isFriend(friend)) {
-            friends.put(friend, friend_id);
+            friends.put(friend, friend_id.name());
             return true;
         }
         return false;
@@ -91,15 +91,15 @@ public class User {
     }
 
     public boolean isFriend(String user_name) {
-        return friends.get(user_name) == friend_status.friend;
+        return friends.get(user_name).equals(friend_status.friend.name());
     }
 
     public boolean isOnAskedList(String user_name) {
-        return friends.get(user_name) == friend_status.asked;
+        return friends.get(user_name).equals(friend_status.asked.name());
     }
 
     public boolean isOnWaitList(String user_name) {
-        return friends.get(user_name) == friend_status.waiting;
+        return friends.get(user_name).equals(friend_status.waiting.name());
     }
 
     public boolean removeFriend(String user_name) { // TODO: check if works
@@ -107,19 +107,19 @@ public class User {
     }
 
     public void addGroupManage(String group_id) {
-        this.groups.put(group_id, Group.user_status.manager);
+        this.groups.put(group_id, Group.user_status.manager.name());
     }
 
     public void addAskGroup(String group_id) {
-        this.groups.put(group_id, Group.user_status.asking);
+        this.groups.put(group_id, Group.user_status.asking.name());
     }
 
     public void addWaitForGroup(String group_id) {
-        this.groups.put(group_id, Group.user_status.waiting);
+        this.groups.put(group_id, Group.user_status.waiting.name());
     }
 
     public void addFriendGroup(String group_id) {
-        this.groups.put(group_id, Group.user_status.friend);
+        this.groups.put(group_id, Group.user_status.friend.name());
     }
 
     /**
@@ -138,6 +138,10 @@ public class User {
         this.user_name = user_name;
     }
 
+    public void setGroups(HashMap<String,String> groups) {
+        this.groups = groups;
+    }
+
     public List<String> getAllConnectedFriends() {
         List<String> real_friends = new ArrayList<>();
         this.friends.forEach((s, s2) -> {
@@ -150,7 +154,7 @@ public class User {
     public List<String> getFriends() {
         List<String> real_friends = new ArrayList<>();
         this.friends.forEach((s, s2) -> {
-            if (s2 == friend_status.friend) {
+            if (s2.equals(friend_status.friend.name())) {
                 real_friends.add(s);
             }
         });
@@ -161,7 +165,7 @@ public class User {
     public List<String> getAskedFriends() {
         List<String> wait_friends = new ArrayList<>();
         this.friends.forEach((s, s2) -> {
-            if (s2 == friend_status.asked) {
+            if (s2.equals(friend_status.asked.name())) {
                 wait_friends.add(s);
             }
         });
@@ -172,7 +176,7 @@ public class User {
     public List<String> getWaitingFriends() {
         List<String> wait_friends = new ArrayList<>();
         this.friends.forEach((s, s2) -> {
-            if (s2 == friend_status.waiting) {
+            if (s2.equals(friend_status.waiting.name())) {
                 wait_friends.add(s);
             }
         });
@@ -221,11 +225,11 @@ public class User {
         this.profile = profile;
     }
 
-    public Map<String, Group.user_status> getGroupsParticipant() {
+    public Map<String, String> getGroups() {
         return groups;
     }
 
-    public List<String> getGroupsParticipantList() {
+    public List<String> getParticipantGroupsList() {
         List<String> groups_with_status = new ArrayList<>();
         groups.forEach((s, s2) -> {
             groups_with_status.add(s);
@@ -236,7 +240,7 @@ public class User {
     public List<String> getAskingGroups() {
         List<String> groups_with_status = new ArrayList<>();
         groups.forEach((s, s2) -> {
-            if (s2 == Group.user_status.asking) {
+            if (s2.equals(Group.user_status.asking.name())) {
                 groups_with_status.add(s);
             }
         });
@@ -247,7 +251,7 @@ public class User {
     public List<String> getFriendsGroups() {
         List<String> groups_with_status = new ArrayList<>();
         groups.forEach((s, s2) -> {
-            if (s2 == Group.user_status.friend) {
+            if (s2.equals(Group.user_status.friend.name())) {
                 groups_with_status.add(s);
             }
         });
@@ -258,7 +262,7 @@ public class User {
     public List<String> getWaitingGroups() {
         List<String> groups_with_status = new ArrayList<>();
         groups.forEach((s, s2) -> {
-            if (s2 == Group.user_status.waiting) {
+            if (s2.equals(Group.user_status.waiting.name())) {
                 groups_with_status.add(s);
             }
         });
@@ -269,7 +273,7 @@ public class User {
     public List<String> getManageGroups() {
         List<String> groups_with_status = new ArrayList<>();
         groups.forEach((s, s2) -> {
-            if (s2 == Group.user_status.manager) {
+            if (s2.equals(Group.user_status.manager.name())) {
                 groups_with_status.add(s);
             }
         });

@@ -15,13 +15,15 @@ import com.project.westudentmain.classes.User;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 
 public class FireBaseGroup {
     private static final DatabaseReference database_reference = FirebaseDatabase.getInstance().getReference();
     private final static FireBaseGroup INSTANCE = new FireBaseGroup();
 
-    private FireBaseGroup() {}
+    private FireBaseGroup() {
+    }
 
     /**
      * singleton
@@ -38,7 +40,7 @@ public class FireBaseGroup {
      *
      * @param group
      * @param listener if you want to know about completion pass listener else pass null
-     * @return  if can even do it(user is logged in)
+     * @return if can even do it(user is logged in)
      */
     public boolean pushNewGroup(Group group, CustomOkListener listener) {
         FirebaseUser firebaseUser = FireBaseLogin.getUser();
@@ -66,9 +68,15 @@ public class FireBaseGroup {
                         database_reference.child(User.class.getSimpleName()).child(firebaseUser.getUid()).child("groups").child(key).setValue("manager").addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    listener.onComplete("group added successfully",true);
-                                }else
+                                if (task.isSuccessful()) {
+                                    database_reference.child(Group.class.getSimpleName()).child(key).child("users").child(firebaseUser.getUid()).setValue(Group.user_status.manager).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            listener.onComplete("group added successfully", true);
+
+                                        }
+                                    });
+                                } else
                                     listener.onComplete("group upload failed in adding to user", false);
                             }
                         });
@@ -81,18 +89,103 @@ public class FireBaseGroup {
         return true;
     }
 
+    public boolean removeGroup(String group_id, CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+
+
+        // get data from group
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                Group group = (Group) data;
+                // check if manager
+                if (group.isOnManagerList(firebaseUser.getUid())) {
+                    List<String> user_list = group.getAllUsers();
+
+                    //reduce the OK in the listener
+                    CustomOkListener super_listener = new CustomOkListener() {
+                        boolean groups_done = false;
+                        boolean users_done = false;
+
+                        @Override
+                        public void onComplete(@NonNull String what, Boolean ok) {
+                            if (ok) {
+                                if (what.contains("users groups data deleted")) {
+                                    users_done = true;
+                                }
+                                if (what.contains("group data deleted")) {
+                                    groups_done = true;
+                                }
+                                if (groups_done && users_done) {
+                                    listener.onComplete("group removed", true);
+                                }
+                            } else {
+                                listener.onComplete(what, false);
+                            }
+                        }
+                    };
+
+                    // go and remove from all users in the list
+                    user_list.forEach(s -> {
+                        database_reference.child(User.class.getSimpleName()).child(s).child("groups").child(group_id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            int count = 0;
+
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    count++;
+                                    if (count == user_list.size()) {
+                                        super_listener.onComplete("users groups data deleted", true);
+                                    }
+                                } else {
+                                    super_listener.onComplete("users groups data failed to delete", false);
+                                }
+                            }
+                        });
+                    });
+
+                    // remove group
+                    database_reference.child(Group.class.getSimpleName()).child(group_id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                super_listener.onComplete("group data deleted", true);
+                            } else {
+                                super_listener.onComplete("group data failed to delete", false);
+
+                            }
+                        }
+                    });
+                } else {
+                    listener.onComplete("user is not manager", false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onComplete(error, false);
+            }
+        });
+
+
+        return true;
+    }
+
+
+
     /**
-     * gets global data
+     * gets group data
      *
-     * @param object         the object to be getting
+     * @param group_id       the group id to be getting
      * @param event_listener the listener for the data or error
      */
-    public void getGlobalData(@NonNull final Class<?> object, CustomDataListener event_listener) {
-        database_reference.child(object.getSimpleName()).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void getGroupData(@NonNull String group_id, CustomDataListener event_listener) {
+        database_reference.child(Group.class.getSimpleName()).child(group_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //TODO: need checking
-                event_listener.onDataChange(Objects.requireNonNull(snapshot.getValue(object)));
+                event_listener.onDataChange(Objects.requireNonNull(snapshot.getValue(Group.class)));
             }
 
             @Override

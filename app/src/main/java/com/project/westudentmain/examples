@@ -97,3 +97,18 @@
     fireBaseGroup.pushNewGroup(g,(what, ok) -> {
         Toast.makeText(this, what + ok, Toast.LENGTH_SHORT).show();
     });
+
+// get group
+        FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
+        fireBaseGroup.getGroupData("-MrSXPoPggk_muRj63Hf", new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                Toast.makeText(getBaseContext(), ((Group)data).getGroupName(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                Toast.makeText(getBaseContext(), error, Toast.LENGTH_SHORT).show();
+            }
+        });

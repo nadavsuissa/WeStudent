@@ -8,12 +8,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.project.westudentmain.Validation;
 
+import com.project.westudentmain.classes.testing;
 import com.project.westudentmain.util.FireBaseLogin;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Login extends AppCompatActivity {
     private EditText user_name, pass_word;
@@ -25,6 +36,34 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         connect_items_by_id();
+
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        testing t = new testing();
+//        t.add("qwertyuiop","123456789");
+//        t.add("121","123456789");
+//        database.getReference().child("qwerty").setValue(t).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//
+//            }
+//        });
+
+//        database.getReference().child("qwerty").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                testing t = snapshot.getValue(testing.class);
+//                if (snapshot == null){
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
         btn_login.setOnClickListener(var -> {
             String email = user_name.getText().toString().trim();
