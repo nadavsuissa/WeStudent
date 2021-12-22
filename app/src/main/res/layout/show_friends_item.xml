@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,37 +15,64 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile"
-            android:src="@drawable/default_icon"
             android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:src="@drawable/default_icon" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="172dp"
             android:layout_height="92dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/Username_adapter"
+                android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/rectangle_border"
-                android:text="Username"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp" />
+                android:text="name:"
+                android:textColor="#5E5E5E"
+                android:textSize="13dp" />
 
             <TextView
                 android:id="@+id/Name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/rectangle_border"
                 android:text="Name"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp" />
 
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="user name:"
+                android:textColor="#5E5E5E"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/Username_adapter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonAddAskAcceptRemove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 

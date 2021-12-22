@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,16 +43,20 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        String name = holder.txt_name.getText() + users.get(position).getName() + " " + users.get(position).getLastName();
+        // set text
+        String name = users.get(position).getName() + " " + users.get(position).getLastName();
         holder.txt_name.setText(name);
-        String username = holder.txt_username.getText() + users.get(position).getUserName();
+
+        String username = users.get(position).getUserName();
         holder.txt_username.setText(username);
 
-        fire_base_data.getIdByUserName(users.get(position).getUserName(), new CustomDataListener() {
+        // set picture
+        FireBaseData.getIdByUserName(users.get(position).getUserName(), new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
                 String user_id = (String) data;
-                fire_base_data.downloadFriendPhoto(context, holder.image, user_id, (what, ok) -> {});
+                fire_base_data.downloadFriendPhoto(context, holder.image, user_id, (what, ok) -> {
+                });
             }
 
             @Override
@@ -59,6 +64,96 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
             }
         });
+
+        // setup the button
+        FireBaseData.getUser(new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                User main_user = (User) data;
+                //FIXME: recursive calling in setOnClickListener
+
+                if (!main_user.hasConnection(users.get(position).getUserName())) {
+                    holder.button_friend_action.setText("add");
+                    holder.button_friend_action.setOnClickListener(view -> {
+                        FireBaseData.getInstance().askToBeFriend(users.get(position).getUserName(), (what, ok) -> {
+                            //TODO: ask if it ok in pop up massage
+                            if (ok) {
+                                Toast.makeText(context, "friend added", Toast.LENGTH_SHORT).show();
+                                holder.button_friend_action.setText("waiting");
+                                //TODO:set click to ask
+//                                    holder.button_friend_action.setOnClickListener(view2 -> {
+//
+//                                    });
+                            } else {
+                                Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    });
+                }else if (main_user.isFriend(users.get(position).getUserName())){
+                    holder.button_friend_action.setText("remove");
+                    holder.button_friend_action.setOnClickListener(view -> {
+                        FireBaseData.getInstance().removeFriend(users.get(position).getUserName(), (what, ok) -> {
+                            //TODO: ask if it ok in pop up massage
+                            if (ok) {
+                                Toast.makeText(context, "friend removed", Toast.LENGTH_SHORT).show();
+                                holder.button_friend_action.setText("add");
+                                //TODO:set click to ask
+//                                    holder.button_friend_action.setOnClickListener(view2 -> {
+//
+//                                    });
+
+                            } else {
+                                Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    });
+                }else if (main_user.isOnAskedList(users.get(position).getUserName())){
+                    holder.button_friend_action.setText("waiting");
+                    holder.button_friend_action.setOnClickListener(view -> {
+                        FireBaseData.getInstance().removeFriend(users.get(position).getUserName(), (what, ok) -> {
+                            //TODO: ask if it ok in pop up massage
+                            if (ok) {
+                                Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                                holder.button_friend_action.setText("add");
+                                //TODO:set click to ask
+//                                    holder.button_friend_action.setOnClickListener(view2 -> {
+//
+//                                    });
+
+                            } else {
+                                Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    });
+                }else if (main_user.isOnWaitList(users.get(position).getUserName())){
+                    holder.button_friend_action.setText("accept");
+                    holder.button_friend_action.setOnClickListener(view -> {
+                        FireBaseData.getInstance().acceptFriendRequest(users.get(position).getUserName(), (what, ok) -> {
+                            //TODO: ask if it ok in pop up massage
+                            if (ok) {
+                                Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                                holder.button_friend_action.setText("remove");
+                                //TODO:set click to ask
+//                                    holder.button_friend_action.setOnClickListener(view2 -> {
+//
+//                                    });
+                            } else {
+                                Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    });
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+
+            }
+        });
+
 
         holder.card_root.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +182,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                     public void onClick(DialogInterface dialog, int which) {
 
                         if (which == 0) {
-                            fire_base_data.askToBeFriend(friend_username,(what, ok) -> {
+                            fire_base_data.askToBeFriend(friend_username, (what, ok) -> {
                                 Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
                             });
                             // Toast.makeText(context, "add friend", Toast.LENGTH_SHORT).show();
@@ -114,7 +209,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 //                            });
                         }
                         if (which == 1) {
-                            fire_base_data.removeFriend(friend_username,(what, ok) -> {
+                            fire_base_data.removeFriend(friend_username, (what, ok) -> {
                                 Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
                             });
 //                            fire_base_data.getUser(new CustomDataListener() {
@@ -161,15 +256,19 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder { // this class holds all item inside the RecyclerView
-        private TextView txt_name, txt_username;
         private CardView card_root;
+        private TextView txt_name, txt_username;
         private ImageView image;
+        private Button button_friend_action;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txt_name = itemView.findViewById(R.id.Name);
             card_root = itemView.findViewById(R.id.card_root);
+
+            txt_name = itemView.findViewById(R.id.Name);
             txt_username = itemView.findViewById(R.id.Username_adapter);
+
+            button_friend_action = itemView.findViewById(R.id.buttonAddAskAcceptRemove);
 
             image = itemView.findViewById(R.id.profile);
         }
