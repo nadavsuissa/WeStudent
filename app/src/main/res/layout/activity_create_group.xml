@@ -169,5 +169,4 @@
         app:layout_constraintTop_toBottomOf="@+id/datetextview"
         app:srcCompat="@drawable/westudentlogo" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
