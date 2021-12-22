@@ -36,71 +36,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
+    <ImageView
+
+        android:id="@+id/imageView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="594dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/westudentlogo" />
+
     <ScrollView
         android:id="@+id/scrollViewSignUp"
-        android:layout_width="396dp"
-        android:layout_height="550dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="407dp"
+        android:layout_height="523dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="118dp"
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friendtextview">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton
-                android:id="@+id/btnaddfriend"
-                android:layout_width="75dp"
-                android:layout_height="65dp"
-                android:layout_marginStart="116dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#0000"
-
-                android:scaleType="fitCenter"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/adduser"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <ImageButton
-                android:id="@+id/btndeletefriend"
-                android:layout_width="75dp"
-                android:layout_height="65dp"
-
-                android:layout_marginEnd="116dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#0000"
-
-                android:scaleType="fitCenter"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/removeuser"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <ImageView
-
-                android:id="@+id/imageView17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="360dp"
-                android:layout_marginEnd="96dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/friendRV"
-                app:srcCompat="@drawable/westudentlogo" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/friendRV"
-                android:layout_width="395dp"
-                android:layout_height="371dp"
-                android:layout_marginStart="4dp"
+                android:layout_width="403dp"
+                android:layout_height="580dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="3dp"
                 android:textAlignment="center"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnaddfriend">
+                app:layout_constraintTop_toTopOf="parent">
 
             </androidx.recyclerview.widget.RecyclerView>
         </androidx.constraintlayout.widget.ConstraintLayout>

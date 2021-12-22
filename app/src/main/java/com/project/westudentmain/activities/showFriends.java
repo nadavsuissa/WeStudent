@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class showFriends extends AppCompatActivity {
     private Toolbar mToolBar;
-    private ImageButton delfriendbtn,addfriendbtn;
+  //  private ImageButton delfriendbtn,addfriendbtn;
 
     private RecyclerView user_friends_rec_view;
     private ArrayList<User> users;
@@ -64,17 +64,17 @@ public class showFriends extends AppCompatActivity {
         });
 
 
-        addfriendbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        addfriendbtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
     private void connect_items_by_id() {
-        addfriendbtn = findViewById(R.id.btnaddfriend);
-        delfriendbtn = findViewById(R.id.btndeletefriend);
+//        addfriendbtn = findViewById(R.id.btnaddfriend);
+//        delfriendbtn = findViewById(R.id.btndeletefriend);
     }
 
     @Override
