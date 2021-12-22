@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.project.westudentmain.activities.showFriends">
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -20,46 +21,68 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friendRV"
-        android:layout_width="410dp"
-        android:layout_height="470dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_width="409dp"
+        android:layout_height="230dp"
+        android:layout_marginTop="16dp"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btndeletefriend" />
+        app:layout_constraintTop_toBottomOf="@+id/btnaddfriend" />
 
     <TextView
         android:id="@+id/friendtextview"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_corner"
         android:gravity="center"
         android:text="@string/your_friends"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
-    <Button
-        android:id="@+id/btnaddfriend"
+    <ImageView
+
+        android:id="@+id/imageView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/add_friend"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friendtextview" />
+        app:srcCompat="@drawable/westudentlogo" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btndeletefriend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_width="179dp"
+        android:layout_height="146dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/delete_friend"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:background="#0000"
+        android:padding="20dp"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friendtextview" />
+        app:layout_constraintTop_toBottomOf="@+id/friendtextview"
+        app:srcCompat="@drawable/removeuser" />
+
+    <ImageButton
+        android:id="@+id/btnaddfriend"
+        android:layout_width="179dp"
+        android:layout_height="146dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:background="#0000"
+        android:padding="20dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friendtextview"
+        app:srcCompat="@drawable/adduser" />
 </androidx.constraintlayout.widget.ConstraintLayout>

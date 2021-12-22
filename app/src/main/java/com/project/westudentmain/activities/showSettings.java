@@ -15,7 +15,7 @@ import com.project.westudentmain.util.FireBaseLogin;
 public class showSettings extends AppCompatActivity {
     private Toolbar mToolBar;
 
-    private Button dissconnectbtn, changepassbtn, editprofilebtn, changepicbtn;
+    private Button btn_dissconnect, btn_delete_user, btn_edit_profile, btn_notifications;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class showSettings extends AppCompatActivity {
         connect_items_by_id();
         mToolBar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolBar);
-        dissconnectbtn.setOnClickListener(var -> {
+        btn_dissconnect.setOnClickListener(var -> {
             FireBaseLogin.signOut();
             finish();
             startActivity(new Intent(showSettings.this, Login.class));
@@ -32,12 +32,10 @@ public class showSettings extends AppCompatActivity {
     }
 
     private void connect_items_by_id() {
-        dissconnectbtn = findViewById(R.id.btndissconect);
-        changepassbtn = findViewById(R.id.btnchangepass);
-        editprofilebtn = findViewById(R.id.btneditprofile);
-        changepicbtn = findViewById(R.id.btnchangeprofpic);
-
-
+        btn_dissconnect = findViewById(R.id.btndissconect);
+        btn_delete_user = findViewById(R.id.btndeleteuser);
+        btn_edit_profile = findViewById(R.id.btneditprofile);
+        btn_notifications = findViewById(R.id.btnnotifications);
     }
 
     @Override
