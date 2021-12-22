@@ -70,7 +70,8 @@
                 android:layout_width="397dp"
                 android:layout_height="466dp"
                 android:layout_marginStart="4dp"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
