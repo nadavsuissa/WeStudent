@@ -218,7 +218,7 @@ public class FireBaseData {
      * @param listener the listener for the data or error
      * @return true if can do it
      */
-    public boolean getUser(CustomDataListener listener) {
+    public static boolean getUser(CustomDataListener listener) {
         if (!FireBaseLogin.userIsLoggedIn())
             return false;
 

@@ -221,4 +221,7 @@ public class User extends UserData {
         return groups_with_status;
     }
 
+    public String friendStatus(String user_name) {
+        return friends.get(user_name);
+    }
 }
