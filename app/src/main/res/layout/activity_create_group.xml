@@ -72,19 +72,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groupdestextview" />
 
-    <TextView
-        android:id="@+id/datetextview"
-
-        android:layout_width="160dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
-        android:background="@drawable/rounded_corner"
-        android:gravity="center"
-        android:text="@string/date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/maxcapacitytextview" />
-
     <EditText
         android:id="@+id/groupnameinput"
 
@@ -133,40 +120,24 @@
         app:layout_constraintTop_toBottomOf="@+id/groupdescription"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <EditText
-        android:id="@+id/date"
-        android:layout_width="160dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_corner"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Enter Date..."
-        android:inputType="date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/maxcapacity"
-        tools:ignore="SpeakableTextPresentCheck" />
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="104dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maxcapacitytextview"
+        app:srcCompat="@drawable/westudentlogo" />
 
     <Button
         android:id="@+id/creategroupbtn"
         android:layout_width="380dp"
         android:layout_height="70dp"
-        android:layout_marginTop="8dp"
         android:text="@string/create"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.612"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
-
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="104dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/datetextview"
-        app:srcCompat="@drawable/westudentlogo" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

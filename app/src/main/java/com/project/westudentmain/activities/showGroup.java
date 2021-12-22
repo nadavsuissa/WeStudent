@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 public class showGroup extends AppCompatActivity {
     private Toolbar mToolBar;
+    private ImageButton image_button;
     private RecyclerView groups_rec_view;
     private ArrayList<Group> groups;
     private FireBaseData fire_base_data;
@@ -31,11 +33,16 @@ public class showGroup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_group);
+
         mToolBar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolBar);
 
         groups_rec_view = findViewById(R.id.groupRV);
 
+        image_button = findViewById(R.id.createGroup);
+        image_button.setOnClickListener(view -> {
+            startActivity(new Intent(this, createGroup.class));
+        });
 //        groups = new ArrayList<>();
 //        groups.add(new Group());
 //        groups.add(new Group("user_name2","name2", 3, "mail2"));
@@ -68,7 +75,7 @@ public class showGroup extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.mi_allpostedprojects:
