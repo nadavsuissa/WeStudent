@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,9 @@ public class showProfile extends AppCompatActivity {
 
     private ImageView img_profile;
     private TextView txt_user_name, txt_name, txt_university, txt_department, txt_degree, txt_year, txt_bio;
-    private Button btn_all_groups, btn_my_groups, btn_friends, btn_users, btn_edit_photo;
+    private Button btn_all_groups, btn_my_groups, btn_friends, btn_users;
+
+    private ImageButton  btn_edit_photo;
 
     private final Context context = this;
     private FireBaseData fire_base_data;

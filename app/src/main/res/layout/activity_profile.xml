@@ -23,25 +23,26 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profilepicview"
-        android:src="@drawable/default_icon"
-        android:layout_width="179dp"
-        android:layout_height="165dp"
+        android:layout_width="170dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="120dp"
         android:contentDescription="@string/profile_picture"
+        android:src="@drawable/defaultpotrait"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         tools:ignore="ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
-        android:layout_width="407dp"
-        android:layout_height="249dp"
+        android:layout_width="411dp"
+        android:layout_height="106dp"
         android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonUpdateUserData"
+        app:layout_constraintTop_toBottomOf="@+id/textViewYear"
         tools:ignore="SpeakableTextPresentCheck">
 
         <LinearLayout
@@ -50,10 +51,11 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/Bio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Bio:"
+                android:textColor="@color/colorPrimaryDark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:gravity="start|top"/>
+                android:gravity="start|top" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -71,7 +73,12 @@
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/name"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/profilepicview"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
@@ -79,41 +86,54 @@
         android:id="@+id/textViewUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/user_name"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="@+id/textViewName"
         app:layout_constraintTop_toBottomOf="@+id/textViewName" />
-
-    <TextView
-        android:id="@+id/textViewYear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Year: "
-        app:layout_constraintStart_toStartOf="@+id/textViewDegree"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDegree" />
-
-    <TextView
-        android:id="@+id/textViewUniversity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="University: "
-        app:layout_constraintStart_toStartOf="@+id/textViewUserName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
 
     <TextView
         android:id="@+id/textViewDepartment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Department: "
-        app:layout_constraintStart_toEndOf="@+id/profilepicview"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewUniversity" />
+
+    <TextView
+        android:id="@+id/textViewUniversity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="University: "
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilepicview" />
 
     <TextView
         android:id="@+id/textViewDegree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Degree: "
-        app:layout_constraintStart_toStartOf="@+id/textViewDepartment"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDepartment" />
+
+    <TextView
+        android:id="@+id/textViewYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Year: "
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDegree" />
 
     <Button
         android:id="@+id/buttonAllGroup"
@@ -160,14 +180,27 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonMyGroup"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonUpdateUserData"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_width="53dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/camara2"
         android:padding="1dip"
-        android:text="update user data"
-        android:textSize="10sp"
-        app:layout_constraintStart_toStartOf="@+id/profilepicview"
-        app:layout_constraintTop_toBottomOf="@+id/profilepicview" />
+        app:layout_constraintCircleRadius="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.31"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="190dp"
+        android:layout_height="109dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonUsers"
+        app:srcCompat="@drawable/westudentlogo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
