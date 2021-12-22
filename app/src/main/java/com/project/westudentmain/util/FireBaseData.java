@@ -29,8 +29,8 @@ import com.project.westudentmain.classes.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+// TODO: clean up CustomOkListener to 1 OK only many fails is OK
 public class FireBaseData {
     private static final DatabaseReference database_reference = FirebaseDatabase.getInstance().getReference();
     private final static FireBaseData INSTANCE = new FireBaseData();
@@ -56,6 +56,40 @@ public class FireBaseData {
         if (!FireBaseLogin.userIsLoggedIn())
             return null;
         return FireBaseLogin.getUser().getEmail();
+    }
+
+    /**
+     * get the email of the user by user name
+     *
+     * @param user_name
+     * @param listener pass the mail
+     */
+    public static void getEmailByUserName(String user_name, CustomDataListener listener) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query applesQuery = ref.child(User.class.getSimpleName()).orderByChild("userName").equalTo(user_name);
+
+        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String mail = null;
+                for (DataSnapshot appleSnapshot : snapshot.getChildren()) {
+                    mail = appleSnapshot.getValue(User.class).getMail();
+                    if (mail != null) {
+                        listener.onDataChange(mail);
+                        break;
+                    }
+                }
+                if (mail == null){
+                    listener.onCancelled("user not found");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onCancelled(error.getMessage());
+            }
+        });
+
     }
 
     /**
@@ -119,7 +153,6 @@ public class FireBaseData {
     public boolean updateUser(@NonNull User user, CustomOkListener listener) {
         if (!FireBaseLogin.userIsLoggedIn())
             return false;
-
         database_reference.child(User.class.getSimpleName()).child(FireBaseLogin.getUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -165,7 +198,11 @@ public class FireBaseData {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //TODO: need checking
-                event_listener.onDataChange(Objects.requireNonNull(snapshot.getValue(object)));
+                Object tmp = snapshot.getValue(object);
+                if (tmp != null)
+                    event_listener.onDataChange(tmp);
+                else
+                    event_listener.onCancelled("no object in database");
             }
 
             @Override
@@ -293,7 +330,7 @@ public class FireBaseData {
 
 
         String id = database_reference.child(group.getClass().getSimpleName()).push().getKey(); //TODO: check if the same as user ID
-        group.setGroup_id(id);
+        group.setGroupId(id);
 
         assert id != null;
         database_reference.child(group.getClass().getSimpleName()).child(id).setValue(group).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -347,7 +384,7 @@ public class FireBaseData {
             @Override
             public void onDataChange(@NonNull Object data) {
                 User user_data = (User) data;
-                if (user_data.getGroupsManager().containsKey(group_id)) {
+                if (user_data.ManageGroupsList().contains(group_id)) {
                     database_reference.child("User").child(user.getUid()).child("groupsManager").child(group_id).getRef().removeValue();
                     database_reference.child("Group").child(group_id).getRef().removeValue();
                     if (listener != null)
@@ -440,7 +477,8 @@ public class FireBaseData {
         return true;
     }
 
-    /**TODO: switch to user name
+    /**
+     * TODO: switch to user name
      * function to download the photo of friend to ImageView
      *
      * @param context     the context of the screen

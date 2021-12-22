@@ -44,7 +44,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.txt_name.setText(groups.get(position).getGroupName());
-        holder.txt_id.setText(groups.get(position).getGroup_id());
+        holder.txt_id.setText(groups.get(position).getGroupId());
         holder.card_root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +140,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
             super(itemView);
             txt_name = itemView.findViewById(R.id.groupname);
             card_root = itemView.findViewById(R.id.group_card_view);
-            txt_id = itemView.findViewById(R.id.groupid);
+            txt_id = itemView.findViewById(R.id.group_manager);
             image = itemView.findViewById(R.id.group_logo);
         }
     }

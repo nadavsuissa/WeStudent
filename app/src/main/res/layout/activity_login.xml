@@ -17,7 +17,7 @@
         android:background="@drawable/rounded_corner"
         android:ems="10"
         android:gravity="center"
-        android:hint="@string/email"
+        android:hint="Email/User name"
         android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"

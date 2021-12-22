@@ -12,8 +12,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile"
+            android:src="@drawable/default_icon"
             android:layout_width="100dp"
             android:layout_height="100dp" />
 

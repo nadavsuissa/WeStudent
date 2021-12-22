@@ -48,7 +48,7 @@ public class createGroup extends AppCompatActivity {
             group.setMaxCapacity(maxcapacity);
             group.setDescription(description);
             // Need To Wrap With Checks
-            myRef.child("Groups").child(group.getGroup_id()).setValue(group);
+            myRef.child("Groups").child(group.getGroupId()).setValue(group);
             Toast.makeText(createGroup.this, "Data saved!", Toast.LENGTH_SHORT).show();
 
 
