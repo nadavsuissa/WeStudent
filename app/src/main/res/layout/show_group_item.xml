@@ -3,50 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/group_card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="65dp"
     android:layout_margin="10dp"
-    app:cardBackgroundColor="#23F0C7">
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp"
+        android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/group_logo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
             android:src="@drawable/default_icon" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="86dp"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:orientation="vertical">
 
             <TextView
-                android:background="@drawable/rectangle_border"
-                android:id="@+id/groupname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/group_name"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp" />
-
-
-            <TextView
-                android:background="@drawable/rectangle_border"
                 android:id="@+id/groupCreatorName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="group Creator Name"
+                android:text="Username"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/groupname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Name"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
+
 
         </LinearLayout>
 
+
     </LinearLayout>
+
 
 </androidx.cardview.widget.CardView>
