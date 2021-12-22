@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">#ff000f</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Theme.AndroidProject.NoActionBar">
@@ -13,7 +13,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
     <style name="Theme.AndroidProject.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.AndroidProject.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

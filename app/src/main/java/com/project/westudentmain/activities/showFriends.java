@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +24,8 @@ import java.util.ArrayList;
 
 public class showFriends extends AppCompatActivity {
     private Toolbar mToolBar;
-    private Button addfriendbtn, delfriendbtn;
+    private ImageButton delfriendbtn,addfriendbtn;
+
     private RecyclerView user_friends_rec_view;
     private ArrayList<User> users;
     private FireBaseData fire_base_data;

@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -19,124 +22,239 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <EditText
+        android:id="@+id/editTextTextPersonName4"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/enter_a_bio"
+        android:background="@drawable/rounded_corner"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        tools:ignore="TouchTargetSizeCheck" />
 
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corner"
+        android:gravity="center"
+        android:text="@string/bio"
+
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
     <TextView
         android:id="@+id/textViewProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
         android:gravity="center_horizontal"
-        android:text="@string/create_profile"
+        android:text="@string/edit_profile"
+        android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toTopOf="@+id/TextViewName"
-        tools:layout_editor_absoluteX="0dp"
-        android:textAlignment="center"/>
+        android:textSize="34sp"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        tools:layout_editor_absoluteX="0dp" />
+
 
     <TextView
+        android:background="@drawable/rounded_corner"
+
         android:id="@+id/TextViewName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
         android:text="@string/name"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toTopOf="@+id/EditTextName"
-        tools:layout_editor_absoluteX="0dp"
-        android:textAlignment="center"/>
-
-    <EditText
-        android:id="@+id/EditTextName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:ems="10"
-        android:hint="@string/enter_your_name"
-        android:inputType="textPersonName|textCapSentences"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/TextViewSurName"
-        tools:ignore="TextContrastCheck"
-        tools:layout_editor_absoluteX="16dp"
-        android:importantForAutofill="no"
-        android:textAlignment="center"/>
-
-    <TextView
-        android:id="@+id/TextViewSurName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/surname"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toTopOf="@+id/EditTextSurname"
-        tools:layout_editor_absoluteX="0dp"
-        android:textAlignment="center"/>
-
-    <EditText
-        android:id="@+id/EditTextSurname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/enter_your_surname"
-        android:inputType="textPersonName|textCapSentences"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/TextViewPhoneNo"
-        tools:ignore="TextContrastCheck"
-        tools:layout_editor_absoluteX="0dp"
-        android:importantForAutofill="no" />
-
-    <TextView
-        android:id="@+id/TextViewPhoneNo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/phone_number"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toTopOf="@+id/EditTextPhoneNo"
-        tools:layout_editor_absoluteX="0dp"
-        android:textAlignment="center"/>
-
-    <EditText
-        android:id="@+id/EditTextPhoneNo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:hint="@string/enter_your_phone_number"
-        android:inputType="number"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/TextViewEmail"
-
-        tools:ignore="TextFields,TextContrastCheck"
-        tools:layout_editor_absoluteX="0dp"
-        android:importantForAutofill="no" />
-
-    <TextView
-        android:id="@+id/TextViewEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/email"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toTopOf="@+id/textViewEmailAddress"
-        tools:layout_editor_absoluteX="16dp"
-        android:textAlignment="center"/>
-
-    <TextView
-        android:id="@+id/textViewEmailAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
-        android:text="@string/email_address"
+        android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnSaveButton"
-        tools:layout_editor_absoluteX="0dp"
-        android:textAlignment="center"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <EditText
+        android:background="@drawable/rounded_corner"
+
+        android:id="@+id/EditTextName"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/enter_your_name"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName|textCapSentences"
+        android:minHeight="48dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewName"
+        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+    <TextView
+        android:background="@drawable/rounded_corner"
+
+        android:id="@+id/TextViewSurName"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="@string/surname"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditTextName" />
+
+    <EditText
+        android:background="@drawable/rounded_corner"
+
+        android:id="@+id/EditTextSurname"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/enter_your_surname"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName|textCapSentences"
+        android:minHeight="48dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewSurName"
+        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+    <TextView
+        android:background="@drawable/rounded_corner"
+
+        android:id="@+id/TextViewPhoneNo"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="@string/phone_number"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditTextSurname" />
+
+    <EditText
+        android:background="@drawable/rounded_corner"
+
+        android:id="@+id/EditTextPhoneNo"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/enter_your_phone_number"
+
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewPhoneNo"
+        tools:ignore="TextFields,TextContrastCheck,TouchTargetSizeCheck" />
 
     <Button
         android:id="@+id/btnSaveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="@string/ok"
+        android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="32dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4"
+        app:layout_constraintVertical_bias="0.868" />
+
+    <TextView
+        android:background="@drawable/rectangle_border"
+        android:id="@+id/textView3"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/user_name"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewProfile" />
+
+    <TextView
+        android:background="@drawable/rectangle_border"
+        android:id="@+id/textView6"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_corner"
+        android:gravity="center"
+        android:text="@string/address"
+
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditTextPhoneNo" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName3"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/enter_an_address"
+        android:background="@drawable/rounded_corner"
+
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
