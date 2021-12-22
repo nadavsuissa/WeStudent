@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
         <activity
+            android:name="com.project.westudentmain.activities.createProject"
+            android:exported="true" />
+        <activity
             android:name="com.project.westudentmain.activities.createGroup"
             android:exported="true" />
         <activity

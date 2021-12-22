@@ -62,4 +62,5 @@
     <string name="enter_an_address">Enter An Address</string>
     <string name="delete_user">Delete User</string>
     <string name="notifications">Notifications</string>
+    <string name="create_project">Create Project</string>
 </resources>
