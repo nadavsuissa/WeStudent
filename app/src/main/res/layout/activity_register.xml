@@ -305,6 +305,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView16"
                 app:srcCompat="@drawable/calendar" />
 
+            <Space
+                android:layout_width="91dp"
+                android:layout_height="92dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup2"
+                tools:layout_editor_absoluteX="179dp" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
