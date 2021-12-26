@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
         <activity
+            android:name="com.project.westudentmain.activities.showUniversityAccount"
+            android:exported="false" />
+        <activity
             android:name="com.project.westudentmain.activities.createProject"
             android:exported="true" />
         <activity
@@ -63,4 +66,5 @@
                 android:resource="@xml/provider_paths" />
         </provider>
     </application>
+
 </manifest>

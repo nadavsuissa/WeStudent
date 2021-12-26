@@ -58,11 +58,35 @@ public class FireBaseData {
         return FireBaseLogin.getUser().getEmail();
     }
 
+    //TODO: check type of user
+    public static boolean isUniversity(CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+
+        database_reference.child("universityID").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue(Boolean.class) != null) {
+                    listener.onComplete("is university account", true);
+                } else {
+                    listener.onComplete("not university account", false);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onComplete("failed checking if university account", false);
+            }
+        });
+
+        return true;
+    }
+
     /**
      * get the email of the user by user name
      *
      * @param user_name
-     * @param listener pass the mail
+     * @param listener  pass the mail
      */
     public static void getEmailByUserName(String user_name, CustomDataListener listener) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -79,7 +103,7 @@ public class FireBaseData {
                         break;
                     }
                 }
-                if (mail == null){
+                if (mail == null) {
                     listener.onCancelled("user not found");
                 }
             }
