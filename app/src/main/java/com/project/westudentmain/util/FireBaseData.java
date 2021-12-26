@@ -67,7 +67,7 @@ public class FireBaseData {
         database_reference.child("universityID").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue(Boolean.class) != null) {
+                if (snapshot.getValue(String.class) != null) {
                     listener.onComplete("is university account", true);
                 } else {
                     listener.onComplete("not university account", false);
