@@ -1,101 +1,108 @@
 package com.project.westudentmain.classes;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.HashMap;
+import java.util.List;
 
-public class Group {
-    // the id of the group is in firebase
-    private String group_id=randomKey();
-    private String group_name;
-    private String description;
-    private int max_capacity;
-    //zoom/faceToFace:enum
-    private String date;
-
-    private ArrayList<User> users;
-    private final GroupActivityManager group_activity_manager;
-
-    public Group(String group_name, String description, int max_capacity, String date) {
-        this.group_name = group_name;
-        this.description = description;
-        this.max_capacity = max_capacity;
-        this.date = date;
-        this.group_activity_manager = new GroupActivityManager();
-    }
+public class Group extends GroupData {
 
     public Group() {
-        this.group_name = "group_name";
-        this.description = "description";
-        this.max_capacity = 0;
-        this.date = "date";
-        this.group_activity_manager = new GroupActivityManager();
+        super();
     }
 
-    public String getGroup_id() {
-        return group_id;
-    }
-
-    public void setGroup_id(String group_id) {
-        this.group_id = group_id;
-    }
-
-    public String getGroupName() {
-        return group_name;
-    }
-
-    public void setGroupName(String group_name) {
+    public Group(String group_name, String description, int max_capacity, String creation_date) {
         this.group_name = group_name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
-    }
-
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(ArrayList<User> users) {
-        this.users = users;
-    }
-
-    public int getMaxCapacity() {
-        return max_capacity;
-    }
-
-    public void setMaxCapacity(int max_capacity) {
         this.max_capacity = max_capacity;
+        this.creation_date = creation_date;
+        this.group_activity_manager = new GroupActivityManager();
+        this.users = new HashMap<>();
+        group_public = true;
     }
 
-    public String getDate() {
-        return date;
+    public List<String> allUsersList() {
+        List<String> all_users = new ArrayList<>();
+        this.users.forEach((s, s2) -> {
+            all_users.add(s);
+        });
+
+        return all_users;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public List<String> askingUsersList() {
+        List<String> all_users = new ArrayList<>();
+        this.users.forEach((s, s2) -> {
+            if (s2 == user_status.asking) {
+                all_users.add(s);
+            }
+        });
+
+        return all_users;
     }
-    public String randomKey() {
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        Random random = new Random();
 
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
+    public List<String> friendsUsersList() {
+        List<String> all_users = new ArrayList<>();
+        this.users.forEach((s, s2) -> {
+            if (s2 == user_status.friend) {
+                all_users.add(s);
+            }
+        });
 
-        return generatedString;
+        return all_users;
+    }
+
+    public List<String> waitingUsersList() {
+        List<String> all_users = new ArrayList<>();
+        this.users.forEach((s, s2) -> {
+            if (s2 == user_status.waiting) {
+                all_users.add(s);
+            }
+        });
+
+        return all_users;
+    }
+
+    public List<String> managerUsersList() {
+        List<String> all_users = new ArrayList<>();
+        this.users.forEach((s, s2) -> {
+            if (s2 == user_status.manager) {
+                all_users.add(s);
+            }
+        });
+
+        return all_users;
+    }
+
+    public boolean isConnectedToHim(String friend) {
+        return users.containsKey(friend);
+    }
+
+    public boolean isFriend(String user_name) {
+        return users.get(user_name) == user_status.friend;
+    }
+
+    public boolean isOnAskedList(String user_name) {
+        return users.get(user_name) == user_status.asking;
+    }
+
+    public boolean isOnWaitList(String user_name) {
+        return users.get(user_name) == user_status.waiting;
+    }
+
+    public boolean isOnManagerList(String user_name) {
+        return users.get(user_name) == user_status.manager;
+    }
+
+
+    public String date() {
+        return creation_date.toString();
+    }
+
+    public void setDate(String creation_date) {
+        this.creation_date = creation_date;
     }
 
     //TODO: check if it is a pointer
-    public GroupActivityManager getGroupActivityManager() {
-        return group_activity_manager;
-    }
+    //TODO: decide if remove
 
 }

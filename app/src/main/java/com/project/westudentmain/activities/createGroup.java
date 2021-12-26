@@ -15,6 +15,7 @@ import com.example.androidproject.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.project.westudentmain.classes.Group;
+import com.project.westudentmain.util.FireBaseGroup;
 
 public class createGroup extends AppCompatActivity {
     private Toolbar mToolBar;
@@ -39,25 +40,23 @@ public class createGroup extends AppCompatActivity {
             String name = edittext_group_name.getText().toString().trim();
             String description = edittext_group_description.getText().toString().trim();
             int maxcapacity = Integer.parseInt(edittext_group_capacity.getText().toString());
-            String date = edittext_group_date.getText().toString().trim();
 
             Group group = new Group();
 
             group.setGroupName(name);
-            group.setDate(date);
             group.setMaxCapacity(maxcapacity);
             group.setDescription(description);
-            // Need To Wrap With Checks
-            myRef.child("Groups").child(group.getGroup_id()).setValue(group);
-            Toast.makeText(createGroup.this, "Data saved!", Toast.LENGTH_SHORT).show();
 
-
+            FireBaseGroup.getInstance().pushNewGroup(group,(what, ok) -> {
+                Toast.makeText(getBaseContext(),what, Toast.LENGTH_SHORT).show();
+                //TODO: switch to the group itself
+                startActivity(new Intent(this, showProfile.class));
+            });
         });
 
     }
 
     private void connect_items_by_id() {
-        edittext_group_date = findViewById(R.id.date);
         edittext_group_capacity = findViewById(R.id.maxcapacity);
         edittext_group_description = findViewById(R.id.groupdescription);
         edittext_group_name = findViewById(R.id.groupnameinput);

@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,16 +47,20 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        String name = holder.txt_name.getText() + users.get(position).getName() + " " + users.get(position).getLastName();
+        // set text
+        String name = users.get(position).getName() + " " + users.get(position).getLastName();
         holder.txt_name.setText(name);
-        String username = holder.txt_username.getText() + users.get(position).getUserName();
+
+        String username = users.get(position).getUserName();
         holder.txt_username.setText(username);
 
+        // set picture
         FireBaseData.getIdByUserName(users.get(position).getUserName(), new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
                 String user_id = (String) data;
-                fire_base_data.downloadFriendPhoto(context, holder.image, user_id, (what, ok) -> {});
+                fire_base_data.downloadFriendPhoto(context, holder.image, user_id, (what, ok) -> {
+                });
             }
 
             @Override
@@ -63,20 +69,133 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             }
         });
 
-        holder.card_root.setOnLongClickListener(v -> {
-            OnPickUserDialog(users.get(position).getUserName(),holder.card_root);
-            //Toast.makeText(context, users.get(position).getName() + " Selected", Toast.LENGTH_SHORT).show();
-            return true;
+
+        // setup the button
+        FireBaseData.getUser(new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                User main_user = (User) data;
+                User selected_user = users.get(position);
+                showFriendStatus(main_user,selected_user,holder);
+                holder.button_friend_action.setOnClickListener(view ->{
+                    requestAndRemoveFriend(main_user,selected_user,holder);
+                });
+                showFriendStatus(main_user,selected_user,holder);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+
+            }
         });
 
-        // this part is to load an image from the internet using Glide (search Glide dependency) to my ImageView object
-//        Glide.with(context)
-//                .asBitmap()
-//                .load(users.get(position).getImageUrl())
-//                .into(holder.image);
+
+//        holder.card_root.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                OnPickUserDialog(users.get(position).getUserName(), holder.card_root);
+//                //Toast.makeText(context, users.get(position).getName() + " Selected", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
 
     }
 
+    private void showFriendStatus(User main_user, User selected_user, ViewHolder holder) {
+        if (!main_user.hasConnection(selected_user.getUserName())) {
+            holder.button_friend_action.setText("add");
+            holder.button_friend_action.setBackgroundColor(context.getColor(R.color.blue));
+        }else if (main_user.isFriend(selected_user.getUserName())){
+            holder.button_friend_action.setText("remove");
+            holder.button_friend_action.setBackgroundColor(context.getColor(R.color.red));
+        }else if (main_user.isOnAskedList(selected_user.getUserName())) {
+            holder.button_friend_action.setText("waiting");
+            holder.button_friend_action.setBackgroundColor(context.getColor(R.color.yellow));
+        }else if (main_user.isOnWaitList(selected_user.getUserName())) {
+            holder.button_friend_action.setText("accept");
+        }
+    }
+
+    private void requestAndRemoveFriend(User main_user, User selected_user, ViewHolder holder) {
+        if (!main_user.hasConnection(selected_user.getUserName())) {
+            FireBaseData.getInstance().askToBeFriend(selected_user.getUserName(), (what, ok) -> {
+                //TODO: ask if it ok in pop up massage
+                if (ok) {
+                    Toast.makeText(context, "friend request sent", Toast.LENGTH_SHORT).show();
+                    holder.button_friend_action.setText("waiting");
+                    holder.button_friend_action.setBackgroundColor(context.getColor(R.color.yellow));
+//                    if(/*main_user.isFriend(selected_user.getUserName())||*/(!main_user.hasConnection(selected_user.getUserName()))||main_user.isOnAskedList(selected_user.getUserName())){
+//                        Toast.makeText(context, "something goes wrong!000", Toast.LENGTH_SHORT).show();
+//                    }
+                    //TODO:set click to ask
+//                                    holder.button_friend_action.setOnClickListener(view2 -> {
+//
+//                                    });
+                } else {
+                    Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }else if (main_user.isFriend(selected_user.getUserName())){
+            FireBaseData.getInstance().removeFriend(selected_user.getUserName(), (what, ok) -> {
+                //TODO: ask if it ok in pop up massage
+                if (ok) {
+                    //Toast.makeText(context, "friend removed", Toast.LENGTH_SHORT).show();
+                    holder.button_friend_action.setText("add");
+                    holder.button_friend_action.setBackgroundColor(context.getColor(R.color.blue));
+//                    if(main_user.isFriend(selected_user.getUserName())||main_user.isOnWaitList(selected_user.getUserName())||main_user.isOnAskedList(selected_user.getUserName())){
+//                        Toast.makeText(context, "something goes wrong!111", Toast.LENGTH_SHORT).show();
+//                    }
+                    //TODO:set click to ask
+//                                    holder.button_friend_action.setOnClickListener(view2 -> {
+//
+//                                    });
+
+                } else {
+                    Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else if (main_user.isOnAskedList(selected_user.getUserName())){
+            FireBaseData.getInstance().removeFriend(selected_user.getUserName(), (what, ok) -> {
+                //TODO: ask if it ok in pop up massage
+                if (ok) {
+                    Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                    holder.button_friend_action.setText("add");
+                    holder.button_friend_action.setBackgroundColor(context.getColor(R.color.blue));
+//                    if(main_user.isFriend(selected_user.getUserName())||(!main_user.hasConnection(selected_user.getUserName()))||main_user.isOnWaitList(selected_user.getUserName())){
+//                        Toast.makeText(context, "something goes wrong!222", Toast.LENGTH_SHORT).show();
+//                    }
+                    //TODO:set click to ask
+//                                    holder.button_friend_action.setOnClickListener(view2 -> {
+//
+//                                    });
+
+                } else {
+                    Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else if (main_user.isOnWaitList(selected_user.getUserName())){
+            FireBaseData.getInstance().acceptFriendRequest(selected_user.getUserName(), (what, ok) -> {
+                //TODO: ask if it ok in pop up massage
+                if (ok) {
+                    Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                    holder.button_friend_action.setText("remove");
+                    holder.button_friend_action.setBackgroundColor(context.getColor(R.color.red));
+//                    if(!main_user.isFriend(selected_user.getUserName())||(!main_user.hasConnection(selected_user.getUserName()))||main_user.isOnAskedList(selected_user.getUserName())){
+//                        Toast.makeText(context, "something goes wrong!333", Toast.LENGTH_SHORT).show();
+//                    }
+                    //TODO:set click to ask
+//                                    holder.button_friend_action.setOnClickListener(view2 -> {
+                    // need to remove selected_user from main_user HashMap
+//
+//                                    });
+                } else {
+                    Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
     private void OnPickUserDialog(String friend_username, CardView parent) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -87,59 +206,16 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                     public void onClick(DialogInterface dialog, int which) {
 
                         if (which == 0) {
-                            fire_base_data.askToBeFriend(friend_username,(what, ok) -> {
-
-                                if(!ok) Toast.makeText(context, "request already sent", Toast.LENGTH_SHORT).show();
-                                //snackbar
-                                showSnackBar(parent,friend_username);
-                            });
-                            // Toast.makeText(context, "add friend", Toast.LENGTH_SHORT).show();
-
-//                            fire_base_data.getUser(new CustomDataListener() {
-//                                @Override
-//                                public void onDataChange(@NonNull Object data) {
-//                                    User my_user = (User) data;
-//                                    if (my_user.addFriend(friend_username))
-//                                        Toast.makeText(context, "friend added", Toast.LENGTH_SHORT).show();
-//                                    else
-//                                        Toast.makeText(context, "friend already exist", Toast.LENGTH_SHORT).show();
-//                                    updateData(my_user);
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(@NonNull String error) {
-//                                    User my_user = new User();
-//                                    my_user.addFriend(friend_username);
-//                                    Toast.makeText(context, "friend added", Toast.LENGTH_SHORT).show();
-//                                    updateData(my_user);
-//                                    // Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-//                                }
-//                            });
-                        }
-                        if (which == 1) {
-                            fire_base_data.removeFriend(friend_username,(what, ok) -> {
+                            fire_base_data.askToBeFriend(friend_username, (what, ok) -> {
                                 Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
                             });
 
-//                            fire_base_data.getUser(new CustomDataListener() {
-//                                @Override
-//                                public void onDataChange(@NonNull Object data) {
-//                                    User my_user = (User) data;
-//                                    if (my_user.removeFriend(friend_username))
-//                                        Toast.makeText(context, "friend deleted", Toast.LENGTH_SHORT).show();
-//                                    else
-//                                        Toast.makeText(context, "friend is not im my list", Toast.LENGTH_SHORT).show();
-//                                    updateData(my_user);
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(@NonNull String error) {
-//                                    User my_user = new User();
-//                                    Toast.makeText(context, "friend is not im my list", Toast.LENGTH_SHORT).show();
-//                                    updateData(my_user);
-//                                    //Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-//                                }
-//                            });
+                        }
+                        if (which == 1) {
+                            fire_base_data.removeFriend(friend_username, (what, ok) -> {
+                                Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                            });
+
                         }
                     }
                 });
@@ -163,35 +239,29 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                 .show();
     }
 
-    private void updateData(User my_user) {
-        fire_base_data.updateUser(my_user, new CustomOkListener() {
-            @Override
-            public void onComplete(@NonNull String what, Boolean ok) {
-            }
-        });
-    }
-
     @Override
     public int getItemCount() {
         return users.size();
     }
 
-    public void setContacts(ArrayList<User> users) {
+    @SuppressLint("NotifyDataSetChanged")
+    public void setUsers(ArrayList<User> users) {
         this.users = users;
         notifyDataSetChanged();  // when i change the list of contacts the adapter is notified to refresh the items list
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder { // this class holds all item inside the RecyclerView
-        private TextView txt_name, txt_username;
         private CardView card_root;
+        private TextView txt_name, txt_username;
         private ImageView image;
+        private Button button_friend_action;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txt_name = itemView.findViewById(R.id.Name);
             card_root = itemView.findViewById(R.id.card_root);
+            txt_name = itemView.findViewById(R.id.Name);
             txt_username = itemView.findViewById(R.id.Username_adapter);
-
+            button_friend_action = itemView.findViewById(R.id.buttonAddAskAcceptRemove);
             image = itemView.findViewById(R.id.profile);
         }
     }

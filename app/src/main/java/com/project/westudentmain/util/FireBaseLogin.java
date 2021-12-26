@@ -41,7 +41,7 @@ public class FireBaseLogin {
      * @param email
      * @param password
      * @param onCompleteListener
-     */
+     *///TODO: switch to custom listener
     public static void emailLogin(@NonNull String email, @NonNull String password, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener);
     }

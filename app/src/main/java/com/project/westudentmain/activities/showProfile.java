@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,9 @@ public class showProfile extends AppCompatActivity {
 
     private ImageView img_profile;
     private TextView txt_user_name, txt_name, txt_university, txt_department, txt_degree, txt_year, txt_bio;
-    private Button btn_all_groups, btn_my_groups, btn_friends, btn_users, btn_edit_photo;
+    private Button btn_all_groups, btn_my_groups, btn_friends, btn_users;
+
+    private ImageButton  btn_edit_photo;
 
     private final Context context = this;
     private FireBaseData fire_base_data;
@@ -56,10 +59,12 @@ public class showProfile extends AppCompatActivity {
 
         setSupportActionBar(mToolBar);
 
+
+
         fire_base_data = FireBaseData.getInstance();
         fire_base_data.downloadUserPhoto(this, img_profile, (what, ok) -> {
         });
-        fire_base_data.getUser(new CustomDataListener() {
+        FireBaseData.getUser(new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
                 User user = (User) data;
@@ -210,6 +215,25 @@ public class showProfile extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+                AlertDialog alertDialog = new AlertDialog.Builder(this)
+                //set title
+                .setTitle("Are you sure to exit?")
+                //set positive button
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+                        finishAffinity();
+                        System.exit(0);
+                    }
+                })
+                //set negative button
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .show();
 
     }
 

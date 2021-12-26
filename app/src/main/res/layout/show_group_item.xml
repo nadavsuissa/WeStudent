@@ -1,45 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/group_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:id="@+id/group_card_view">
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/group_logo"
             android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:src="@drawable/default_icon" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="172dp"
+            android:layout_height="92dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
+
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/groupname"
-                android:layout_width="wrap_content"
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text=""
+                android:text="name:"
+                android:textColor="#5E5E5E"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/groupNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/group_name"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="intent:"
+                android:textColor="#5E5E5E"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/groupIntentText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp" />
 
 
-            <TextView
-                android:id="@+id/groupid"
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonGroupAsk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text=""
-                android:textSize="15sp" />
+                android:layout_weight="1"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp" />
 
         </LinearLayout>
 
+
     </LinearLayout>
+
 
 </androidx.cardview.widget.CardView>

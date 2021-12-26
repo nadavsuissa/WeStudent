@@ -14,23 +14,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
         <activity
+            android:name="com.project.westudentmain.activities.createProject"
+            android:exported="true" />
+        <activity
             android:name="com.project.westudentmain.activities.createGroup"
             android:exported="true" />
         <activity
             android:name="com.project.westudentmain.activities.showProject"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.project.westudentmain.activities.showGroup"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.project.westudentmain.activities.showFriends"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.project.westudentmain.activities.showChat"
             android:exported="true" />
         <activity
             android:name="com.project.westudentmain.activities.showSettings"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.project.westudentmain.activities.showProfile"
             android:exported="false" />
@@ -60,5 +63,4 @@
                 android:resource="@xml/provider_paths" />
         </provider>
     </application>
-
 </manifest>

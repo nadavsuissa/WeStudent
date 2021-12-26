@@ -8,28 +8,16 @@
     android:orientation="vertical"
     tools:context="com.project.westudentmain.activities.Login">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="377dp"
-        android:layout_height="68dp"
-        android:gravity="center_horizontal"
-        android:text="@string/project_name"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/loginemail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.176" />
-
     <EditText
         android:id="@+id/loginemail"
+
         android:layout_width="247dp"
         android:layout_height="60dp"
         android:layout_marginBottom="28dp"
+        android:background="@drawable/rounded_corner"
         android:ems="10"
-        android:hint="@string/email"
+        android:gravity="center"
+        android:hint="Email/User name"
         android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
@@ -42,7 +30,9 @@
         android:layout_width="247dp"
         android:layout_height="60dp"
         android:layout_marginBottom="188dp"
+        android:background="@drawable/rounded_corner"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/password"
         android:importantForAutofill="no"
         android:inputType="textPassword"
@@ -73,6 +63,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginPassword" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="176dp"
+        app:layout_constraintBottom_toTopOf="@+id/loginemail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/westudentlogo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

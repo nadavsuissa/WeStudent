@@ -63,6 +63,8 @@ public class Register extends AppCompatActivity {
         fire_base = FireBaseLogin.getInstance();
         fire_base_data = FireBaseData.getInstance();
 
+        String[] year_options = {"1","2","3","4","5","6","7"};
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.years, android.R.layout.select_dialog_item);
@@ -107,8 +109,9 @@ public class Register extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull String what, Boolean ok) {
                     Validation validation = new Validation();
-                    boolean flag = validation.Register(user_email, user_password, user_firstName, user_lastName, user_userName, user_university, user_dgree
-                            , email, password, firstName, lastName, userName, university, dgree,uri,btn_upload_photo);
+
+                    boolean flag = validation.Register(user_email,user_password,user_firstName,user_lastName,user_userName,user_university,user_dgree,
+                            email,password,firstName,lastName,userName,university,dgree,uri,btn_upload_photo);
                     if (!flag) return;
                     User user = new User();
                     user.setMail(email);
@@ -234,25 +237,26 @@ public class Register extends AppCompatActivity {
 
     @Override
     public void onBackPressed() { // TODO: go back to login
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                //set title
-                .setTitle("Are you sure to exit?")
-                //set positive button
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //set what would happen when positive button is clicked
-                        finishAffinity();
-                        System.exit(0);
-                    }
-                })
-                //set negative button
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                })
-                .show();
+//        AlertDialog alertDialog = new AlertDialog.Builder(this)
+//                //set title
+//                .setTitle("Are you sure to exit?")
+//                //set positive button
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        //set what would happen when positive button is clicked
+//                        startActivity(new Intent(Register.this, Login.class));
+//
+//                    }
+//                })
+//                //set negative button
+//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                    }
+//                })
+//                .show();
+        startActivity(new Intent(Register.this,Login.class));
     }
 
     private void connect_items_by_id() {
