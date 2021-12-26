@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidproject.R;
+import com.google.android.material.snackbar.Snackbar;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.CustomOkListener;
@@ -47,7 +50,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         String username = holder.txt_username.getText() + users.get(position).getUserName();
         holder.txt_username.setText(username);
 
-        fire_base_data.getIdByUserName(users.get(position).getUserName(), new CustomDataListener() {
+        FireBaseData.getIdByUserName(users.get(position).getUserName(), new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
                 String user_id = (String) data;
@@ -60,15 +63,11 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             }
         });
 
-        holder.card_root.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OnPickUserDialog(users.get(position).getUserName());
-                //Toast.makeText(context, users.get(position).getName() + " Selected", Toast.LENGTH_SHORT).show();
-            }
+        holder.card_root.setOnLongClickListener(v -> {
+            OnPickUserDialog(users.get(position).getUserName(),holder.card_root);
+            //Toast.makeText(context, users.get(position).getName() + " Selected", Toast.LENGTH_SHORT).show();
+            return true;
         });
-//        String photo = users.get(position).getPhoto_uri();
-//        if (photo!=null) holder.image.setImageURI(Uri.parse(photo));
 
         // this part is to load an image from the internet using Glide (search Glide dependency) to my ImageView object
 //        Glide.with(context)
@@ -78,17 +77,21 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
     }
 
-    private void OnPickUserDialog(String friend_username) {
+    private void OnPickUserDialog(String friend_username, CardView parent) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
         builder.setTitle("Choose option:");
         builder.setItems(new CharSequence[]
-                        {"add friend", "delete friend"},
+                        {"send friend request", "cancel friend request"},
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                         if (which == 0) {
                             fire_base_data.askToBeFriend(friend_username,(what, ok) -> {
-                                Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+
+                                if(!ok) Toast.makeText(context, "request already sent", Toast.LENGTH_SHORT).show();
+                                //snackbar
+                                showSnackBar(parent,friend_username);
                             });
                             // Toast.makeText(context, "add friend", Toast.LENGTH_SHORT).show();
 
@@ -117,6 +120,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                             fire_base_data.removeFriend(friend_username,(what, ok) -> {
                                 Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
                             });
+
 //                            fire_base_data.getUser(new CustomDataListener() {
 //                                @Override
 //                                public void onDataChange(@NonNull Object data) {
@@ -140,6 +144,23 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                     }
                 });
         builder.create().show();
+    }
+
+    private void showSnackBar(
+            CardView parent,String friend_username) {
+        String txt_snackbar = "sending request ";
+        Snackbar.make(parent,txt_snackbar+"Undo in 5 seconds", 5000/* can replace with Snackbar.LENGTH_INDEFINITE*/).setAction("Undo", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // undo request
+                fire_base_data.cancelFriendRequest(friend_username,(what, ok) -> {
+                    Toast.makeText(context, what+ok, Toast.LENGTH_SHORT).show();
+                });
+            }
+        })
+                .setActionTextColor(Color.RED)  // for Action color
+                .setTextColor(Color.WHITE)
+                .show();
     }
 
     private void updateData(User my_user) {

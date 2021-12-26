@@ -9,9 +9,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -36,7 +40,11 @@ import java.io.File;
 public class Register extends AppCompatActivity {
     private ImageView student_card;
     private Button btn2_signup, btn_upload_photo;
-    private EditText user_email, user_password, user_firstName, user_lastName, user_userName, user_university, user_dgree, user_homeTown, user_yearOfStudying, user_Bio;
+    private EditText user_email, user_password, user_firstName, user_lastName, user_userName, user_university, user_dgree, user_homeTown, user_Bio;
+    private TextView txt_year;
+
+    private Spinner spinner_year;
+    private int year;
 
     private FireBaseLogin fire_base;
     private FireBaseData fire_base_data;
@@ -55,6 +63,27 @@ public class Register extends AppCompatActivity {
         fire_base = FireBaseLogin.getInstance();
         fire_base_data = FireBaseData.getInstance();
 
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.years, android.R.layout.select_dialog_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.select_dialog_item);
+        // Apply the adapter to the spinner
+        spinner_year.setAdapter(adapter);
+
+        spinner_year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(Register.this, parent.getItemAtPosition(position)+" Selected", Toast.LENGTH_SHORT).show();
+                year = Integer.parseInt((String) parent.getItemAtPosition(position));
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                year =1;
+            }
+        });
+
+
         btn2_signup.setOnClickListener(v ->
         {
             String email = user_email.getText().toString().trim();
@@ -65,8 +94,13 @@ public class Register extends AppCompatActivity {
             String university = user_university.getText().toString().trim();
             String dgree = user_dgree.getText().toString().trim();
             String homeTown = user_homeTown.getText().toString().trim();
-            int yearOfStudying = Integer.parseInt(user_yearOfStudying.getText().toString().trim());
+            //collapse if didnt put anithing in yearOfStudying
+            // int yearOfStudying = Integer.parseInt(user_yearOfStudying.getText().toString().trim());
             String bio = user_Bio.getText().toString().trim();
+
+
+
+
 
 
             FireBaseLogin.isUserFree(userName, new CustomOkListener() {
@@ -74,7 +108,7 @@ public class Register extends AppCompatActivity {
                 public void onComplete(@NonNull String what, Boolean ok) {
                     Validation validation = new Validation();
                     boolean flag = validation.Register(user_email, user_password, user_firstName, user_lastName, user_userName, user_university, user_dgree
-                            , email, password, firstName, lastName, userName, university, dgree);
+                            , email, password, firstName, lastName, userName, university, dgree,uri,btn_upload_photo);
                     if (!flag) return;
                     User user = new User();
                     user.setMail(email);
@@ -85,9 +119,11 @@ public class Register extends AppCompatActivity {
                     profile.setUniversity(university);
                     profile.setDegree(dgree);
                     profile.setHomeTown(homeTown);
-                    profile.setStartingYear(yearOfStudying);
                     profile.setBIO(bio);
+                    profile.setStartingYear(year);
                     user.setProfile(profile);
+
+
 
                     fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task ->
                     {
@@ -230,9 +266,10 @@ public class Register extends AppCompatActivity {
         user_university = findViewById(R.id.registerUniversity);
         user_dgree = findViewById(R.id.registerDegree);
         user_homeTown = findViewById(R.id.registerHomeTown);
-        user_yearOfStudying = findViewById(R.id.registerYearOfStudying);
+        spinner_year = (Spinner) findViewById(R.id.spinner_year);
         user_Bio = findViewById(R.id.registerBio);
         student_card = findViewById(R.id.imageViewStudentCard);
+        txt_year = findViewById(R.id.txt_year_register);
     }
 
 }

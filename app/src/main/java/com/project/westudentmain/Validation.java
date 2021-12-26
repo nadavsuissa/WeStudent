@@ -1,6 +1,8 @@
 package com.project.westudentmain;
 
+import android.net.Uri;
 import android.util.Patterns;
+import android.widget.Button;
 import android.widget.EditText;
 
 /**
@@ -10,7 +12,7 @@ import android.widget.EditText;
 public class Validation {
 
     public boolean Register(EditText user_email, EditText user_password, EditText user_firstName, EditText user_lastName, EditText user_userName, EditText user_university, EditText user_dgree,
-                            String email, String password, String firstName, String lastName, String userName, String university, String dgree) {
+                            String email, String password, String firstName, String lastName, String userName, String university, String dgree, Uri uri, Button btn_upload_photo) {
         if (email.isEmpty()) {
             user_email.setError("Email is empty");
             user_email.requestFocus();
@@ -48,7 +50,10 @@ public class Validation {
             user_dgree.requestFocus();
             return false;
         }
-
+        else if (uri == null) {
+            btn_upload_photo.setError("must upload student card");
+            return false;
+        }
         return true;
     }
 
@@ -70,6 +75,7 @@ public class Validation {
             user_password.requestFocus();
             return false;
         }
+
         return true;
     }
 }

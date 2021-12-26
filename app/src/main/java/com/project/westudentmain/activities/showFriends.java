@@ -40,9 +40,7 @@ public class showFriends extends AppCompatActivity {
 
         user_friends_rec_view = findViewById(R.id.friendRV);
 
-//        users = new ArrayList<>();
-//        users.add(new User());
-//        users.add(new User("user_name2","name2", "last_name2", "mail2", "phone2"));
+
         fire_base_data = FireBaseData.getInstance();
         fire_base_data.getAllUsers(new CustomDataListener() {
             @Override

@@ -153,13 +153,18 @@
                 android:minHeight="48dp"
                 tools:ignore="TextContrastCheck" />
 
-            <EditText
-                android:id="@+id/registerYearOfStudying"
+            <TextView
+                android:id="@+id/txt_year_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="year of studying"
-                android:inputType="number" />
+                android:text="select current year:"
+                android:textColor="#000000" />
+
+            <Spinner
+                android:id="@+id/spinner_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog" />
 
             <EditText
                 android:id="@+id/registerBio"
