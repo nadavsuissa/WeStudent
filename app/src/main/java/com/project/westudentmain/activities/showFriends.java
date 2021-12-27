@@ -121,6 +121,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -153,17 +154,13 @@ public class showFriends extends AppCompatActivity {
         initViews();
 
         setSupportActionBar(mToolBar);
-
-        fire_base_data = FireBaseData.getInstance();
-        fire_base_data.getAllUsers(new CustomDataListener() {
+        CustomDataListener customDataListener = new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
                 users = (ArrayList<User>) data;
                 UserRecyclerViewAdapter adapter = new UserRecyclerViewAdapter(context);
                 adapter.setUsers(users);
-
                 user_friends_rec_view.setAdapter(adapter);
-
                 user_friends_rec_view.setLayoutManager(new GridLayoutManager(context, 1)); // splitting the contacts to 2 columns
             }
 
@@ -171,7 +168,14 @@ public class showFriends extends AppCompatActivity {
             public void onCancelled(@NonNull String error) {
 
             }
-        });
+        };
+        fire_base_data = FireBaseData.getInstance();
+        if(getIntent().getBooleanExtra("from profile",false)){
+            fire_base_data.getFriends(customDataListener);
+        }
+        else {
+            fire_base_data.getAllUsers(customDataListener);
+        }
     }
 
 

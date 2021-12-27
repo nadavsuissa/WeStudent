@@ -80,16 +80,16 @@ public class showProfile extends AppCompatActivity {
 
         //TODO: give them what to look for
         btn_all_groups.setOnClickListener(view -> {
-            startActivity(new Intent(this, showGroup.class));
+            startActivity(new Intent(this, showGroup.class).putExtra("from profile",false));
         });
         btn_my_groups.setOnClickListener(view -> {
-            startActivity(new Intent(this, showGroup.class));
+            startActivity(new Intent(this, showGroup.class).putExtra("from profile",true));
         });
         btn_friends.setOnClickListener(view -> {
-            startActivity(new Intent(this, showFriends.class));
+            startActivity(new Intent(this, showFriends.class).putExtra("from profile",true));
         });
         btn_users.setOnClickListener(view -> {
-            startActivity(new Intent(this, showFriends.class));
+            startActivity(new Intent(this, showFriends.class).putExtra("from profile",false));
         });
         btn_edit_photo.setOnClickListener(view -> {
             CameraGalleryDialog();

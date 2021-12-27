@@ -713,6 +713,75 @@ public class FireBaseData {
     }
 
     /**
+     *  get array of connected Users
+     * @param listener pass  ArrayList<User>
+     * @return if can even do it(user is logged in)
+     */
+    public boolean getFriends(CustomDataListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+
+        getUser(new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                User me = (User) data;
+                List<String> friends = me.FriendsList();
+
+                CustomDataListener super_listener = new CustomDataListener() {
+                    final int size_of_list = friends.size();
+                    ArrayList<User> friends_list = new ArrayList<>();
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        friends_list.add((User) data);
+                        if (friends_list.size() == size_of_list){
+                            listener.onDataChange(friends_list);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onCancelled(error);
+                    }
+                };
+                friends.forEach(s -> {
+                    getIdByUserName(s, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+                            database_reference.child(User.class.getSimpleName()).child((String) data).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    User user = snapshot.getValue(User.class);
+                                    if (user!=null)
+                                        super_listener.onDataChange(user);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    super_listener.onCancelled(error.getMessage());
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            super_listener.onCancelled(error);
+                        }
+                    });
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
+            }
+        });
+
+        return true;
+    }
+
+    /**
      * cancel friend request or reject
      *
      * @param friend_user_name
