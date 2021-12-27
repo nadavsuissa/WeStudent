@@ -15,6 +15,7 @@ import com.project.westudentmain.classes.User;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 //TODO: use username instead of id
@@ -509,7 +510,7 @@ public class FireBaseGroup {
      *
      * @param group_id
      * @param listener
-     * @return
+     * @return if can even do it(user is logged in)
      */
     public boolean leaveGroup(String group_id, CustomOkListener listener) {
         FirebaseUser firebaseUser = FireBaseLogin.getUser();
@@ -592,6 +593,69 @@ public class FireBaseGroup {
                 listener.onComplete("there is no group", false);
             }
         });
+    }
+
+    /**
+     * get array of all connected groups
+     *
+     * @param listener pass ArrayList<Group>
+     * @return if can even do it(user is logged in)
+     */
+    public static boolean getConnectedGroups(CustomDataListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+
+        FireBaseData.getUser(new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                User me = (User) data;
+                List<String> groups = me.ParticipantGroupsList();
+
+                CustomDataListener super_listener = new CustomDataListener() {
+                    final int size_of_list = groups.size();
+                    ArrayList<Group> group_list = new ArrayList<>();
+
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        group_list.add((Group) data);
+
+                        if (group_list.size() == size_of_list) {
+                            listener.onDataChange(group_list);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onCancelled(error);
+                    }
+                };
+
+                groups.forEach(s -> {
+                    getGroupData(s, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+                            Group group = (Group) data;
+                            super_listener.onDataChange(group);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            super_listener.onCancelled(error);
+
+                        }
+                    });
+
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
+            }
+        });
+
+        return true;
     }
 
 }
