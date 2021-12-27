@@ -14,7 +14,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.androidproject.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.project.westudentmain.classes.Group;
+import com.project.westudentmain.util.FcmNotificationsSender;
 import com.project.westudentmain.util.FireBaseGroup;
 
 public class createGroup extends AppCompatActivity {
@@ -33,6 +35,8 @@ public class createGroup extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference();
         DatabaseReference myRef = database.getReference();
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
+
 
 
         btn_create_group.setOnClickListener(v ->
@@ -46,8 +50,12 @@ public class createGroup extends AppCompatActivity {
             group.setGroupName(name);
             group.setMaxCapacity(maxcapacity);
             group.setDescription(description);
+            FcmNotificationsSender notificationsSender = new FcmNotificationsSender("/topics/all","Group Notification","A new Group Has Been Created",getApplicationContext(),createGroup.this);
+
+
 
             FireBaseGroup.getInstance().pushNewGroup(group,(what, ok) -> {
+                notificationsSender.SendNotifications();
                 Toast.makeText(getBaseContext(),what, Toast.LENGTH_SHORT).show();
                 //TODO: switch to the group itself
                 startActivity(new Intent(this, showProfile.class));
