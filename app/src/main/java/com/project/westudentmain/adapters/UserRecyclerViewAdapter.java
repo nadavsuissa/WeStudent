@@ -85,8 +85,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                     });
 
                 });
-                showFriendStatus(main_user,selected_user,holder);
-
             }
 
             @Override
