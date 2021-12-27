@@ -54,40 +54,28 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
                 Toast.makeText(context, groups.get(position).getGroupName() + " Selected", Toast.LENGTH_SHORT).show();
             }
         });
-        // setup the button
-        FireBaseData.getUser(new CustomDataListener() {
-            @Override
-            public void onDataChange(@NonNull Object data) {
-                User my_user = (User) data;
-                Group selected_group = groups.get(position);
-                //showGroupStatus(my_user,selected_group,holder);
 
-                holder.btn_join.setOnClickListener(view->{
-                        //joinAndLeaveGroup(my_user,selected_group,holder);
-                });
-                //======================================================
-//                holder.btn_decline.setBackgroundColor(context.getColor(R.color.red));
-//                holder.btn_decline.setOnClickListener(view ->{
-//                    FireBaseData.getInstance().removeFriend(selected_user.getUserName(), (what, ok) -> {
-//                        if (ok) {
-//                            Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
-//                            holder.button_friend_action.setText("add");
-//                            holder.button_friend_action.setBackgroundColor(context.getColor(R.color.blue));
-//                            holder.btn_decline.setVisibility(View.GONE);
-//                            holder.button_friend_action.setClickable(true);
-//                        } else {
-//                            Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//
-//                });
-                //==========================================================
-            }
+        Group selected_group = groups.get(position);
+        showGroupStatus(selected_group,holder);
+        holder.btn_join.setOnClickListener(view->{
+            // if manager delete else joinAndLeaveGroup
+            joinAndLeaveGroup(selected_group,holder);
+        });
 
-            @Override
-            public void onCancelled(@NonNull String error) {
-
-            }
+        holder.btn_withdraw.setBackgroundColor(context.getColor(R.color.red));
+        holder.btn_withdraw.setOnClickListener(view ->{
+            FireBaseGroup.getInstance().rejectGroup(selected_group.getGroupId(), (what, ok) -> {
+                holder.btn_join.setText("join");
+                if (ok) {
+                    Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                    holder.btn_join.setText("join");
+                    holder.btn_join.setBackgroundColor(context.getColor(R.color.blue));
+                    holder.btn_withdraw.setVisibility(View.GONE);
+                    holder.btn_join.setClickable(true);
+                } else {
+                    Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
 
@@ -96,74 +84,72 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
 
 
     }
-/*
-    private void showGroupStatus(User my_user, Group selected_group, ViewHolder holder)
-        if (!my_user.hasConnection(selected_user.getUserName())) {
-            holder.button_friend_action.setText("add");
-            holder.button_friend_action.setBackgroundColor(context.getColor(R.color.blue));
-        }else if (my_user.isFriend(selected_user.getUserName())){
-            holder.button_friend_action.setText("remove");
-            holder.button_friend_action.setBackgroundColor(context.getColor(R.color.red));
-            holder.btn_decline.setVisibility(View.GONE);
-        }else if (main_user.isOnAskedList(selected_user.getUserName())) {
-            holder.button_friend_action.setText("waiting");
-            holder.button_friend_action.setClickable(false);
-            holder.button_friend_action.setBackgroundColor(context.getColor(R.color.yellow));
-            holder.btn_decline.setVisibility(View.VISIBLE);
-            holder.btn_decline.setText("withdraw");
-        }else if (main_user.isOnWaitList(selected_user.getUserName())) {
-            holder.button_friend_action.setText("accept");
-            holder.btn_decline.setVisibility(View.VISIBLE);
-            holder.btn_decline.setText("decline");
 
+    private void showGroupStatus(Group selected_group, ViewHolder holder){
+        String my_user_id  = FireBaseLogin.getUser().getUid();
+        if (!selected_group.isConnectedToHim(my_user_id)){
+            holder.btn_join.setText("join");
+            holder.btn_join.setBackgroundColor(context.getColor(R.color.blue));
+        }else if (selected_group.isOnWaitList(my_user_id)){
+            holder.btn_join.setText("waiting");
+            holder.btn_join.setBackgroundColor(context.getColor(R.color.yellow));
+            holder.btn_join.setClickable(false);
+            holder.btn_withdraw.setVisibility(View.VISIBLE);
+            holder.btn_withdraw.setText("withdraw");
+        }else if (selected_group.isFriend(my_user_id)) {
+            holder.btn_join.setText("leave");
+            holder.btn_join.setBackgroundColor(context.getColor(R.color.red));
+
+        }else if (selected_group.isOnManagerList(my_user_id)) {
+            holder.btn_join.setText("delete");
+            holder.btn_join.setBackgroundColor(context.getColor(R.color.red));
         }
     }
 
-    private void joinAndLeaveGroup(User my_user, Group selected_group, ViewHolder holder) {
+    private void joinAndLeaveGroup(Group selected_group, ViewHolder holder) {
         //FIXME: recursive setOnClickListener
         //TODO: add if ok
-        if (!groups.get(position).isConnectedToHim(FireBaseLogin.getUser().getUid())) {
+        String my_user_id  = FireBaseLogin.getUser().getUid();
+        String selected_group_id = selected_group.getGroupId();
+
+        // todo: if i'm the manager -> show button (delete)
+        //  else -> show (join,waiting and withdraw,leave)
+
+
+
+        if (!selected_group.isConnectedToHim(my_user_id)) {
             holder.btn_join.setText("join");
-            holder.btn_join.setOnClickListener(view -> {
-                FireBaseGroup.getInstance().askGroup(groups.get(position).getGroupId(), (what, ok) -> {
-                    holder.btn_join.setText("waiting");
-                    holder.btn_join.setOnClickListener(null);
-                });
+            FireBaseGroup.getInstance().askGroup(selected_group_id, (what, ok) -> {
+                holder.btn_join.setText("waiting");
+                holder.btn_join.setOnClickListener(null);
             });
-        } else if (groups.get(position).isOnWaitList(FireBaseLogin.getUser().getUid())) {
+        }else if (selected_group.isOnWaitList(my_user_id)){
             holder.btn_join.setText("waiting");
-            holder.btn_join.setOnClickListener(view -> {
-                FireBaseGroup.getInstance().rejectGroup(groups.get(position).getGroupId(), (what, ok) -> {
-                    holder.btn_join.setText("join");
-                    holder.btn_join.setOnClickListener(null);
-                });
+            FireBaseGroup.getInstance().rejectGroup(selected_group_id, (what, ok) -> {
+                holder.btn_join.setText("join");
+                holder.btn_join.setOnClickListener(null);
             });
-        }else if (groups.get(position).isOnAskedList(FireBaseLogin.getUser().getUid())) {
+        }else if (selected_group.isOnAskedList(my_user_id)){
             holder.btn_join.setText("asking");//TODO: have accept or reject
-            holder.btn_join.setOnClickListener(view -> {
-                FireBaseGroup.getInstance().acceptingGroup(groups.get(position).getGroupId(), (what, ok) -> {
-                    holder.btn_join.setText("remove");
-                    holder.btn_join.setOnClickListener(null);
-                });
+            // if(FireBaseGroup.getInstance().isManager(my_user_id))
+            FireBaseGroup.getInstance().acceptingGroup(selected_group_id, (what, ok) -> {
+                holder.btn_join.setText("remove");
+                holder.btn_join.setOnClickListener(null);
             });
-        }else if (groups.get(position).isFriend(FireBaseLogin.getUser().getUid())) {
+        }else if (selected_group.isFriend(my_user_id)) {
             holder.btn_join.setText("remove");
-            holder.btn_join.setOnClickListener(view -> {
-                FireBaseGroup.getInstance().rejectGroup(groups.get(position).getGroupId(), (what, ok) -> {
-                    holder.btn_join.setText("join");
-                    holder.btn_join.setOnClickListener(null);
-                });
+            FireBaseGroup.getInstance().rejectGroup(selected_group_id, (what, ok) -> {
+                holder.btn_join.setText("join");
+                holder.btn_join.setOnClickListener(null);
             });
-        }else if (groups.get(position).isOnManagerList(FireBaseLogin.getUser().getUid())) {
+        }else if (selected_group.isOnManagerList(my_user_id)) {
             holder.btn_join.setText("delete");
-            holder.btn_join.setOnClickListener(view -> {
-                FireBaseGroup.getInstance().deleteGroup(groups.get(position).getGroupId(), (what, ok) -> {
-                    holder.btn_join.setText("deleted");
-                    holder.btn_join.setOnClickListener(null);
-                });
+            FireBaseGroup.getInstance().deleteGroup(selected_group_id, (what, ok) -> {
+                holder.btn_join.setText("deleted");
+                holder.btn_join.setOnClickListener(null);
             });
         }
-    }*/
+    }
 
 
     @Override
@@ -179,7 +165,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
     public class ViewHolder extends RecyclerView.ViewHolder { // this class holds all item inside the RecyclerView
         private TextView txt_group_name, txt_intent;
         private CardView card_root;
-        private Button btn_join;
+        private Button btn_join,btn_withdraw;
         private ImageView image;
 
         public ViewHolder(@NonNull View itemView) {
@@ -188,6 +174,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
             txt_intent = itemView.findViewById(R.id.groupIntentText);
             txt_group_name = itemView.findViewById(R.id.groupNameText);
             btn_join = itemView.findViewById(R.id.buttonGroupAsk);
+            btn_withdraw = itemView.findViewById(R.id.btn_withdraw);
             image = itemView.findViewById(R.id.group_logo);
         }
     }

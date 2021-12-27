@@ -106,8 +106,8 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             holder.btn_decline.setVisibility(View.GONE);
         }else if (main_user.isOnAskedList(selected_user.getUserName())) {
             holder.button_friend_action.setText("waiting");
-            holder.button_friend_action.setClickable(false);
             holder.button_friend_action.setBackgroundColor(context.getColor(R.color.yellow));
+            holder.button_friend_action.setClickable(false);
             holder.btn_decline.setVisibility(View.VISIBLE);
             holder.btn_decline.setText("withdraw");
         }else if (main_user.isOnWaitList(selected_user.getUserName())) {
