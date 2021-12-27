@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +35,7 @@ import java.util.List;
 public class FireBaseData {
     private static final DatabaseReference database_reference = FirebaseDatabase.getInstance().getReference();
     private final static FireBaseData INSTANCE = new FireBaseData();
+     private static String idToken;
 
     private FireBaseData() {
     }
@@ -57,6 +59,7 @@ public class FireBaseData {
             return null;
         return FireBaseLogin.getUser().getEmail();
     }
+
 
     /**
      * get the email of the user by user name
@@ -796,5 +799,6 @@ public class FireBaseData {
             }
         });
     }
+
 
 }

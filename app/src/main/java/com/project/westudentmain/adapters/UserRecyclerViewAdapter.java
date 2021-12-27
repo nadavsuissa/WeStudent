@@ -1,7 +1,9 @@
 package com.project.westudentmain.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.androidproject.R;
+import com.project.westudentmain.activities.createGroup;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
+import com.project.westudentmain.util.FcmNotificationsSender;
 import com.project.westudentmain.util.FireBaseData;
 import java.util.ArrayList;
 
@@ -22,10 +26,13 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     private final FireBaseData fire_base_data = FireBaseData.getInstance();
     private ArrayList<User> users = new ArrayList<>();
     Context context;
+    String sToken;
+    Activity activity = (Activity) context;
 
     public UserRecyclerViewAdapter(Context context) {
         this.context = context;
     }
+
 
     @NonNull
     @Override
@@ -127,6 +134,19 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             FireBaseData.getInstance().askToBeFriend(selected_user.getUserName(), (what, ok) -> {
                 //TODO: ask if it ok in pop up massage
                 if (ok) {
+                    FireBaseData.getIdByUserName(selected_user.getUserName(), new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+                            sToken =(String)data;
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+
+                        }
+                    });
+                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender(sToken,"Group Notification","A new Group Has Been Created", context.getApplicationContext(),activity);
+                    notificationsSender.SendNotifications();
                     Toast.makeText(context, "friend request sent", Toast.LENGTH_SHORT).show();
                     holder.button_friend_action.setText("waiting");
                     holder.button_friend_action.setBackgroundColor(context.getColor(R.color.yellow));
@@ -151,6 +171,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         }else if (btn_status.equals("accept")){
             FireBaseData.getInstance().acceptFriendRequest(selected_user.getUserName(), (what, ok) -> {
                 if (ok) {
+
                     Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
                     holder.button_friend_action.setText("remove");
                     holder.button_friend_action.setBackgroundColor(context.getColor(R.color.red));
