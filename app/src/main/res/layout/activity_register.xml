@@ -304,10 +304,11 @@
                 android:id="@+id/uploadphoto"
                 android:layout_width="152dp"
                 android:layout_height="128dp"
-
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:backgroundTint="#646881"
                 android:text="@string/upload_student_card"
+                android:textColorLink="#E1E2EF"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
