@@ -112,3 +112,32 @@
                 Toast.makeText(getBaseContext(), error, Toast.LENGTH_SHORT).show();
             }
         });
+
+// get all notifications
+FireBaseUniversity.getNotifications(new CustomDataListener() {
+    @Override
+    public void onDataChange(@NonNull Object data) {
+        ArrayList<UniversityNotification> universityNotification = (ArrayList<UniversityNotification>) data;
+    }
+
+    @Override
+    public void onCancelled(@NonNull String error) {
+
+    }
+});
+
+// by department
+        FireBaseUniversity.getNotificationsByDepartment("computers",new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                ArrayList<UniversityNotification> universityNotification = (ArrayList<UniversityNotification>) data;
+                if (true){
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+
+            }
+        });

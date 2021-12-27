@@ -73,4 +73,14 @@
         <item>6</item>
         <item>7</item>
     </string-array>
+
+    <string-array name="department">
+        <item>computers</item>
+        <item>math</item>
+        <item>physics</item>
+        <item>medical</item>
+        <item>engineering</item>
+        <item>psychology</item>
+        <item>grass</item>
+    </string-array>
 </resources>

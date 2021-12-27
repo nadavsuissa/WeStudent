@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidproject.R;
 import com.project.westudentmain.Validation;
 import com.project.westudentmain.util.CustomOkListener;
+import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseLogin;
 
 public class Login extends AppCompatActivity {
@@ -46,8 +47,16 @@ public class Login extends AppCompatActivity {
                         FireBaseLogin.emailLogin(what, password, task -> {
                             // TODO: start loading fragment before the last line and close in here
                             if (task.isSuccessful()) {
-                                startActivity(new Intent(Login.this, showProfile.class));
-                                //TODO:close this activity?
+                                FireBaseData.isUniversity((what1, ok1) -> {
+                                    if (ok1){
+                                        Toast.makeText(getBaseContext(), what1, Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(Login.this, showUniversityAccount.class));
+                                    }else {
+                                        startActivity(new Intent(Login.this, showProfile.class));
+                                        //TODO:close this activity?
+                                    }
+                                });
+
                             } else {
                                 Toast.makeText(Login.this,
                                         "email or password are not correct" + what,
