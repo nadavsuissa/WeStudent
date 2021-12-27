@@ -118,78 +118,48 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     }
 
     private void requestAndRemoveFriend(User main_user, User selected_user, ViewHolder holder) {
-        if (!main_user.hasConnection(selected_user.getUserName())) {
+        String btn_status =  holder.button_friend_action.getText().toString();
+        if (btn_status.equals("add")) {
             FireBaseData.getInstance().askToBeFriend(selected_user.getUserName(), (what, ok) -> {
                 //TODO: ask if it ok in pop up massage
                 if (ok) {
                     Toast.makeText(context, "friend request sent", Toast.LENGTH_SHORT).show();
                     holder.button_friend_action.setText("waiting");
                     holder.button_friend_action.setBackgroundColor(context.getColor(R.color.yellow));
-//                    if(/*main_user.isFriend(selected_user.getUserName())||*/(!main_user.hasConnection(selected_user.getUserName()))||main_user.isOnAskedList(selected_user.getUserName())){
-//                        Toast.makeText(context, "something goes wrong!000", Toast.LENGTH_SHORT).show();
-//                    }
-                    //TODO:set click to ask
-//                                    holder.button_friend_action.setOnClickListener(view2 -> {
-//
-//                                    });
                 } else {
                     Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
                 }
             });
 
-        }else if (main_user.isFriend(selected_user.getUserName())){
+        }else if (btn_status.equals("remove")){
             FireBaseData.getInstance().removeFriend(selected_user.getUserName(), (what, ok) -> {
-                //TODO: ask if it ok in pop up massage
                 if (ok) {
                     //Toast.makeText(context, "friend removed", Toast.LENGTH_SHORT).show();
                     holder.button_friend_action.setText("add");
                     holder.button_friend_action.setBackgroundColor(context.getColor(R.color.blue));
-//                    if(main_user.isFriend(selected_user.getUserName())||main_user.isOnWaitList(selected_user.getUserName())||main_user.isOnAskedList(selected_user.getUserName())){
-//                        Toast.makeText(context, "something goes wrong!111", Toast.LENGTH_SHORT).show();
-//                    }
-                    //TODO:set click to ask
-//                                    holder.button_friend_action.setOnClickListener(view2 -> {
-//
-//                                    });
-
                 } else {
                     Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
                 }
             });
-        }else if (main_user.isOnAskedList(selected_user.getUserName())){
+        }else if (btn_status.equals("waiting")){
+
             FireBaseData.getInstance().removeFriend(selected_user.getUserName(), (what, ok) -> {
-                //TODO: ask if it ok in pop up massage
                 if (ok) {
                     Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
                     holder.button_friend_action.setText("add");
                     holder.button_friend_action.setBackgroundColor(context.getColor(R.color.blue));
-//                    if(main_user.isFriend(selected_user.getUserName())||(!main_user.hasConnection(selected_user.getUserName()))||main_user.isOnWaitList(selected_user.getUserName())){
-//                        Toast.makeText(context, "something goes wrong!222", Toast.LENGTH_SHORT).show();
-//                    }
-                    //TODO:set click to ask
-//                                    holder.button_friend_action.setOnClickListener(view2 -> {
-//
-//                                    });
-
                 } else {
                     Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
                 }
             });
-        }else if (main_user.isOnWaitList(selected_user.getUserName())){
+        }else if (btn_status.equals("accept")){
+            //Todo add decline friend
             FireBaseData.getInstance().acceptFriendRequest(selected_user.getUserName(), (what, ok) -> {
-                //TODO: ask if it ok in pop up massage
                 if (ok) {
                     Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
                     holder.button_friend_action.setText("remove");
                     holder.button_friend_action.setBackgroundColor(context.getColor(R.color.red));
-//                    if(!main_user.isFriend(selected_user.getUserName())||(!main_user.hasConnection(selected_user.getUserName()))||main_user.isOnAskedList(selected_user.getUserName())){
-//                        Toast.makeText(context, "something goes wrong!333", Toast.LENGTH_SHORT).show();
-//                    }
-                    //TODO:set click to ask
-//                                    holder.button_friend_action.setOnClickListener(view2 -> {
-                    // need to remove selected_user from main_user HashMap
-//
-//                                    });
+
                 } else {
                     Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
                 }

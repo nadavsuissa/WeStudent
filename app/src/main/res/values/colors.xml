@@ -14,6 +14,7 @@
     <color name="red">#E40B0B</color>
     <color name="yellow">#FFC107</color>
     <color name="blue">#0D69DD</color>
+    <color name="appBarColor">#4AC5AD</color>
 
 
 </resources>

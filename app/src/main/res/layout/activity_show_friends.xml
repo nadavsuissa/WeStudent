@@ -4,20 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.project.westudentmain.activities.showFriends">
+    tools:context="com.project.westudentmain.activities.showFriends"
+    android:background="@drawable/bg">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <SearchView
+        android:id="@+id/users_search"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@+id/users_search"
+        android:layout_marginStart="150dp"
+        />
+
+</RelativeLayout>
 
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/main_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -45,35 +62,37 @@
         android:layout_marginTop="594dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/westudentlogo" />
+        app:srcCompat="@drawable/logo" />
 
-    <ScrollView
-        android:id="@+id/scrollViewSignUp"
-        android:layout_width="407dp"
-        android:layout_height="523dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="118dp"
-        android:background="@color/white"
+<!--    <ScrollView-->
+<!--        android:id="@+id/scrollViewSignUp"-->
+<!--        android:layout_width="407dp"-->
+<!--        android:layout_height="523dp"-->
+<!--        android:layout_marginStart="2dp"-->
+<!--        android:layout_marginTop="118dp"-->
+<!--        android:background="@color/white"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/linearLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="#6CBFFA">-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friendRV"
+        android:layout_width="403dp"
+        android:layout_height="580dp"
+        android:layout_marginTop="20dp"
+        android:background="#6CBFFA"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/friendtextview">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/friendRV"
-                android:layout_width="403dp"
-                android:layout_height="580dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="3dp"
-                android:textAlignment="center"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </androidx.recyclerview.widget.RecyclerView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.recyclerview.widget.RecyclerView>
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--    </ScrollView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

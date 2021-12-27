@@ -95,7 +95,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
         }else if (groups.get(position).isOnManagerList(FireBaseLogin.getUser().getUid())) {
             holder.button.setText("delete");
             holder.button.setOnClickListener(view -> {
-                FireBaseGroup.getInstance().removeGroup(groups.get(position).getGroupId(), (what, ok) -> {
+                FireBaseGroup.getInstance().deleteGroup(groups.get(position).getGroupId(), (what, ok) -> {
                     holder.button.setText("deleted");
                     holder.button.setOnClickListener(null);
                 });
