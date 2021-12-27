@@ -58,11 +58,35 @@ public class FireBaseData {
         return FireBaseLogin.getUser().getEmail();
     }
 
+    //TODO: check type of user
+    public static boolean isUniversity(CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+
+        database_reference.child("universityID").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue(String.class) != null) {
+                    listener.onComplete("is university account", true);
+                } else {
+                    listener.onComplete("not university account", false);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onComplete("failed checking if university account", false);
+            }
+        });
+
+        return true;
+    }
+
     /**
      * get the email of the user by user name
      *
      * @param user_name
-     * @param listener pass the mail
+     * @param listener  pass the mail
      */
     public static void getEmailByUserName(String user_name, CustomDataListener listener) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -79,7 +103,7 @@ public class FireBaseData {
                         break;
                     }
                 }
-                if (mail == null){
+                if (mail == null) {
                     listener.onCancelled("user not found");
                 }
             }
@@ -788,6 +812,31 @@ public class FireBaseData {
                 }
                 if (user_key == null)
                     listener.onCancelled("user name not found");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onCancelled(error.getMessage());
+            }
+        });
+    }
+
+    /**
+     * gets userName by uID
+     *
+     * @param ID the id of the user
+     * @param listener pass string of the username or error
+     */
+    public static void getUserNameById(String ID, CustomDataListener listener) {
+        database_reference.child(User.class.getSimpleName()).child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User data = snapshot.getValue(User.class);
+
+                if (data == null)
+                    listener.onCancelled("no user data");
+                else
+                    listener.onDataChange(data.getUserName());
             }
 
             @Override
