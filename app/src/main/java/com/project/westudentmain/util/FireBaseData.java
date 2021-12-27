@@ -73,6 +73,7 @@ public class FireBaseData {
                     listener.onComplete("not university account", false);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 listener.onComplete("failed checking if university account", false);
@@ -132,6 +133,21 @@ public class FireBaseData {
         if (user == null)
             return false;
 
+        CustomOkListener super_listener = new CustomOkListener() {
+            int okays = 0;
+
+            @Override
+            public void onComplete(@NonNull String what, Boolean ok) {
+                if (ok) {
+                    okays++;
+                    if (okays == 2) {
+                        listener.onComplete("user deleted", true);
+                    }
+                } else {
+                    listener.onComplete(what, false);
+                }
+            }
+        };
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         Query applesQuery = ref.child(User.class.getSimpleName()).orderByChild("userName").equalTo(user_name);
 
@@ -144,12 +160,12 @@ public class FireBaseData {
                     remove_num++;
                 }
 
-                listener.onComplete(String.format("removed %s remove_num"), remove_num != 0);
+                super_listener.onComplete(String.format("removed %s remove_num"), remove_num != 0);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                listener.onComplete(error.getMessage(), false);
+                super_listener.onComplete(error.getMessage(), false);
             }
         });
 
@@ -158,9 +174,9 @@ public class FireBaseData {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            listener.onComplete("user deleted", true);
+                            super_listener.onComplete("user deleted", true);
                         } else {
-                            listener.onComplete("user deletion error", false);
+                            super_listener.onComplete("user deletion error", false);
                         }
                     }
                 });
@@ -352,6 +368,21 @@ public class FireBaseData {
         if (user == null)
             return false;
 
+        CustomOkListener super_listener = new CustomOkListener() {
+            int okays = 0;
+
+            @Override
+            public void onComplete(@NonNull String what, Boolean ok) {
+                if (ok) {
+                    okays++;
+                    if (okays == 2) {
+                        listener.onComplete("group added", true);
+                    }
+                } else {
+                    listener.onComplete(what, false);
+                }
+            }
+        };
 
         String id = database_reference.child(group.getClass().getSimpleName()).push().getKey(); //TODO: check if the same as user ID
         group.setGroupId(id);
@@ -362,21 +393,21 @@ public class FireBaseData {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     if (listener != null)
-                        listener.onComplete("group creation in DB", true);
+                        super_listener.onComplete("group creation in DB", true);
 
                     database_reference.child("User").child(user.getUid()).child("groupsManager").child(id).setValue(group.getGroupName()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (listener != null) {
                                 if (task.isSuccessful())
-                                    listener.onComplete("group add to user in DB", true);
+                                    super_listener.onComplete("group add to user in DB", true);
                                 else
-                                    listener.onComplete("group add to user in DB", false);
+                                    super_listener.onComplete("group add to user in DB", false);
                             }
                         }
                     });
                 } else if (listener != null)
-                    listener.onComplete("group creation in DB", false);
+                    super_listener.onComplete("group creation in DB", false);
             }
         });
 
@@ -445,13 +476,13 @@ public class FireBaseData {
         StorageReference filepath = mStorage.child("userProfile").child(user.getUid()).child("profilePhoto");
         filepath.putFile(uri).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 listener.onComplete("progress is: " + progress, true);
             }
         }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+            public void onPaused(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
                 listener.onComplete("Upload is paused", false);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -552,6 +583,22 @@ public class FireBaseData {
         if (firebaseUser == null)
             return false;
 
+        CustomOkListener super_listener = new CustomOkListener() {
+            int okays = 0;
+
+            @Override
+            public void onComplete(@NonNull String what, Boolean ok) {
+                if (ok) {
+                    okays++;
+                    if (okays == 2) {
+                        listener.onComplete("friend added to your asking list", true);
+                    }
+                } else {
+                    listener.onComplete(what, false);
+                }
+            }
+        };
+
         getUser(new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
@@ -572,15 +619,15 @@ public class FireBaseData {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 if (task.isSuccessful())
-                                                                    listener.onComplete("friend added to your asking list", true);
+                                                                    super_listener.onComplete("friend added to your asking list", true);
                                                                 else
-                                                                    listener.onComplete("friend fail to be added to your asking list", false);
+                                                                    super_listener.onComplete("friend fail to be added to your asking list", false);
                                                             }
                                                         }
                                                 );
-                                                listener.onComplete("friend added to waiting list", true);
+                                                super_listener.onComplete("friend added to waiting list", true);
                                             } else
-                                                listener.onComplete("friend fail to be added to waiting list", false);
+                                                super_listener.onComplete("friend fail to be added to waiting list", false);
                                         }
                                     }
                             );
@@ -588,7 +635,7 @@ public class FireBaseData {
 
                         @Override
                         public void onCancelled(@NonNull String error) {
-                            listener.onComplete(error, false);
+                            super_listener.onComplete(error, false);
                         }
                     });
             }
@@ -824,7 +871,7 @@ public class FireBaseData {
     /**
      * gets userName by uID
      *
-     * @param ID the id of the user
+     * @param ID       the id of the user
      * @param listener pass string of the username or error
      */
     public static void getUserNameById(String ID, CustomDataListener listener) {
