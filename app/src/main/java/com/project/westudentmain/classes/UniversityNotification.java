@@ -6,8 +6,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class UniversityNotification {
+    @PropertyName("department")
     String department;
+    @PropertyName("head")
     String head;
+    @PropertyName("body")
     String body;
     @PropertyName("dateOfAlert")
     String date_of_alert;
@@ -15,6 +18,9 @@ public class UniversityNotification {
     String date_of_making;
     //TODO: picture
 
+
+    public UniversityNotification() {
+    }
 
     public UniversityNotification(String department, String head, String body, String date_of_alert) {
         this.department = department;
@@ -52,19 +58,19 @@ public class UniversityNotification {
         this.body = body;
     }
 
-    public String getDate_of_alert() {
+    public String getDateOfAlert() {
         return date_of_alert;
     }
 
-    public void setDate_of_alert(String date_of_alert) {
+    public void setDateOfAlert(String date_of_alert) {
         this.date_of_alert = date_of_alert;
     }
 
-    public String getDate_of_making() {
+    public String getDateOfMaking() {
         return date_of_making;
     }
 
-    public void setDate_of_making(String date_of_making) {
+    public void setDateOfMaking(String date_of_making) {
         this.date_of_making = date_of_making;
     }
 }

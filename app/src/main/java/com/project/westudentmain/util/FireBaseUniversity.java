@@ -51,7 +51,7 @@ public class FireBaseUniversity {
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String formattedDate = myDateObj.format(myFormatObj);
-        notification.setDate_of_making(formattedDate);
+        notification.setDateOfMaking(formattedDate);
 
         database_reference.child(UniversityNotification.class.getSimpleName()).child(formattedDate).setValue(notification).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -108,7 +108,8 @@ public class FireBaseUniversity {
                 ArrayList<UniversityNotification> notifications = new ArrayList<>();
 
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    notifications.add(child.getValue(UniversityNotification.class));
+                    UniversityNotification tmp = child.getValue(UniversityNotification.class);
+                    notifications.add(tmp);
                 }
                 listener.onDataChange(notifications);
             }
