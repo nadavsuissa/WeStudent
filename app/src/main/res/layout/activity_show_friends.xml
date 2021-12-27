@@ -53,32 +53,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
+
     <ImageView
 
         android:id="@+id/imageView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="105dp"
-        android:layout_marginTop="594dp"
+        android:layout_width="106dp"
+        android:layout_height="91dp"
+        app:layout_constraintBottom_toBottomOf="@+id/friendtextview"
+        app:layout_constraintEnd_toStartOf="@+id/friendtextview"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintTop_toTopOf="@+id/friendtextview"
+        app:layout_constraintVertical_bias="0.807"
         app:srcCompat="@drawable/logo" />
-
-<!--    <ScrollView-->
-<!--        android:id="@+id/scrollViewSignUp"-->
-<!--        android:layout_width="407dp"-->
-<!--        android:layout_height="523dp"-->
-<!--        android:layout_marginStart="2dp"-->
-<!--        android:layout_marginTop="118dp"-->
-<!--        android:background="@color/white"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent">-->
-
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/linearLayout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:background="#6CBFFA">-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friendRV"
@@ -92,7 +80,6 @@
         app:layout_constraintTop_toBottomOf="@+id/friendtextview">
 
     </androidx.recyclerview.widget.RecyclerView>
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-<!--    </ScrollView>-->
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
