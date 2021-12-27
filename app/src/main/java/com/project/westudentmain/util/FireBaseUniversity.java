@@ -11,14 +11,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.UniversityNotification;
-import com.project.westudentmain.classes.User;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 public class FireBaseUniversity {
     private static final DatabaseReference database_reference = FirebaseDatabase.getInstance().getReference();
@@ -36,7 +33,13 @@ public class FireBaseUniversity {
         return INSTANCE;
     }
 
-
+    /**
+     * push new notification to firebase
+     *
+     * @param notification
+     * @param listener
+     * @return true if can do it (user connected)
+     */
     public boolean pushNewNotification(UniversityNotification notification, CustomOkListener listener) {
         FirebaseUser firebaseUser = FireBaseLogin.getUser();
         if (firebaseUser == null) // TODO: check if uni is connected
@@ -64,6 +67,13 @@ public class FireBaseUniversity {
         return true;
     }
 
+    /**
+     * remove notification by date
+     *
+     * @param date
+     * @param listener
+     * @return true if can do it (user connected)
+     */
     public boolean removeNotification(String date, CustomOkListener listener) {
         FirebaseUser firebaseUser = FireBaseLogin.getUser();
         if (firebaseUser == null)
@@ -87,10 +97,38 @@ public class FireBaseUniversity {
      * gets notifications data
      *
      * @param listener the listener for the data or error pass ArrayList<UniversityNotification>
-     */
+     */ // TODO: check if work
     public static void getNotifications(CustomDataListener listener) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         Query applesQuery = ref.child(UniversityNotification.class.getSimpleName()).orderByChild("dateOfAlert");
+
+        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<UniversityNotification> notifications = new ArrayList<>();
+
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    notifications.add(child.getValue(UniversityNotification.class));
+                }
+                listener.onDataChange(notifications);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onCancelled(error.getMessage());
+            }
+        });
+    }
+
+    /**
+     * gets notifications data by department
+     *
+     * @param department the department to search
+     * @param listener the listener for the data or error pass ArrayList<UniversityNotification>
+     */ // TODO: check if work
+    public static void getNotificationsByDepartment(String department, CustomDataListener listener) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query applesQuery = ref.child(UniversityNotification.class.getSimpleName()).orderByChild("department").equalTo(department);
 
         applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
