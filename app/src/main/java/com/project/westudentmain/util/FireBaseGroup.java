@@ -89,7 +89,7 @@ public class FireBaseGroup {
         return true;
     }
 
-    public boolean removeGroup(String group_id, CustomOkListener listener) {
+    public boolean deleteGroup(String group_id, CustomOkListener listener) {
         FirebaseUser firebaseUser = FireBaseLogin.getUser();
         if (firebaseUser == null)
             return false;

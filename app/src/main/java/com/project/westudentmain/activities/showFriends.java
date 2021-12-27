@@ -124,6 +124,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -138,26 +139,21 @@ import java.util.ArrayList;
 
 public class showFriends extends AppCompatActivity {
     private Toolbar mToolBar;
-  //  private ImageButton delfriendbtn,addfriendbtn;
 
     private RecyclerView user_friends_rec_view;
     private ArrayList<User> users;
     private FireBaseData fire_base_data;
     private Context context = this;
+    private SearchView search_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_friends);
-        connect_items_by_id();
-        mToolBar = findViewById(R.id.main_toolbar);
+        initViews();
+
         setSupportActionBar(mToolBar);
 
-        user_friends_rec_view = findViewById(R.id.friendRV);
-
-//        users = new ArrayList<>();
-//        users.add(new User());
-//        users.add(new User("user_name2","name2", "last_name2", "mail2", "phone2"));
         fire_base_data = FireBaseData.getInstance();
         fire_base_data.getAllUsers(new CustomDataListener() {
             @Override
@@ -176,20 +172,14 @@ public class showFriends extends AppCompatActivity {
 
             }
         });
-
-
-//        addfriendbtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
     }
 
-    private void connect_items_by_id() {
-//        addfriendbtn = findViewById(R.id.btnaddfriend);
-//        delfriendbtn = findViewById(R.id.btndeletefriend);
+
+    private void initViews() {
+        mToolBar = findViewById(R.id.main_toolbar);
+        user_friends_rec_view = findViewById(R.id.friendRV);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
