@@ -19,6 +19,7 @@ import com.project.westudentmain.adapters.GroupRecycleViewAdapter;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FireBaseData;
+import com.project.westudentmain.util.FireBaseGroup;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class showGroup extends AppCompatActivity {
             }
         };
         if(getIntent().getBooleanExtra("from profile",false)){
-            Toast.makeText(context, "get my groups", Toast.LENGTH_SHORT).show();
+            FireBaseGroup.getConnectedGroups(customDataListener);
         }
         else {
             fire_base_data.getAllGroups(customDataListener);
