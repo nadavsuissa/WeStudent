@@ -1,5 +1,7 @@
 package com.project.westudentmain.classes;
 
+import com.google.firebase.database.PropertyName;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -7,7 +9,9 @@ public class UniversityNotification {
     String department;
     String head;
     String body;
+    @PropertyName("dateOfAlert")
     String date_of_alert;
+    @PropertyName("dateOfMaking")
     String date_of_making;
     //TODO: picture
 

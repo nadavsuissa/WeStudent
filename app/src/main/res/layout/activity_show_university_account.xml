@@ -39,17 +39,20 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="24dp" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/department_input"
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="department:" />
+
+        <Spinner
+            android:id="@+id/notification_department"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="department"
             android:inputType="textWebEditText"
-            android:minHeight="48dp" />
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/notification_date"
@@ -79,7 +82,6 @@
             android:id="@+id/button_send_notification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="88dp"
             android:text="send notification" />
 
     </LinearLayout>
