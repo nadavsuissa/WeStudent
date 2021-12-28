@@ -79,7 +79,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                 User selected_user = users.get(position);
                 showFriendStatus(main_user,selected_user,holder);
                 holder.button_friend_action.setOnClickListener(view ->{
-                    requestAndRemoveFriend(main_user,selected_user,holder);
+                    requestAndRemoveFriend(main_user,selected_user,holder,view);
                 });
                 holder.btn_decline.setBackgroundColor(context.getColor(R.color.red));
                 holder.btn_decline.setOnClickListener(view ->{
@@ -129,7 +129,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         }
     }
 
-    private void requestAndRemoveFriend(User main_user, User selected_user, ViewHolder holder) {
+    private void requestAndRemoveFriend(User main_user, User selected_user, ViewHolder holder, View view) {
         String btn_status =  holder.button_friend_action.getText().toString();
         if (btn_status.equals("add")) {
             holder.button_friend_action.setClickable(true);
@@ -140,6 +140,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                     FireBaseData.getIdByUserName(selected_user.getUserName(), new CustomDataListener() {
                         @Override
                         public void onDataChange(@NonNull Object data) {
+
                             sToken =(String)data;
                         }
 
@@ -148,12 +149,12 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
                         }
                     });
-//                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender("/topics/all",
-//                            "Group Notification",
-//                            "A new Group Has Been Created",
-//                            context.getApplicationContext(),
-//                            activity.getSupportFragmentManager());
-//                    notificationsSender.SendNotifications();
+                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender("/topics/all",
+                            "Friend Notification",
+                            "You have a new friend request",
+                            context.getApplicationContext(),
+                            (Activity)view.getContext());
+                    notificationsSender.SendNotifications();
                     Toast.makeText(context, "friend request sent", Toast.LENGTH_SHORT).show();
                     holder.button_friend_action.setText("waiting");
                     holder.button_friend_action.setBackgroundColor(context.getColor(R.color.yellow));
