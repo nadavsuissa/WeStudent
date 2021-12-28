@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#91D7F7"
+    android:background="#927CC7"
     >
 
     <ScrollView
@@ -22,7 +22,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg">
+            android:background="@drawable/backgroundimage">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageViewStudentCard"
@@ -306,7 +306,8 @@
                 android:layout_height="128dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="#646881"
+                android:backgroundTint="#F8CBA1"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@string/upload_student_card"
                 android:textColorLink="#E1E2EF"
                 app:layout_constraintStart_toStartOf="parent"
