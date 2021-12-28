@@ -2,16 +2,24 @@ package com.project.westudentmain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.androidproject.R;
 
 public class showspecificGroup extends AppCompatActivity {
     private Toolbar mToolBar;
+    private TextView txt_groupname, txt_groupmanagername, txt_groupdiscription, txt_groupnotifications;
+    private ImageButton imgbtn_pushnotifications;
+    private Button btn_leavegroup;
+    private RecyclerView rv_groupmembers;
 
 
     @Override
@@ -53,5 +61,16 @@ public class showspecificGroup extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    private void connect_items_by_id() {
+        txt_groupname = findViewById(R.id.groupnametv);
+        txt_groupmanagername = findViewById(R.id.groupmanageroutput);
+        txt_groupdiscription = findViewById(R.id.groupdescriptionoutput);
+        txt_groupnotifications = findViewById(R.id.groupnotificationview);
+        imgbtn_pushnotifications = findViewById(R.id.pushnotificationbutton);
+        btn_leavegroup = findViewById(R.id.leavgroupbutton);
+        rv_groupmembers= findViewById(R.id.groupmemberrv);
     }
 }
