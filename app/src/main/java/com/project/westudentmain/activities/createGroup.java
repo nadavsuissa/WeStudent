@@ -14,7 +14,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.androidproject.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.project.westudentmain.classes.Group;
+import com.project.westudentmain.util.FcmNotificationsSender;
 import com.project.westudentmain.util.FireBaseGroup;
 
 public class createGroup extends AppCompatActivity {
@@ -35,6 +37,7 @@ public class createGroup extends AppCompatActivity {
         DatabaseReference myRef = database.getReference();
 
 
+
         btn_create_group.setOnClickListener(v ->
         {
             String name = edittext_group_name.getText().toString().trim();
@@ -47,7 +50,10 @@ public class createGroup extends AppCompatActivity {
             group.setMaxCapacity(maxcapacity);
             group.setDescription(description);
 
+
+
             FireBaseGroup.getInstance().pushNewGroup(group,(what, ok) -> {
+
                 Toast.makeText(getBaseContext(),what, Toast.LENGTH_SHORT).show();
                 //TODO: switch to the group itself
                 startActivity(new Intent(this, showProfile.class));

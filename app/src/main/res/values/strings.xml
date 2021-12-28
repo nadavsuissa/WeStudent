@@ -63,6 +63,9 @@
     <string name="delete_user">Delete User</string>
     <string name="notifications">Notifications</string>
     <string name="create_project">Create Project</string>
+    <string name="members">Members:</string>
+    <string name="manager">Manager:</string>
+    <string name="leave_group">Leave Group</string>
 
     <string-array name="years">
         <item>1</item>
