@@ -35,7 +35,6 @@ public class createGroup extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference();
         DatabaseReference myRef = database.getReference();
-        //FirebaseMessaging.getInstance().subscribeToTopic("all"); // Based on this Can Send to Groups - in this Case - All Users
 
 
 
@@ -50,8 +49,7 @@ public class createGroup extends AppCompatActivity {
             group.setGroupName(name);
             group.setMaxCapacity(maxcapacity);
             group.setDescription(description);
-//            FcmNotificationsSender notificationsSender = new FcmNotificationsSender("/topics/all","Group Notification","A new Group Has Been Created",getApplicationContext(),createGroup.this);
-//            notificationsSender.SendNotifications();
+
 
 
             FireBaseGroup.getInstance().pushNewGroup(group,(what, ok) -> {
