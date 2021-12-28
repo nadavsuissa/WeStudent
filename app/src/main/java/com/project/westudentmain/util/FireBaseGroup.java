@@ -1,8 +1,16 @@
 package com.project.westudentmain.util;
 
+import android.content.Context;
+import android.net.Uri;
+import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+import com.example.androidproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -10,6 +18,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.GroupData;
 import com.project.westudentmain.classes.User;
@@ -885,6 +898,69 @@ public class FireBaseGroup {
             public void onCancelled(@NonNull String error) {
                 listener.onCancelled(error);
 
+            }
+        });
+    }
+
+    /**
+     * function to upload the photo of group
+     * // TODO: only manager can set pic?
+     * @param uri      the pic
+     * @param group_id
+     * @param listener pass true + percentage if working great else pass false + explanation
+     * @return true if can do it (user connected)
+     */
+    public void uploadGroupPhoto(Uri uri,String group_id, CustomOkListener listener) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference mStorage = storage.getReference();
+
+        StorageReference filepath = mStorage.child("GroupPhoto").child(group_id).child("GroupIcon");
+        filepath.putFile(uri).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                listener.onComplete("progress is: " + progress, true);
+            }
+        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onPaused(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                listener.onComplete("Upload is paused", false);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                listener.onComplete("Upload failed", false);
+            }
+        });
+    }
+
+    /**
+     * function to download the photo of group to ImageView
+     *
+     * @param context     the context of the screen
+     * @param img_profile the place to put the image
+     * @param listener
+     * @return true if can do it (user connected)
+     */
+    public static void downloadUserPhoto(Context context, ImageView img_profile,String group_id, CustomOkListener listener) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+
+        StorageReference file = storageRef.child("GroupPhoto").child(group_id).child("GroupIcon");
+
+        file.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri downloadUrl) {
+                Glide.with(context)
+                        .load(downloadUrl.toString())
+                        .placeholder(R.drawable.image_placeholder)
+                        .into(img_profile);
+                listener.onComplete("success", true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onComplete("Failure: " + e.getMessage(), false);
             }
         });
     }
