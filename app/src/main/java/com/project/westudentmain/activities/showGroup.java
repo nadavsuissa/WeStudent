@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.project.westudentmain.adapters.GroupRecycleViewAdapter;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FireBaseData;
+import com.project.westudentmain.util.FireBaseGroup;
 
 import java.util.ArrayList;
 
@@ -43,11 +45,9 @@ public class showGroup extends AppCompatActivity {
         image_button.setOnClickListener(view -> {
             startActivity(new Intent(this, createGroup.class));
         });
-//        groups = new ArrayList<>();
-//        groups.add(new Group());
-//        groups.add(new Group("user_name2","name2", 3, "mail2"));
+
         fire_base_data = FireBaseData.getInstance();
-        fire_base_data.getAllGroups(new CustomDataListener() {
+        CustomDataListener customDataListener = new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
                 groups = (ArrayList<Group>) data;
@@ -63,7 +63,13 @@ public class showGroup extends AppCompatActivity {
             public void onCancelled(@NonNull String error) {
 
             }
-        });
+        };
+        if(getIntent().getBooleanExtra("from profile",false)){
+            FireBaseGroup.getConnectedGroups(customDataListener);
+        }
+        else {
+            fire_base_data.getAllGroups(customDataListener);
+        }
 
     }
 

@@ -115,7 +115,7 @@ public class User extends UserData {
         return real_friends;
     }
 
-    public List<String> FriendsListList() {
+    public List<String> FriendsList() {
         List<String> real_friends = new ArrayList<>();
         this.friends.forEach((s, s2) -> {
             if (s2.equals(friend_status.friend.name())) {

@@ -13,7 +13,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +34,6 @@ import java.util.List;
 public class FireBaseData {
     private static final DatabaseReference database_reference = FirebaseDatabase.getInstance().getReference();
     private final static FireBaseData INSTANCE = new FireBaseData();
-     private static String idToken;
 
     private FireBaseData() {
     }
@@ -60,12 +58,36 @@ public class FireBaseData {
         return FireBaseLogin.getUser().getEmail();
     }
 
+    //TODO: check type of user
+    public static boolean isUniversity(CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+
+        database_reference.child("universityID").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue(String.class) != null) {
+                    listener.onComplete("is university account", true);
+                } else {
+                    listener.onComplete("not university account", false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onComplete("failed checking if university account", false);
+            }
+        });
+
+        return true;
+    }
 
     /**
      * get the email of the user by user name
      *
      * @param user_name
-     * @param listener pass the mail
+     * @param listener  pass the mail
      */
     public static void getEmailByUserName(String user_name, CustomDataListener listener) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -82,7 +104,7 @@ public class FireBaseData {
                         break;
                     }
                 }
-                if (mail == null){
+                if (mail == null) {
                     listener.onCancelled("user not found");
                 }
             }
@@ -111,6 +133,21 @@ public class FireBaseData {
         if (user == null)
             return false;
 
+        CustomOkListener super_listener = new CustomOkListener() {
+            int okays = 0;
+
+            @Override
+            public void onComplete(@NonNull String what, Boolean ok) {
+                if (ok) {
+                    okays++;
+                    if (okays == 2) {
+                        listener.onComplete("user deleted", true);
+                    }
+                } else {
+                    listener.onComplete(what, false);
+                }
+            }
+        };
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         Query applesQuery = ref.child(User.class.getSimpleName()).orderByChild("userName").equalTo(user_name);
 
@@ -123,12 +160,12 @@ public class FireBaseData {
                     remove_num++;
                 }
 
-                listener.onComplete(String.format("removed %s remove_num"), remove_num != 0);
+                super_listener.onComplete(String.format("removed %s remove_num"), remove_num != 0);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                listener.onComplete(error.getMessage(), false);
+                super_listener.onComplete(error.getMessage(), false);
             }
         });
 
@@ -137,9 +174,9 @@ public class FireBaseData {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            listener.onComplete("user deleted", true);
+                            super_listener.onComplete("user deleted", true);
                         } else {
-                            listener.onComplete("user deletion error", false);
+                            super_listener.onComplete("user deletion error", false);
                         }
                     }
                 });
@@ -331,6 +368,21 @@ public class FireBaseData {
         if (user == null)
             return false;
 
+        CustomOkListener super_listener = new CustomOkListener() {
+            int okays = 0;
+
+            @Override
+            public void onComplete(@NonNull String what, Boolean ok) {
+                if (ok) {
+                    okays++;
+                    if (okays == 2) {
+                        listener.onComplete("group added", true);
+                    }
+                } else {
+                    listener.onComplete(what, false);
+                }
+            }
+        };
 
         String id = database_reference.child(group.getClass().getSimpleName()).push().getKey(); //TODO: check if the same as user ID
         group.setGroupId(id);
@@ -341,21 +393,21 @@ public class FireBaseData {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     if (listener != null)
-                        listener.onComplete("group creation in DB", true);
+                        super_listener.onComplete("group creation in DB", true);
 
                     database_reference.child("User").child(user.getUid()).child("groupsManager").child(id).setValue(group.getGroupName()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (listener != null) {
                                 if (task.isSuccessful())
-                                    listener.onComplete("group add to user in DB", true);
+                                    super_listener.onComplete("group add to user in DB", true);
                                 else
-                                    listener.onComplete("group add to user in DB", false);
+                                    super_listener.onComplete("group add to user in DB", false);
                             }
                         }
                     });
                 } else if (listener != null)
-                    listener.onComplete("group creation in DB", false);
+                    super_listener.onComplete("group creation in DB", false);
             }
         });
 
@@ -424,13 +476,13 @@ public class FireBaseData {
         StorageReference filepath = mStorage.child("userProfile").child(user.getUid()).child("profilePhoto");
         filepath.putFile(uri).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 listener.onComplete("progress is: " + progress, true);
             }
         }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+            public void onPaused(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
                 listener.onComplete("Upload is paused", false);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -531,6 +583,22 @@ public class FireBaseData {
         if (firebaseUser == null)
             return false;
 
+        CustomOkListener super_listener = new CustomOkListener() {
+            int okays = 0;
+
+            @Override
+            public void onComplete(@NonNull String what, Boolean ok) {
+                if (ok) {
+                    okays++;
+                    if (okays == 2) {
+                        listener.onComplete("friend added to your asking list", true);
+                    }
+                } else {
+                    listener.onComplete(what, false);
+                }
+            }
+        };
+
         getUser(new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
@@ -551,15 +619,15 @@ public class FireBaseData {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 if (task.isSuccessful())
-                                                                    listener.onComplete("friend added to your asking list", true);
+                                                                    super_listener.onComplete("friend added to your asking list", true);
                                                                 else
-                                                                    listener.onComplete("friend fail to be added to your asking list", false);
+                                                                    super_listener.onComplete("friend fail to be added to your asking list", false);
                                                             }
                                                         }
                                                 );
-                                                listener.onComplete("friend added to waiting list", true);
+                                                super_listener.onComplete("friend added to waiting list", true);
                                             } else
-                                                listener.onComplete("friend fail to be added to waiting list", false);
+                                                super_listener.onComplete("friend fail to be added to waiting list", false);
                                         }
                                     }
                             );
@@ -567,7 +635,7 @@ public class FireBaseData {
 
                         @Override
                         public void onCancelled(@NonNull String error) {
-                            listener.onComplete(error, false);
+                            super_listener.onComplete(error, false);
                         }
                     });
             }
@@ -638,6 +706,75 @@ public class FireBaseData {
             @Override
             public void onCancelled(@NonNull String error) {
                 listener.onComplete(error + " in askToBeFriend", false);
+            }
+        });
+
+        return true;
+    }
+
+    /**
+     *  get array of connected Users
+     * @param listener pass  ArrayList<User>
+     * @return if can even do it(user is logged in)
+     */
+    public boolean getFriends(CustomDataListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+
+        getUser(new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                User me = (User) data;
+                List<String> friends = me.FriendsList();
+
+                CustomDataListener super_listener = new CustomDataListener() {
+                    final int size_of_list = friends.size();
+                    ArrayList<User> friends_list = new ArrayList<>();
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        friends_list.add((User) data);
+                        if (friends_list.size() == size_of_list){
+                            listener.onDataChange(friends_list);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onCancelled(error);
+                    }
+                };
+                friends.forEach(s -> {
+                    getIdByUserName(s, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+                            database_reference.child(User.class.getSimpleName()).child((String) data).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    User user = snapshot.getValue(User.class);
+                                    if (user!=null)
+                                        super_listener.onDataChange(user);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    super_listener.onCancelled(error.getMessage());
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            super_listener.onCancelled(error);
+                        }
+                    });
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
             }
         });
 
@@ -800,5 +937,29 @@ public class FireBaseData {
         });
     }
 
+    /**
+     * gets userName by uID
+     *
+     * @param ID       the id of the user
+     * @param listener pass string of the username or error
+     */
+    public static void getUserNameById(String ID, CustomDataListener listener) {
+        database_reference.child(User.class.getSimpleName()).child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User data = snapshot.getValue(User.class);
+
+                if (data == null)
+                    listener.onCancelled("no user data");
+                else
+                    listener.onDataChange(data.getUserName());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onCancelled(error.getMessage());
+            }
+        });
+    }
 
 }
