@@ -557,6 +557,7 @@ public class FireBaseGroup {
 
         return true;
     }
+
     /**
      * if user want to leave group
      *
@@ -710,19 +711,20 @@ public class FireBaseGroup {
         return true;
     }
 
-    public void getGroupManager(String group_id,CustomDataListener listener){
+    public void getGroupManager(String group_id, CustomDataListener listener) {
         getGroupData(group_id, new CustomDataListener() {
             boolean done = false;
+
             @Override
             public void onDataChange(@NonNull Object data) {
                 Group group = (Group) data;
                 group.getUsers().forEach((user_id, user_status) -> {
-                    if (user_status == GroupData.user_status.manager){
+                    if (user_status == GroupData.user_status.manager) {
                         FireBaseData.getUserNameById(user_id, listener);
                         done = true;
                     }
                 });
-                if (!done){
+                if (!done) {
                     listener.onCancelled("haven't found the manager");
                 }
             }
@@ -734,4 +736,56 @@ public class FireBaseGroup {
         });
     }
 
+    /**
+     * push notification to the group - WARNING: it doesn't check if user that friend of the group sent that
+     *
+     * @param group_id
+     * @param notification the notification
+     * @param listener     pass ok
+     */
+    public static void pushNotification(String group_id, String notification, CustomOkListener listener) {
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                database_reference.child(Group.class.getSimpleName()).child(group_id).child("notification").setValue(notification).addOnCompleteListener(runnable -> {
+                    if (runnable.isSuccessful()) {
+                        listener.onComplete("pushed successful", true);
+                    } else {
+                        listener.onComplete("push failed", false);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onComplete(error, false);
+
+            }
+        });
+    }
+
+    /**
+     * get notification of a group
+     *
+     * @param group_id
+     * @param listener pass String or error
+     */
+    public static void getNotification(String group_id, CustomDataListener listener) {
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                String notification = ((Group) data).getNotification();
+                if (notification != null)
+                    listener.onDataChange(notification);
+                else
+                    listener.onCancelled("notification is empty");
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
+
+            }
+        });
+    }
 }
