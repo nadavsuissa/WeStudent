@@ -15,7 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.androidproject.R;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.project.westudentmain.activities.createGroup;
+import com.project.westudentmain.activities.showFriends;
+import com.project.westudentmain.activities.showProfile;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FcmNotificationsSender;
@@ -27,7 +30,8 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     private ArrayList<User> users = new ArrayList<>();
     Context context;
     String sToken;
-    Activity activity = (Activity) context;
+
+
 
     public UserRecyclerViewAdapter(Context context) {
         this.context = context;
@@ -134,6 +138,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             FireBaseData.getInstance().askToBeFriend(selected_user.getUserName(), (what, ok) -> {
                 //TODO: ask if it ok in pop up massage
                 if (ok) {
+                    FirebaseMessaging.getInstance().subscribeToTopic("all");
                     FireBaseData.getIdByUserName(selected_user.getUserName(), new CustomDataListener() {
                         @Override
                         public void onDataChange(@NonNull Object data) {
@@ -145,8 +150,12 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
                         }
                     });
-                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender(sToken,"Group Notification","A new Group Has Been Created", context.getApplicationContext(),activity);
-                    notificationsSender.SendNotifications();
+//                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender("/topics/all",
+//                            "Group Notification",
+//                            "A new Group Has Been Created",
+//                            context.getApplicationContext(),
+//                            activity.getSupportFragmentManager());
+//                    notificationsSender.SendNotifications();
                     Toast.makeText(context, "friend request sent", Toast.LENGTH_SHORT).show();
                     holder.button_friend_action.setText("waiting");
                     holder.button_friend_action.setBackgroundColor(context.getColor(R.color.yellow));

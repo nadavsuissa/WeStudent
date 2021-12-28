@@ -79,8 +79,6 @@ public class FcmNotificationsSender  {
                     header.put("content-type", "application/json");
                     header.put("authorization", "key=" + fcmServerKey);
                     return header;
-
-
                 }
             };
             requestQueue.add(request);
@@ -89,9 +87,6 @@ public class FcmNotificationsSender  {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-
 
     }
 }
