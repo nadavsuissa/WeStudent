@@ -962,4 +962,27 @@ public class FireBaseData {
         });
     }
 
+    /**
+     * get user by id
+     * @param user_id
+     * @param listener pass User
+     */
+    public static void getUserById(String user_id, CustomDataListener listener) {
+        database_reference.child(User.class.getSimpleName()).child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User data = snapshot.getValue(User.class);
+
+                if (data == null)
+                    listener.onCancelled("no user data");
+                else
+                    listener.onDataChange(data);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onCancelled(error.getMessage());
+            }
+        });
+    }
 }

@@ -788,4 +788,104 @@ public class FireBaseGroup {
             }
         });
     }
+
+    /**
+     * get list of connected users
+     * @param group_id
+     * @param listener pass List<User>
+     */
+    public static void getGroupUsersConnected(String group_id, CustomDataListener listener) {
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                Group group = (Group) data;
+                List<String> users_id_list = group.allUsersList();
+                List<User> user_list = new ArrayList<>();
+                CustomDataListener super_listener = new CustomDataListener() {
+                    final int user_list_size = users_id_list.size();
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        user_list.add((User) data);
+                        if (user_list.size() == user_list_size){
+                            listener.onDataChange(user_list);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onCancelled(error);
+                    }
+                };
+                users_id_list.forEach(user_id -> {
+                    FireBaseData.getUserById(user_id, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+                            super_listener.onDataChange(data);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            super_listener.onCancelled(error);
+                        }
+                    });
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
+
+            }
+        });
+    }
+
+    /**
+     * get list of the group friends users
+     * @param group_id
+     * @param listener pass List<User>
+     */
+    public static void getGroupUsersFriends(String group_id, CustomDataListener listener) {
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                Group group = (Group) data;
+                List<String> users_id_list = group.friendsUsersList();
+                List<User> user_list = new ArrayList<>();
+                CustomDataListener super_listener = new CustomDataListener() {
+                    final int user_list_size = users_id_list.size();
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        user_list.add((User) data);
+                        if (user_list.size() == user_list_size){
+                            listener.onDataChange(user_list);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onCancelled(error);
+                    }
+                };
+                users_id_list.forEach(user_id -> {
+                    FireBaseData.getUserById(user_id, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+                            super_listener.onDataChange(data);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            super_listener.onCancelled(error);
+                        }
+                    });
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
+
+            }
+        });
+    }
 }
