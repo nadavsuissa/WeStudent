@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/backgroundimage"
     tools:context="com.project.westudentmain.activities.showUniversityAccount">
 
     <LinearLayout
@@ -91,6 +92,8 @@
             android:id="@+id/button_send_notification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#F8CBA1"
+            android:textColor="@color/colorPrimaryDark"
             android:text="send notification" />
 
     </LinearLayout>

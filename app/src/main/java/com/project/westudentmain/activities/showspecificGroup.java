@@ -17,7 +17,7 @@ public class showspecificGroup extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_showspecific_group);
+        setContentView(R.layout.activity_group_page);
         mToolBar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolBar);
     }
