@@ -17,8 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.project.westudentmain.classes.UniversityNotification;
 import com.project.westudentmain.util.CustomDataListener;
+import com.project.westudentmain.util.FcmNotificationsSender;
 import com.project.westudentmain.util.FireBaseUniversity;
 
 import java.text.SimpleDateFormat;
@@ -41,6 +43,8 @@ public class showUniversityAccount extends AppCompatActivity implements AdapterV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_university_account);
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
+
 
         department = findViewById(R.id.notification_department);
         department.setOnItemSelectedListener(this);
@@ -90,7 +94,16 @@ public class showUniversityAccount extends AppCompatActivity implements AdapterV
                 return;
             }
             UniversityNotification notification = new UniversityNotification(string_department, string_head, string_body, string_date);
+
             FireBaseUniversity.getInstance().pushNewNotification(notification, (what, ok) -> {
+                FcmNotificationsSender notificationsSender = new FcmNotificationsSender(
+                        "/topics/all",
+                        string_head,
+                        string_body,
+                        getApplicationContext(),
+                        showUniversityAccount.this
+                );
+                notificationsSender.SendNotifications();
                 Toast.makeText(this, what, Toast.LENGTH_SHORT).show();
             });
         });
