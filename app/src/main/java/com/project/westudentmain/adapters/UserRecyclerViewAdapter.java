@@ -138,27 +138,13 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             FireBaseData.getInstance().askToBeFriend(selected_user.getUserName(), (what, ok) -> {
                 //TODO: ask if it ok in pop up massage
                 if (ok) {
-                    FireBaseData.getIdByUserName(selected_user.getUserName(), new CustomDataListener() {
-                        @Override
-                        public void onDataChange(@NonNull Object data) {
-
-                            sToken =(String)data;
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull String error) {
-
-                        }
-                    });
                     FireBaseToken.getUserToken(selected_user.getUserName(), new CustomDataListener() {
                         @Override
                         public void onDataChange(@NonNull Object data) {
-
                             if (true){
-                                sToken= (String) data;
+                                sToken = (String) data;
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull String error) {
 
