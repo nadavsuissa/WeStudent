@@ -3,6 +3,7 @@ package com.project.westudentmain.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidproject.R;
+import com.google.gson.Gson;
+import com.project.westudentmain.activities.showGroup;
+import com.project.westudentmain.activities.showspecificGroup;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
@@ -45,6 +49,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        Group selected_group = groups.get(position);
         holder.txt_group_name.setText(groups.get(position).getGroupName());
         holder.txt_intent.setText(groups.get(position).getDescription());
 
@@ -52,9 +57,12 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
             @Override
             public void onClick(View v) {
                 // TODO: open group page here
+                Gson gson = new Gson();
+                String group_json = gson.toJson(selected_group);
+                v.getContext().startActivity(new Intent(v.getContext(), showspecificGroup.class).putExtra("from group_adapter",group_json));
             }
         });
-        Group selected_group = groups.get(position);
+
         showGroupStatus(selected_group,holder);
         holder.btn_join.setOnClickListener(view->{
             // if manager delete else joinAndLeaveGroup
