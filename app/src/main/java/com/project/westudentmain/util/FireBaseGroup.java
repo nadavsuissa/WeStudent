@@ -942,7 +942,7 @@ public class FireBaseGroup {
      * @param listener
      * @return true if can do it (user connected)
      */
-    public static void downloadUserPhoto(Context context, ImageView img_profile,String group_id, CustomOkListener listener) {
+    public void downloadUserPhoto(Context context, ImageView img_profile,String group_id, CustomOkListener listener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
 
