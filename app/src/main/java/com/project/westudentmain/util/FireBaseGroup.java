@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.project.westudentmain.classes.Group;
+import com.project.westudentmain.classes.GroupData;
 import com.project.westudentmain.classes.User;
 
 import java.time.LocalDateTime;
@@ -707,6 +708,30 @@ public class FireBaseGroup {
         });
 
         return true;
+    }
+
+    public void getGroupManager(String group_id,CustomDataListener listener){
+        getGroupData(group_id, new CustomDataListener() {
+            boolean done = false;
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                Group group = (Group) data;
+                group.getUsers().forEach((user_id, user_status) -> {
+                    if (user_status == GroupData.user_status.manager){
+                        FireBaseData.getUserNameById(user_id, listener);
+                        done = true;
+                    }
+                });
+                if (!done){
+                    listener.onCancelled("haven't found the manager");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
+            }
+        });
     }
 
 }
