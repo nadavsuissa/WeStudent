@@ -23,6 +23,8 @@ import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FcmNotificationsSender;
 import com.project.westudentmain.util.FireBaseData;
+import com.project.westudentmain.util.FireBaseToken;
+
 import java.util.ArrayList;
 
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.ViewHolder> {
@@ -136,7 +138,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             FireBaseData.getInstance().askToBeFriend(selected_user.getUserName(), (what, ok) -> {
                 //TODO: ask if it ok in pop up massage
                 if (ok) {
-                    FirebaseMessaging.getInstance().subscribeToTopic("all");
                     FireBaseData.getIdByUserName(selected_user.getUserName(), new CustomDataListener() {
                         @Override
                         public void onDataChange(@NonNull Object data) {
@@ -149,7 +150,21 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
                         }
                     });
-                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender("/topics/all",
+                    FireBaseToken.getUserToken(selected_user.getUserName(), new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+
+                            if (true){
+                                sToken= (String) data;
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+
+                        }
+                    });
+                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender(sToken,
                             "Friend Notification",
                             "You have a new friend request",
                             context.getApplicationContext(),

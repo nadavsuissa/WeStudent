@@ -142,21 +142,18 @@ FireBaseUniversity.getNotifications(new CustomDataListener() {
             }
         });
 
-
-// send and get group notification
-        FireBaseGroup.pushNotification("-MrYLsUiOGmHDuqN9nMu","test",(what, ok) -> {
-            Toast.makeText(getBaseContext(), what+ok, Toast.LENGTH_SHORT).show();
-        });
-
-        FireBaseGroup.getNotification("-MrYLsUiOGmHDuqN9nMu", new CustomDataListener() {
+// get token
+        FireBaseToken.getUserToken("i32", new CustomDataListener() {
             @Override
             public void onDataChange(@NonNull Object data) {
                 Toast.makeText(getBaseContext(), (String) data, Toast.LENGTH_SHORT).show();
+                if (true){
+
+                }
             }
 
             @Override
             public void onCancelled(@NonNull String error) {
-                Toast.makeText(getBaseContext(), error, Toast.LENGTH_SHORT).show();
 
             }
         });
