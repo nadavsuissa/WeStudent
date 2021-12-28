@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import com.example.androidproject.R;
 public class showspecificGroup extends AppCompatActivity {
     private Toolbar mToolBar;
     private TextView txt_groupname, txt_groupmanagername, txt_groupdiscription, txt_groupnotifications;
+    private EditText edtxt_enternotifications;
     private ImageButton imgbtn_pushnotifications;
     private Button btn_leavegroup;
     private RecyclerView rv_groupmembers;
@@ -69,6 +71,7 @@ public class showspecificGroup extends AppCompatActivity {
         txt_groupmanagername = findViewById(R.id.groupmanageroutput);
         txt_groupdiscription = findViewById(R.id.groupdescriptionoutput);
         txt_groupnotifications = findViewById(R.id.groupnotificationview);
+        edtxt_enternotifications = findViewById((R.id.edtxt_enternotification));
         imgbtn_pushnotifications = findViewById(R.id.pushnotificationbutton);
         btn_leavegroup = findViewById(R.id.leavgroupbutton);
         rv_groupmembers= findViewById(R.id.groupmemberrv);
