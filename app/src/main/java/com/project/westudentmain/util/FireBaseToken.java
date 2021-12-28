@@ -27,6 +27,11 @@ public class FireBaseToken {
         return INSTANCE;
     }
 
+    /**
+     *  getting specific user token by user name
+     * @param user_name
+     * @param listener pass String back or error
+     */
     public static void getUserToken(String user_name, CustomDataListener listener) {
         database_reference.child("tokens").child(user_name).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -46,6 +51,12 @@ public class FireBaseToken {
         });
     }
 
+    /**
+     * send the token to the server under user name
+     * @param token
+     * @param listener if all good
+     * @return if user is connected
+     */
     public static boolean updateToken(String token, CustomOkListener listener) {
         if (!FireBaseLogin.userIsLoggedIn())
             return false;
