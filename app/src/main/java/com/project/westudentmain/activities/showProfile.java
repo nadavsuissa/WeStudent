@@ -217,7 +217,7 @@ public class showProfile extends AppCompatActivity {
     public void onBackPressed() {
                 AlertDialog alertDialog = new AlertDialog.Builder(this)
                 //set title
-                .setTitle("Are you sure to exit?")
+                .setTitle("Are you sure you want to exit?")
                 //set positive button
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override

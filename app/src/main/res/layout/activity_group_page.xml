@@ -37,13 +37,14 @@
 
     <TextView
         android:id="@+id/groupnametv"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="128dp"
         android:gravity="center"
-        android:textSize="20sp"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -63,7 +64,7 @@
         android:text="@string/members"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupnotificationview" />
+        app:layout_constraintTop_toBottomOf="@+id/scroll_notifications" />
 
     <TextView
         android:id="@+id/groupnotificationtv"
@@ -101,15 +102,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groupnametv" />
 
-    <TextView
-        android:id="@+id/groupnotificationview"
+    <ScrollView
+        android:id="@+id/scroll_notifications"
         android:layout_width="315dp"
         android:layout_height="111dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupnotificationtv" />
+        app:layout_constraintTop_toBottomOf="@+id/groupnotificationtv">
+
+        <TextSwitcher
+            android:id="@+id/textSwitcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center" />
+    </ScrollView>
+
 
     <TextView
         android:id="@+id/groupmanagertv"
@@ -153,10 +161,17 @@
         android:layout_marginStart="68dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="#F8CBA1"
-        android:textColor="@color/colorPrimaryDark"
         android:text="@string/leave_group"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groupmemberrv" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="133dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

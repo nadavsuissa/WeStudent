@@ -2,6 +2,7 @@ package com.project.westudentmain.classes;
 
 import com.google.firebase.database.PropertyName;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,6 +95,7 @@ public class GroupData {
     public Map<String, user_status> getUsers() {
         return users;
     }
+
 
     public void setUsers(Map<String, user_status> users) {
         this.users = users;

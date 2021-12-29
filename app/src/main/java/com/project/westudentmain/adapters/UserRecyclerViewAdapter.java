@@ -140,6 +140,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                     FireBaseData.getIdByUserName(selected_user.getUserName(), new CustomDataListener() {
                         @Override
                         public void onDataChange(@NonNull Object data) {
+
                             sToken =(String)data;
                         }
 
@@ -148,9 +149,10 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
                         }
                     });
-                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender(sToken,
-                            "Group Notification",
-                            "A new Group Has Been Created",
+
+                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender("/topics/all",
+                            "Friend Notification",
+                            "You have a new friend request",
                             context.getApplicationContext(),
                             (Activity)view.getContext());
                     notificationsSender.SendNotifications();
