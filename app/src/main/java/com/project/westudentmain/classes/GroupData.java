@@ -26,6 +26,9 @@ public class GroupData {
     @PropertyName("groupActivityManager")
     protected GroupActivityManager group_activity_manager;
 
+    @PropertyName("notification")
+    protected String notification;
+
     public enum user_status {
         asking,  // asked them to accept
         waiting, // waiting for the group to accept
@@ -107,5 +110,13 @@ public class GroupData {
 
     public void setGroupActivityManager(GroupActivityManager group_activity_manager) {
         this.group_activity_manager = group_activity_manager;
+    }
+
+    public String getNotification() {
+        return notification;
+    }
+
+    public void setNotification(String notification) {
+        this.notification = notification;
     }
 }

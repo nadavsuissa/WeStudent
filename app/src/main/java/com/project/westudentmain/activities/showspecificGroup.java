@@ -5,17 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextSwitcher;
@@ -23,20 +20,20 @@ import android.widget.Toast;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.example.androidproject.R;
+
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.GroupData;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
-import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseGroup;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class showspecificGroup extends AppCompatActivity {
     private Toolbar mToolBar;
@@ -48,6 +45,7 @@ public class showspecificGroup extends AppCompatActivity {
     private final Context context =this;
     private final FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
     private GroupData group;
+
 
 
     @Override
@@ -104,12 +102,14 @@ public class showspecificGroup extends AppCompatActivity {
         alert.setView(input);
 
         alert.setPositiveButton("Send", (dialog, whichButton) -> {
-            //TODO: here you send the notifications to the members group
-            FireBaseGroup.getGroupData(group.getGroupId(), new CustomDataListener() {
+
+
+            FireBaseGroup.getGroupUsersFriends(group.getGroupId(), new CustomDataListener() {
                 @Override
                 public void onDataChange(@NonNull Object data) {
-                    GroupData curr_group = (Group)data;
-                    // list of users here
+                    ArrayList<User> group_friends = (ArrayList<User>)data;
+
+                    //TODO: here you send the notifications to the members group using group_friends
                 }
 
                 @Override

@@ -15,14 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.androidproject.R;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.project.westudentmain.activities.createGroup;
-import com.project.westudentmain.activities.showFriends;
-import com.project.westudentmain.activities.showProfile;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FcmNotificationsSender;
 import com.project.westudentmain.util.FireBaseData;
+import com.project.westudentmain.util.FireBaseToken;
+
 import java.util.ArrayList;
 
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.ViewHolder> {
@@ -136,21 +134,20 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             FireBaseData.getInstance().askToBeFriend(selected_user.getUserName(), (what, ok) -> {
                 //TODO: ask if it ok in pop up massage
                 if (ok) {
-                    FirebaseMessaging.getInstance().subscribeToTopic("all");
-                    FireBaseData.getIdByUserName(selected_user.getUserName(), new CustomDataListener() {
+                    FireBaseToken.getUserToken(selected_user.getUserName(), new CustomDataListener() {
                         @Override
                         public void onDataChange(@NonNull Object data) {
-
-                            sToken =(String)data;
+                            if (true){
+                                sToken = (String) data;
+                            }
                         }
-
                         @Override
                         public void onCancelled(@NonNull String error) {
 
                         }
                     });
 
-                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender("/topics/all",
+                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender(sToken,
                             "Friend Notification",
                             "You have a new friend request",
                             context.getApplicationContext(),

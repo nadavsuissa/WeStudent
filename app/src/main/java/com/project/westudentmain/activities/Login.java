@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,10 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.project.westudentmain.Validation;
 import com.project.westudentmain.util.CustomOkListener;
 import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseLogin;
+import com.project.westudentmain.util.FireBaseToken;
 
 public class Login extends AppCompatActivity {
     private EditText user_name, pass_word;
@@ -53,6 +58,21 @@ public class Login extends AppCompatActivity {
                                         startActivity(new Intent(Login.this, showUniversityAccount.class));
                                     }else {
                                         startActivity(new Intent(Login.this, showProfile.class));
+                                        //send token
+                                        FirebaseMessaging.getInstance().getToken()
+                                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                    private static final String TAG = "token";
+
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<String> task) {
+                                                        if (!task.isSuccessful()) {
+                                                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                                                            return;
+                                                        }
+                                                        String token = task.getResult();
+                                                        FireBaseToken.updateToken(token, (what, ok) -> Log.w(TAG, what+" "+ok));
+                                                    }
+                                                });
                                         //TODO:close this activity?
                                     }
                                 });

@@ -1,8 +1,16 @@
 package com.project.westudentmain.util;
 
+import android.content.Context;
+import android.net.Uri;
+import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+import com.example.androidproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -10,7 +18,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.project.westudentmain.classes.Group;
+import com.project.westudentmain.classes.GroupData;
 import com.project.westudentmain.classes.User;
 
 import java.time.LocalDateTime;
@@ -556,6 +570,7 @@ public class FireBaseGroup {
 
         return true;
     }
+
     /**
      * if user want to leave group
      *
@@ -709,4 +724,244 @@ public class FireBaseGroup {
         return true;
     }
 
+    public void getGroupManager(String group_id, CustomDataListener listener) {
+        getGroupData(group_id, new CustomDataListener() {
+            boolean done = false;
+
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                Group group = (Group) data;
+                group.getUsers().forEach((user_id, user_status) -> {
+                    if (user_status == GroupData.user_status.manager) {
+                        FireBaseData.getUserNameById(user_id, listener);
+                        done = true;
+                    }
+                });
+                if (!done) {
+                    listener.onCancelled("haven't found the manager");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
+            }
+        });
+    }
+
+    /**
+     * push notification to the group - WARNING: it doesn't check if user that friend of the group sent that
+     *
+     * @param group_id
+     * @param notification the notification
+     * @param listener     pass ok
+     */
+    public static void pushNotification(String group_id, String notification, CustomOkListener listener) {
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                database_reference.child(Group.class.getSimpleName()).child(group_id).child("notification").setValue(notification).addOnCompleteListener(runnable -> {
+                    if (runnable.isSuccessful()) {
+                        listener.onComplete("pushed successful", true);
+                    } else {
+                        listener.onComplete("push failed", false);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onComplete(error, false);
+
+            }
+        });
+    }
+
+    /**
+     * get notification of a group
+     *
+     * @param group_id
+     * @param listener pass String or error
+     */
+    public static void getNotification(String group_id, CustomDataListener listener) {
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                String notification = ((Group) data).getNotification();
+                if (notification != null)
+                    listener.onDataChange(notification);
+                else
+                    listener.onCancelled("notification is empty");
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
+
+            }
+        });
+    }
+
+    /**
+     * get list of connected users
+     * @param group_id
+     * @param listener pass List<User>
+     */
+    public static void getGroupUsersConnected(String group_id, CustomDataListener listener) {
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                Group group = (Group) data;
+                List<String> users_id_list = group.allUsersList();
+                List<User> user_list = new ArrayList<>();
+                CustomDataListener super_listener = new CustomDataListener() {
+                    final int user_list_size = users_id_list.size();
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        user_list.add((User) data);
+                        if (user_list.size() == user_list_size){
+                            listener.onDataChange(user_list);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onCancelled(error);
+                    }
+                };
+                users_id_list.forEach(user_id -> {
+                    FireBaseData.getUserById(user_id, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+                            super_listener.onDataChange(data);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            super_listener.onCancelled(error);
+                        }
+                    });
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
+
+            }
+        });
+    }
+
+    /**
+     * get list of the group friends users
+     * @param group_id
+     * @param listener pass List<User>
+     */
+    public static void getGroupUsersFriends(String group_id, CustomDataListener listener) {
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                Group group = (Group) data;
+                List<String> users_id_list = group.friendsUsersList();
+                List<User> user_list = new ArrayList<>();
+                CustomDataListener super_listener = new CustomDataListener() {
+                    final int user_list_size = users_id_list.size();
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        user_list.add((User) data);
+                        if (user_list.size() == user_list_size){
+                            listener.onDataChange(user_list);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onCancelled(error);
+                    }
+                };
+                users_id_list.forEach(user_id -> {
+                    FireBaseData.getUserById(user_id, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+                            super_listener.onDataChange(data);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            super_listener.onCancelled(error);
+                        }
+                    });
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
+
+            }
+        });
+    }
+
+    /**
+     * function to upload the photo of group
+     * // TODO: only manager can set pic?
+     * @param uri      the pic
+     * @param group_id
+     * @param listener pass true + percentage if working great else pass false + explanation
+     * @return true if can do it (user connected)
+     */
+    public void uploadGroupPhoto(Uri uri,String group_id, CustomOkListener listener) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference mStorage = storage.getReference();
+
+        StorageReference filepath = mStorage.child("GroupPhoto").child(group_id).child("GroupIcon");
+        filepath.putFile(uri).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                listener.onComplete("progress is: " + progress, true);
+            }
+        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onPaused(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                listener.onComplete("Upload is paused", false);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                listener.onComplete("Upload failed", false);
+            }
+        });
+    }
+
+    /**
+     * function to download the photo of group to ImageView
+     *
+     * @param context     the context of the screen
+     * @param img_profile the place to put the image
+     * @param listener
+     * @return true if can do it (user connected)
+     */
+    public void downloadUserPhoto(Context context, ImageView img_profile,String group_id, CustomOkListener listener) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+
+        StorageReference file = storageRef.child("GroupPhoto").child(group_id).child("GroupIcon");
+
+        file.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri downloadUrl) {
+                Glide.with(context)
+                        .load(downloadUrl.toString())
+                        .placeholder(R.drawable.image_placeholder)
+                        .into(img_profile);
+                listener.onComplete("success", true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onComplete("Failure: " + e.getMessage(), false);
+            }
+        });
+    }
 }
