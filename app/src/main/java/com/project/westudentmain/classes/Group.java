@@ -20,6 +20,7 @@ public class Group extends GroupData {
         group_public = true;
     }
 
+
     public List<String> allUsersList() {
         List<String> all_users = new ArrayList<>();
         this.users.forEach((s, s2) -> {

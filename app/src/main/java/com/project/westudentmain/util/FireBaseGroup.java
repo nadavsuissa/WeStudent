@@ -623,6 +623,175 @@ public class FireBaseGroup {
         return true;
     }
 
+    public boolean declineByManagerGroup(String group_id, String user_name, CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+        if (user_name == null)
+            return false;
+
+        //get id of user
+        FireBaseData.getIdByUserName(user_name, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                String user_id = (String) data;
+
+                getGroupData(group_id, new CustomDataListener() {
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        Group group = (Group) data;
+                        //check if waiting and main user is manager
+                        if (group.isOnManagerList(firebaseUser.getUid()) && group.isOnWaitList(user_id)) {
+                            //change friend in group
+                            database_reference.child(Group.class.getSimpleName()).child(group_id).child("users").child(user_id).removeValue().addOnCompleteListener(
+                                    task -> {
+                                        if (task.isSuccessful()) {
+                                            //remove friend in user
+                                            database_reference.child(User.class.getSimpleName()).child(user_id).child("groups").child(group_id).removeValue().addOnCompleteListener(
+                                                    task1 -> {
+                                                        if (task.isSuccessful()) {
+                                                            listener.onComplete("decline user successfully", true);
+                                                        } else {
+                                                            listener.onComplete("failed declining in user", false);
+                                                        }
+
+                                                    }
+                                            );
+
+                                        } else {
+                                            listener.onComplete("failed declining in group", false);
+                                        }
+                                    });
+                        } else {
+                            listener.onComplete("not friend of the group or no manager", false);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onComplete("there is no group", false);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onComplete("there is no user", false);
+            }
+        });
+
+        return true;
+    }
+
+    public static boolean kickByManagerGroup(String group_id, String user_name, CustomOkListener listener) {
+        FirebaseUser firebaseUser = FireBaseLogin.getUser();
+        if (firebaseUser == null)
+            return false;
+        if (user_name == null)
+            return false;
+
+        //get id of user
+        FireBaseData.getIdByUserName(user_name, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                String user_id = (String) data;
+
+                getGroupData(group_id, new CustomDataListener() {
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        Group group = (Group) data;
+                        //check if asking and main user is manager
+                        if (group.isOnManagerList(firebaseUser.getUid()) && group.isFriend(user_id)) {
+                            //change friend in group
+                            database_reference.child(Group.class.getSimpleName()).child(group_id).child("users").child(user_id).removeValue().addOnCompleteListener(
+                                    task -> {
+                                        if (task.isSuccessful()) {
+                                            //remove friend in user
+                                            database_reference.child(User.class.getSimpleName()).child(user_id).child("groups").child(group_id).removeValue().addOnCompleteListener(
+                                                    task1 -> {
+                                                        if (task.isSuccessful()) {
+                                                            listener.onComplete("kicked user successfully", true);
+                                                        } else {
+                                                            listener.onComplete("failed kicking in user", false);
+                                                        }
+
+                                                    }
+                                            );
+
+                                        } else {
+                                            listener.onComplete("failed kicking in group", false);
+                                        }
+                                    });
+                        } else {
+                            listener.onComplete("not friend of the group or no manager", false);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onComplete("there is no group", false);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onComplete("there is no user", false);
+            }
+        });
+
+        return true;
+    }
+    /**
+     * get list of the group asking users
+     * @param group_id
+     * @param listener pass List<User>
+     */
+    public static void getGroupAskingUsers(String group_id, CustomDataListener listener) {
+        getGroupData(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                Group group = (Group) data;
+                List<String> users_id_list = group.waitingUsersList();
+                List<User> user_list = new ArrayList<>();
+                CustomDataListener super_listener = new CustomDataListener() {
+                    final int user_list_size = users_id_list.size();
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        user_list.add((User) data);
+                        if (user_list.size() == user_list_size){
+                            listener.onDataChange(user_list);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onCancelled(error);
+                    }
+                };
+                users_id_list.forEach(user_id -> {
+                    FireBaseData.getUserById(user_id, new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+                            super_listener.onDataChange(data);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                            super_listener.onCancelled(error);
+                        }
+                    });
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
+
+            }
+        });
+    }
+
     /**
      * check if user is the group manager
      *

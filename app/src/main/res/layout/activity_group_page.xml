@@ -50,8 +50,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/groupmemberrv"
-        android:layout_width="416dp"
-        android:layout_height="196dp"
+        android:layout_width="406dp"
+        android:layout_height="111dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,29 +79,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
+
     <ImageButton
         android:id="@+id/pushnotificationbutton"
         android:layout_width="52dp"
         android:layout_height="51dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="52dp"
         android:layout_marginEnd="32dp"
         android:adjustViewBounds="true"
         android:background="#0000"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/scroll_notifications"
         app:layout_constraintTop_toTopOf="@+id/guideline4"
         app:srcCompat="@drawable/notifications"
         tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
-
 
     <TextView
         android:id="@+id/groupmanageroutput"
         android:layout_width="160dp"
         android:layout_height="50dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/rounded_corner"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,8 +110,8 @@
 
     <ScrollView
         android:id="@+id/scroll_notifications"
-        android:layout_width="315dp"
-        android:layout_height="111dp"
+        android:layout_width="318dp"
+        android:layout_height="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groupnotificationtv">
 
@@ -128,13 +129,13 @@
         android:id="@+id/groupmanagertv"
         android:layout_width="160dp"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/rounded_corner"
         android:gravity="center"
         android:text="@string/manager"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.58"
         app:layout_constraintStart_toEndOf="@+id/groupmanageroutput"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
@@ -149,16 +150,21 @@
         android:text="@string/group_description"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupmanagertv" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/groupmanagertv"
+        app:layout_constraintTop_toBottomOf="@+id/groupmanagertv"
+        app:layout_constraintVertical_bias="0.526" />
 
     <ImageView
         android:id="@+id/imageView29"
-        android:layout_width="133dp"
-        android:layout_height="61dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="68dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupmemberrv"
+        android:layout_width="93dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toStartOf="@+id/groupnametv"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         app:srcCompat="@drawable/logo"
         tools:ignore="ContentDescription" />
 
@@ -166,27 +172,49 @@
         android:id="@+id/leavgroupbutton"
         android:layout_width="133dp"
         android:layout_height="61dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="#F8CBA1"
         android:text="@string/leave_group"
         android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupmemberrv" />
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="133dp" />
+        app:layout_constraintGuide_begin="118dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="299dp" />
+        app:layout_constraintGuide_begin="230dp" />
+
+    <TextView
+        android:id="@+id/asking_users"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Asking:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groupmemberrv" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_asking_users"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/leavgroupbutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/asking_users" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

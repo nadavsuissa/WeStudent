@@ -36,6 +36,7 @@ public class GroupData {
         manager
     }
 
+
     public GroupData() {
         this.group_name = "default group name";
         this.description = "";
@@ -45,7 +46,6 @@ public class GroupData {
         this.users = new HashMap<>();
         group_public = true;
     }
-
 
     public String getGroupId() {
         return group_id;

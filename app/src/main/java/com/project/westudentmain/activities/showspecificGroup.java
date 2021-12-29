@@ -3,6 +3,7 @@ package com.project.westudentmain.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextSwitcher;
@@ -20,28 +22,29 @@ import android.widget.Toast;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.example.androidproject.R;
-
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.project.westudentmain.adapters.GroupAskingRecViewAdapter;
+import com.project.westudentmain.adapters.GroupMembersRecViewAdapter;
+import com.project.westudentmain.adapters.UserRecyclerViewAdapter;
 import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.GroupData;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
+import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseGroup;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class showspecificGroup extends AppCompatActivity {
     private Toolbar mToolBar;
-    private TextView txt_group_name, txt_group_manager_name, txt_group_description;
+    private TextView txt_group_name, txt_group_manager_name, txt_group_description,txt_head_line_notif,txt_asking;
     private TextSwitcher txt_notifications;
     private ImageButton push_notifications;
     private Button btn_leave_group;
-    private RecyclerView rv_group_members;
+    private RecyclerView rv_group_members,rv_asking_users;
     private final Context context =this;
     private final FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
     private GroupData group;
@@ -65,20 +68,118 @@ public class showspecificGroup extends AppCompatActivity {
             group = gson.fromJson(group_json,type );
             txt_group_name.setText(group.getGroupName());
             txt_group_name.setTypeface(null, Typeface.BOLD_ITALIC);
-            txt_group_description.setText(group.getDescription());
+
+            fireBaseGroup.getGroupManager(group.getGroupId(), new CustomDataListener() {
+                @Override
+                public void onDataChange(@NonNull Object data) {
+                    txt_group_manager_name.setText((String)data);
+                    txt_group_description.setText(group.getDescription());
+                }
+                @Override
+                public void onCancelled(@NonNull String error) {
+                }
+            });
+
             push_notifications.setOnClickListener(view->{
                 popUpDialog();
             });
+            btn_leave_group.setVisibility(View.GONE);
+            push_notifications.setVisibility(View.GONE);
+            txt_head_line_notif.setVisibility(View.GONE);
+            txt_notifications.setVisibility(View.GONE);
+            rv_asking_users.setVisibility(View.GONE);
+            txt_asking.setVisibility(View.GONE);
+
+            // TODO: fix problem with isManagerGroup
+            FireBaseData.getUser(new CustomDataListener() {
+                @Override
+                public void onDataChange(@NonNull Object data) {
+                    User my_user = (User) data;
+
+                    FireBaseGroup.getGroupUsersFriends(group.getGroupId(), new CustomDataListener() {
+                        @Override
+                        public void onDataChange(@NonNull Object data) {
+                            ArrayList<User> users = (ArrayList<User>) data;
+                            users.forEach(user -> {
+                                if (user.getUserName().equals(my_user.getUserName())) {
+                                    push_notifications.setVisibility(View.GONE);
+                                    btn_leave_group.setVisibility(View.VISIBLE);
+                                    txt_head_line_notif.setVisibility(View.VISIBLE);
+                                    txt_notifications.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            GroupMembersRecViewAdapter adapter = new GroupMembersRecViewAdapter(context,group);
+                            adapter.setMembers(users);
+                            rv_group_members.setAdapter(adapter);
+                            rv_group_members.setLayoutManager(new GridLayoutManager(context, 1)); // splitting the contacts to 2 columns
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull String error) {
+                        }
+                    });
+                    FireBaseGroup.isGroupManager(my_user.getUserName(), group.getGroupId(), (what, ok) -> {
+                        if(ok){
+                            btn_leave_group.setVisibility(View.VISIBLE);
+                            btn_leave_group.setText("delete group");
+                            txt_head_line_notif.setVisibility(View.VISIBLE);
+                            txt_notifications.setVisibility(View.VISIBLE);
+                            push_notifications.setVisibility(View.VISIBLE);
+                            rv_asking_users.setVisibility(View.VISIBLE);
+                            txt_asking.setVisibility(View.VISIBLE);
+                            FireBaseGroup.getGroupAskingUsers(group.getGroupId(), new CustomDataListener() {
+                                @Override
+                                public void onDataChange(@NonNull Object data) {
+                                    ArrayList<User> users = (ArrayList<User>) data;
+                                    GroupAskingRecViewAdapter adapter = new GroupAskingRecViewAdapter(context,group);
+                                    adapter.setMembers(users);
+                                    rv_asking_users.setAdapter(adapter);
+                                    rv_asking_users.setLayoutManager(new GridLayoutManager(context, 1)); // splitting the contacts to 2 columns
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull String error) {
+
+                                }
+                            });
+                        }
+                    });
+                }
+                @Override
+                public void onCancelled(@NonNull String error) {
+                }
+            });
+
 
             btn_leave_group.setOnClickListener(v -> {
-                //TODO: add if i'm manager change text to delete group
-                fireBaseGroup.leaveGroup(group.getGroupId(), (what, ok) -> {
-
+                FireBaseGroup.getGroupData(group.getGroupId(), new CustomDataListener() {
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        Group group_functions = (Group) data;
+                        FireBaseData.getUser(new CustomDataListener() {
+                            @Override
+                            public void onDataChange(@NonNull Object data) {
+                                User my_user = (User) data;
+                                if(group_functions.isOnManagerList(my_user.getUserName())){
+                                    fireBaseGroup.deleteGroup(group.getGroupId(), (what, ok) -> {
+                                    });
+                                }
+                                else {
+                                    fireBaseGroup.leaveGroup(group.getGroupId(), (what, ok) -> {
+                                    });
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull String error) {
+                            }
+                        });
+                    }
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                    }
                 });
             });
         }
-
-
     }
 
     private void configTextSwitcher() {
@@ -165,5 +266,8 @@ public class showspecificGroup extends AppCompatActivity {
         push_notifications = findViewById(R.id.pushnotificationbutton);
         btn_leave_group = findViewById(R.id.leavgroupbutton);
         rv_group_members = findViewById(R.id.groupmemberrv);
+        txt_head_line_notif = findViewById(R.id.groupnotificationtv);
+        txt_asking = findViewById(R.id.asking_users);
+        rv_asking_users = findViewById(R.id.rv_asking_users);
     }
 }
