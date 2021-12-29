@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +30,9 @@ import com.project.westudentmain.classes.Group;
 import com.project.westudentmain.classes.GroupData;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
+import com.project.westudentmain.util.FcmNotificationsSender;
 import com.project.westudentmain.util.FireBaseGroup;
+import com.project.westudentmain.util.FireBaseToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -45,6 +48,7 @@ public class showspecificGroup extends AppCompatActivity {
     private final Context context =this;
     private final FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
     private GroupData group;
+    private String sToken;
 
 
 
@@ -103,11 +107,33 @@ public class showspecificGroup extends AppCompatActivity {
 
         alert.setPositiveButton("Send", (dialog, whichButton) -> {
 
-
+            txt_notifications.setText(input.getText());
             FireBaseGroup.getGroupUsersFriends(group.getGroupId(), new CustomDataListener() {
                 @Override
                 public void onDataChange(@NonNull Object data) {
                     ArrayList<User> group_friends = (ArrayList<User>)data;
+                    // For Each User, Get Token - Send Private Notification
+                    for (User a:group_friends) {
+
+                        FireBaseToken.getUserToken(a.getUserName(), new CustomDataListener() {
+                            @Override
+                            public void onDataChange(@NonNull Object data) {
+                                if (true){
+                                    sToken = (String) data;
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull String error) {
+
+                            }
+                        });
+                        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(sToken,
+                                "Group Notification",
+                                input.getText().toString(),
+                                context.getApplicationContext(),
+                               showspecificGroup.this);
+                        notificationsSender.SendNotifications();
+                    }
 
                     //TODO: here you send the notifications to the members group using group_friends
                 }
@@ -117,7 +143,8 @@ public class showspecificGroup extends AppCompatActivity {
 
                 }
             });
-            txt_notifications.setText(input.getText());
+
+
         }).setNegativeButton("Cancel", (dialog, whichButton) -> {
         }).show();
     }
