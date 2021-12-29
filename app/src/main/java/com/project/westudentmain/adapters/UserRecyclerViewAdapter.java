@@ -27,8 +27,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     private final FireBaseData fire_base_data = FireBaseData.getInstance();
     private ArrayList<User> users = new ArrayList<>();
     Context context;
-    String sToken;
-
 
 
     public UserRecyclerViewAdapter(Context context) {
@@ -137,18 +135,21 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                     FireBaseToken.getUserToken(selected_user.getUserName(), new CustomDataListener() {
                         @Override
                         public void onDataChange(@NonNull Object data) {
-                            sToken = (String) data;
-                            FcmNotificationsSender notificationsSender = new FcmNotificationsSender(sToken,
-                                    "Friend Notification",
-                                    "You have a new friend request",
-                                    context.getApplicationContext(),
-                                    (Activity)view.getContext());
-                            notificationsSender.SendNotifications();
+
+                                String sToken = (String) data;
+                                FcmNotificationsSender notificationsSender = new FcmNotificationsSender(sToken,
+                                        "Friend Notification",
+                                        "You have a new friend request from "+main_user.getUserName(),
+                                        context.getApplicationContext(),
+                                        (Activity)view.getContext());
+                                notificationsSender.SendNotifications();
+
                         }
                         @Override
                         public void onCancelled(@NonNull String error) {
                         }
                     });
+
                     Toast.makeText(context, "friend request sent", Toast.LENGTH_SHORT).show();
                     holder.button_friend_action.setText("waiting");
                     holder.button_friend_action.setBackgroundColor(context.getColor(R.color.yellow));
