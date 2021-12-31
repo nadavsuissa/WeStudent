@@ -62,7 +62,6 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull Object data) {
                 user = (User) data;
                 updateScreen(user);
-
                 btn_save.setOnClickListener(save_listener);
             }
 
@@ -78,7 +77,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void updateScreen(User user) {
         user_name.setText(user.getUserName());
-
         edt_name.setText(user.getName());
         edt_surname.setText(user.getLastName());
         edt_phone.setText(user.getPhone());
@@ -133,28 +131,11 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.mi_allpostedprojects:
-                startActivity(new Intent(this, showProject.class));
-                return true;
-            case R.id.mi_yourgroups:
-                startActivity(new Intent(this, showGroup.class));
-                return true;
-            case R.id.mi_settings:
-                startActivity(new Intent(this, showSettings.class));
-                return true;
-            case R.id.mi_your_profile:
-                startActivity(new Intent(this, showProfile.class));
-                return true;
-            case R.id.mi_chat:
-                startActivity(new Intent(this, showChat.class));
-                return true;
-            case R.id.mi_create_group:
-                startActivity(new Intent(this, createGroup.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.setting_menu ) {
+            startActivity(new Intent(this, showSettings.class));
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
 }

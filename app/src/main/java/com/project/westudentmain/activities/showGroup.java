@@ -83,28 +83,11 @@ public class showGroup extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.mi_allpostedprojects:
-                startActivity(new Intent(this, showProject.class));
-                return true;
-            case R.id.mi_yourgroups:
-                startActivity(new Intent(this, showGroup.class));
-                return true;
-            case R.id.mi_settings:
-                startActivity(new Intent(this, showSettings.class));
-                return true;
-            case R.id.mi_your_profile:
-                startActivity(new Intent(this, showProfile.class));
-                return true;
-            case R.id.mi_chat:
-                startActivity(new Intent(this, showChat.class));
-                return true;
-            case R.id.mi_create_group:
-                startActivity(new Intent(this, createGroup.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.setting_menu ) {
+            startActivity(new Intent(this, showSettings.class));
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

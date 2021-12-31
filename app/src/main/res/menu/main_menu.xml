@@ -2,23 +2,30 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
         // Mi -- Menu Item
+
     <item
-        android:id="@+id/mi_settings"
-        android:title="@string/settings" />
-    <item
-        android:id="@+id/mi_yourgroups"
-        android:title="@string/your_groups" />
-    <item
-        android:id="@+id/mi_allpostedprojects"
-        android:title="@string/all_posted_projects" />
-    <item android:id="@+id/mi_home"
-        android:title="Home"/>
-    <item android:id="@+id/mi_chat"
-        android:title="Chat"/>
-    <item android:title="Your Profile"
-        android:id="@+id/mi_your_profile"
-        />
-    <item android:title="Create Group"
-        android:id="@+id/mi_create_group"
-        />
+        android:icon="@drawable/ic_action_setting"
+        android:title="Setting"
+        android:id="@+id/setting_menu"
+        app:showAsAction="ifRoom">
+    </item>
+<!--    <item-->
+<!--        android:id="@+id/mi_settings"-->
+<!--        android:title="@string/settings" />-->
+<!--    <item-->
+<!--        android:id="@+id/mi_yourgroups"-->
+<!--        android:title="@string/your_groups" />-->
+<!--    <item-->
+<!--        android:id="@+id/mi_allpostedprojects"-->
+<!--        android:title="@string/all_posted_projects" />-->
+<!--    <item android:id="@+id/mi_home"-->
+<!--        android:title="Home"/>-->
+<!--    <item android:id="@+id/mi_chat"-->
+<!--        android:title="Chat"/>-->
+<!--    <item android:title="Your Profile"-->
+<!--        android:id="@+id/mi_your_profile"-->
+<!--        />-->
+<!--    <item android:title="Create Group"-->
+<!--        android:id="@+id/mi_create_group"-->
+<!--        />-->
 </menu>

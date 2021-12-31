@@ -1,20 +1,25 @@
 package com.project.westudentmain.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.androidproject.R;
+import com.project.westudentmain.classes.User;
+import com.project.westudentmain.util.CustomDataListener;
+import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseLogin;
 
 public class showSettings extends AppCompatActivity {
-    private Toolbar mToolBar;
-
+    private User my_user;
     private Button btn_dissconnect, btn_delete_user, btn_edit_profile, btn_notifications;
 
     @Override
@@ -22,8 +27,19 @@ public class showSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_settings);
         connect_items_by_id();
-        mToolBar = findViewById(R.id.main_toolbar);
-        setSupportActionBar(mToolBar);
+
+        FireBaseData.getUser(new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                my_user = (User)data;
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+
+            }
+        });
+
         btn_dissconnect.setOnClickListener(var -> {
             FireBaseLogin.signOut();
             finish();
@@ -33,6 +49,33 @@ public class showSettings extends AppCompatActivity {
         btn_edit_profile.setOnClickListener(view -> {
             startActivity(new Intent(showSettings.this, EditProfileActivity.class));
         });
+        btn_delete_user.setOnClickListener(v -> {
+            popUpDialog();
+
+        });
+    }
+
+    private void popUpDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                //set title
+                .setTitle("Are you sure you want to delete your account?")
+                //set positive button
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+                        FireBaseData.deleteUser(my_user.getUserName(),(what, ok) -> {
+                            startActivity(new Intent(showSettings.this, Login.class));
+                        });
+                    }
+                })
+                //set negative button
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .show();
     }
 
     private void connect_items_by_id() {
@@ -42,39 +85,6 @@ public class showSettings extends AppCompatActivity {
         btn_notifications = findViewById(R.id.btnnotifications);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.mi_allpostedprojects:
-                startActivity(new Intent(this, showProject.class));
-                return true;
-            case R.id.mi_yourgroups:
-                startActivity(new Intent(this, showGroup.class));
-                return true;
-            case R.id.mi_settings:
-                startActivity(new Intent(this, showSettings.class));
-                return true;
-            case R.id.mi_your_profile:
-                startActivity(new Intent(this, showProfile.class));
-                return true;
-            case R.id.mi_chat:
-                startActivity(new Intent(this, showChat.class));
-                return true;
-            case R.id.mi_create_group:
-                startActivity(new Intent(this, createGroup.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @Override
     public void onBackPressed() {
