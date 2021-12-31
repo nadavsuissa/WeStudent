@@ -29,6 +29,10 @@ public class showSettings extends AppCompatActivity {
             finish();
             startActivity(new Intent(showSettings.this, Login.class));
         });
+
+        btn_edit_profile.setOnClickListener(view -> {
+            startActivity(new Intent(showSettings.this, EditProfileActivity.class));
+        });
     }
 
     private void connect_items_by_id() {

@@ -25,7 +25,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private Toolbar mToolBar;
 
     private Button btn_save;
-    private EditText edt_name,edt_surname,edt_phone; //TODO:
+    private EditText edt_name,edt_surname,edt_phone, edt_address,edt_bio; //TODO:
+    private TextView user_name;
     private FireBaseData fire_base_data;
 
     private User user;
@@ -34,8 +35,10 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         initViews();
+
         mToolBar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolBar);
+
         // TODO: if fail then the user is still inserted
         fire_base_data = FireBaseData.getInstance();
         if (!FireBaseLogin.userIsLoggedIn()) {
@@ -44,47 +47,58 @@ public class EditProfileActivity extends AppCompatActivity {
         }
         Log.d("edit profile","fire base connected"); // PRINT
 
-
-        btn_save.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener save_listener = new View.OnClickListener() { // init only after user data received
             @Override
             public void onClick(View view) {
+                FillUser();
                 UpdateUser();
                 finish();
                 startActivity(new Intent(EditProfileActivity.this, showProfile.class));
             }
-        });
+        };
 
-
-
-        // TODO: check why it needs to be an array (probably because pointers)
-        // get last data if data is empty it will stay null so add something to catch it in `onDataChange`
-//        final User[] t = {new User()};
-        fire_base_data.getUser(new CustomDataListener() {
+        FireBaseData.getUser(new CustomDataListener() {
             @Override
-            public void onDataChange(@NonNull Object data){
+            public void onDataChange(@NonNull Object data) {
                 user = (User) data;
-                FillUser();
+                updateScreen(user);
+
+                btn_save.setOnClickListener(save_listener);
             }
 
             @Override
             public void onCancelled(@NonNull String error) {
-                user = new User();
                 Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
             }
-
         });
 
-//        fire_base.updateData(user); its null!!!!!!!!!!
 
 
     }
 
+    private void updateScreen(User user) {
+        user_name.setText(user.getUserName());
+
+        edt_name.setText(user.getName());
+        edt_surname.setText(user.getLastName());
+        edt_phone.setText(user.getPhone());
+        edt_address.setText(user.getProfile().getHomeTown());
+        edt_bio.setText(user.getProfile().getBIO());
+    }
+
     private void FillUser() {
 
-        String name = edt_name.getText().toString().trim();
-        String surname = edt_surname.getText().toString().trim();
-        String phone_number = edt_phone.getText().toString().trim();
-        user = new User("user name",name, surname, "mail",phone_number);
+        String s_name = edt_name.getText().toString().trim();
+        String s_surname = edt_surname.getText().toString().trim();
+        String s_phone_number = edt_phone.getText().toString().trim();
+        String s_address = edt_address.getText().toString().trim();
+        String s_bio = edt_bio.getText().toString().trim();
+
+        user.setName(s_name);
+        user.setLastName(s_surname);
+        user.setPhone(s_phone_number);
+        user.getProfile().setHomeTown(s_address);
+        user.getProfile().setBIO(s_bio);
     }
 
     private void initViews() {
@@ -92,7 +106,10 @@ public class EditProfileActivity extends AppCompatActivity {
         edt_surname = findViewById(R.id.EditTextSurname);
         edt_phone = findViewById(R.id.EditTextPhoneNo);
         btn_save = findViewById(R.id.btnSaveButton);
+        edt_address = findViewById(R.id.editTextTextPersonName3);
+        edt_bio = findViewById(R.id.editTextTextPersonName4);
 
+        user_name = findViewById(R.id.textView6);
     }
 
     private void UpdateUser() {
@@ -140,7 +157,4 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    //    private void sendUserData() {
-//        // Get "User UID" from Firebase > Authentification > Users.
-//    }
 }
