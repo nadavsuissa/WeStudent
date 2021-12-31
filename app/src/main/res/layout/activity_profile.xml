@@ -29,10 +29,11 @@
         android:layout_width="170dp"
         android:layout_height="160dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="200dp"
         android:contentDescription="@string/profile_picture"
         android:src="@drawable/defaultpotrait"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         tools:ignore="ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />
@@ -42,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/user_name"
+        android:textSize="20dp"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="@+id/textViewName"
         app:layout_constraintTop_toBottomOf="@+id/textViewName" />
@@ -50,13 +52,15 @@
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="16dp"
+        android:paddingEnd="@dimen/paddingSmall"
         android:text="@string/name"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="34sp"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.716"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/profilepicview"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
@@ -259,15 +263,15 @@
 
     <ImageButton
         android:id="@+id/buttonUpdateUserData"
-        android:layout_width="53dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="50dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/ic_action_camara"
         android:padding="1dip"
         app:layout_constraintCircleRadius="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.072"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/profilepicview"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/profilepicview"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <Space

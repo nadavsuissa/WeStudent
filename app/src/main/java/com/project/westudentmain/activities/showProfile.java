@@ -140,7 +140,7 @@ public class showProfile extends AppCompatActivity {
     }
 
     private void RenderText(@NonNull User user) {
-        txt_name.setText(user.getName());
+        txt_name.setText(new StringBuilder().append(user.getName()).append(" ").append(user.getLastName()).toString());
         txt_user_name.setText(user.getUserName());
 
         Profile profile = user.getProfile();
