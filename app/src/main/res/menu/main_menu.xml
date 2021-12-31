@@ -2,6 +2,13 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
         // Mi -- Menu Item
+    <item
+        android:title="add_person"
+        android:id="@+id/add_group_paticipent"
+        android:icon="@drawable/ic_add_participent"
+        app:showAsAction="ifRoom"
+        android:visible="false">
+    </item>
 
     <item
         android:icon="@drawable/ic_action_setting"
@@ -9,6 +16,8 @@
         android:id="@+id/setting_menu"
         app:showAsAction="ifRoom">
     </item>
+
+
 <!--    <item-->
 <!--        android:id="@+id/mi_settings"-->
 <!--        android:title="@string/settings" />-->

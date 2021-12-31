@@ -1,6 +1,7 @@
 package com.project.westudentmain.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,21 +19,21 @@ import com.example.androidproject.R;
 import com.project.westudentmain.classes.GroupData;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
+import com.project.westudentmain.util.FcmNotificationsSender;
 import com.project.westudentmain.util.FireBaseData;
 import com.project.westudentmain.util.FireBaseGroup;
+import com.project.westudentmain.util.FireBaseToken;
 
 import java.util.ArrayList;
 
-public class GroupMembersRecViewAdapter extends RecyclerView.Adapter<GroupMembersRecViewAdapter.ViewHolder>{
+public class OnlyUsersRecViewAdapter extends RecyclerView.Adapter<OnlyUsersRecViewAdapter.ViewHolder> {
     private final FireBaseData fire_base_data = FireBaseData.getInstance();
-    private final FireBaseGroup fire_base_group = FireBaseGroup.getInstance();
     private ArrayList<User> users = new ArrayList<>();
     Context context;
     GroupData group;
 
 
-
-    public GroupMembersRecViewAdapter(Context context, GroupData group) {
+    public OnlyUsersRecViewAdapter(Context context, GroupData group) {
         this.context = context;
         this.group = group;
     }
@@ -40,14 +41,14 @@ public class GroupMembersRecViewAdapter extends RecyclerView.Adapter<GroupMember
 
     @NonNull
     @Override
-    public GroupMembersRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public OnlyUsersRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_friends_item, parent, false);
-        GroupMembersRecViewAdapter.ViewHolder holder = new GroupMembersRecViewAdapter.ViewHolder(view);
+        OnlyUsersRecViewAdapter.ViewHolder holder = new OnlyUsersRecViewAdapter.ViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GroupMembersRecViewAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull OnlyUsersRecViewAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         // set text
         String name = users.get(position).getName() + " " + users.get(position).getLastName();
         holder.txt_name.setText(name);
@@ -70,46 +71,16 @@ public class GroupMembersRecViewAdapter extends RecyclerView.Adapter<GroupMember
             }
         });
 
+
         holder.btn_decline.setVisibility(View.GONE);
         holder.button_friend_action.setVisibility(View.GONE);
-        // setup the button
-        FireBaseData.getUser(new CustomDataListener() {
-            @Override
-            public void onDataChange(@NonNull Object data) {
-                User main_user = (User) data;
-                User selected_user = users.get(position);
 
-                FireBaseGroup.isGroupManager(main_user.getUserName(), group.getGroupId(), (what, ok) -> {
-                    if(ok){
-                        holder.button_friend_action.setVisibility(View.VISIBLE);
-                        showMemberStatus(holder);
-                        holder.button_friend_action.setOnClickListener(view ->{
-                            removeMember(selected_user);
-                        });
-                    }
-                });
-            }
-            @Override
-            public void onCancelled(@NonNull String error) {
+        holder.card_root.setOnClickListener(v -> {
+            FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
+            fireBaseGroup.askUserByManagerGroup(group.getGroupId(),users.get(position).getUserName(),(what, ok) -> {
 
-            }
+            });
         });
-
-
-    }
-
-    private void showMemberStatus(ViewHolder holder) {
-        holder.button_friend_action.setText("remove");
-        holder.button_friend_action.setBackgroundColor(context.getColor(R.color.red));
-    }
-
-
-    private void removeMember(User selected_user) {
-        //TODO: remove member from group
-        FireBaseGroup.kickByManagerGroup(group.getGroupId(), selected_user.getUserName(), (what, ok) -> {
-            Toast.makeText(context, "removed successfully", Toast.LENGTH_SHORT).show();
-        });
-
     }
 
     @Override
@@ -118,8 +89,8 @@ public class GroupMembersRecViewAdapter extends RecyclerView.Adapter<GroupMember
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setMembers(ArrayList<User> members) {
-        this.users = members;
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
         notifyDataSetChanged();  // when i change the list of contacts the adapter is notified to refresh the items list
     }
 
@@ -139,6 +110,4 @@ public class GroupMembersRecViewAdapter extends RecyclerView.Adapter<GroupMember
             image = itemView.findViewById(R.id.profile);
         }
     }
-
 }
-

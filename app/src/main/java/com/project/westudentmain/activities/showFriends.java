@@ -153,6 +153,16 @@ public class showFriends extends AppCompatActivity {
         setContentView(R.layout.activity_show_friends);
         initViews();
 
+        //TODO: show people who is not in group to send them request to join
+
+//        if(getIntent().hasExtra("showspecificGroup")){
+//            users = (ArrayList<User>) data;
+//            UserRecyclerViewAdapter adapter = new UserRecyclerViewAdapter(context);
+//            adapter.setUsers(users);
+//            user_friends_rec_view.setAdapter(adapter);
+//            user_friends_rec_view.setLayoutManager(new GridLayoutManager(context, 1));
+//        }
+
         setSupportActionBar(mToolBar);
         CustomDataListener customDataListener = new CustomDataListener() {
             @Override

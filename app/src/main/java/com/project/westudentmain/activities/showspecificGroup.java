@@ -51,7 +51,7 @@ public class showspecificGroup extends AppCompatActivity {
     private final Context context =this;
     private final FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
     private GroupData group;
-    private String sToken;
+    private String sToken, data_base_notification;
 
 
 
@@ -81,6 +81,19 @@ public class showspecificGroup extends AppCompatActivity {
                 }
                 @Override
                 public void onCancelled(@NonNull String error) {
+                }
+            });
+            FireBaseGroup.getNotification(group.getGroupId(), new CustomDataListener() {
+                @Override
+                public void onDataChange(@NonNull Object data) {
+                    data_base_notification = (String) data;
+                    Toast.makeText(context, data_base_notification+"!!", Toast.LENGTH_SHORT).show();
+                    txt_notifications.setText(data_base_notification);
+                }
+
+                @Override
+                public void onCancelled(@NonNull String error) {
+
                 }
             });
 
@@ -189,7 +202,6 @@ public class showspecificGroup extends AppCompatActivity {
     private void configTextSwitcher() {
         txt_notifications.setInAnimation(AnimationUtils.loadAnimation(this,android.R.anim.slide_in_left));
         txt_notifications.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right));
-
         txt_notifications.setFactory(() -> {
             TextView t = new TextView(context);
             t.setGravity(Gravity.CENTER_VERTICAL| Gravity.CENTER_HORIZONTAL);
@@ -234,6 +246,9 @@ public class showspecificGroup extends AppCompatActivity {
                                 context.getApplicationContext(),
                                showspecificGroup.this);
                         notificationsSender.SendNotifications();
+                        FireBaseGroup.pushNotification(group.getGroupId(),input.getText().toString(),(what, ok) -> {
+
+                        });
                     }
 
                     //TODO: here you send the notifications to the members group using group_friends
@@ -248,12 +263,24 @@ public class showspecificGroup extends AppCompatActivity {
 
         }).setNegativeButton("Cancel", (dialog, whichButton) -> {
         }).show();
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        //TODO: just if im a manager
+        MenuItem register = menu.findItem(R.id.add_group_paticipent);
+        register.setVisible(true);
         return true;
     }
 
@@ -263,6 +290,8 @@ public class showspecificGroup extends AppCompatActivity {
         if (item.getItemId() == R.id.setting_menu ) {
             startActivity(new Intent(this, showSettings.class));
             return true;
+        }else if(item.getItemId() == R.id.add_group_paticipent){
+            startActivity(new Intent(this,showFriends.class).putExtra("showspecificGroup","OK"));
         }
         return super.onOptionsItemSelected(item);
     }

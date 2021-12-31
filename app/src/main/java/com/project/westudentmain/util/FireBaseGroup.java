@@ -460,7 +460,7 @@ public class FireBaseGroup {
                     public void onDataChange(@NonNull Object data) {
                         Group group = (Group) data;
                         //check if asking and main user is manager
-                        if (group.isOnManagerList(firebaseUser.getUid()) && group.isOnAskedList(user_id)) {
+                        if (group.isOnManagerList(firebaseUser.getUid()) && group.isOnWaitList(user_id)) {
                             //change asking to friend in group
                             database_reference.child(Group.class.getSimpleName()).child(group_id).child("users").child(user_id).setValue(Group.user_status.friend).addOnCompleteListener(
                                     task -> {

@@ -79,6 +79,7 @@ public class GroupAskingRecViewAdapter extends RecyclerView.Adapter<GroupAskingR
         holder.btn_accept.setOnClickListener(v -> {
             fire_base_group.acceptByManagerGroup(group.getGroupId(),selected_user.getUserName(),(what, ok) -> {
 
+
             });
         });
 
