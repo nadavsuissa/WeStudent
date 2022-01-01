@@ -529,8 +529,6 @@ public class FireBaseGroup {
                     @Override
                     public void onDataChange(@NonNull Object data) {
                         Group group = (Group) data;
-                        //check if user not connected and main user is manager
-                        if (group.isOnManagerList(firebaseUser.getUid()) && group.isConnectedToHim(user_id)) {
                             //add waiting in group
                             database_reference.child(Group.class.getSimpleName()).child(group_id).child("users").child(user_id).setValue(Group.user_status.asking).addOnCompleteListener(
                                     task -> {
@@ -550,9 +548,6 @@ public class FireBaseGroup {
                                             listener.onComplete("failed adding user to the group waiting list in group", false);
                                         }
                                     });
-                        } else {
-                            listener.onComplete("user already connected or main user is not manager", false);
-                        }
                     }
 
                     @Override
@@ -967,6 +962,52 @@ public class FireBaseGroup {
             public void onCancelled(@NonNull String error) {
                 listener.onCancelled(error);
 
+            }
+        });
+    }
+
+    public static void getAllUserButGroup(String group_id, CustomDataListener listener) {
+        //get group users
+        getGroupUsersConnected(group_id, new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                List<User> group_users = (List<User>) data;
+
+                //get all users
+                FireBaseData.getInstance().getAllUsers(new CustomDataListener() {
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        List<User> all_users = (List<User>) data;
+                        List<User> all_users_but_group = new ArrayList<User>();
+
+                        //remove group from users
+                        for (User user : all_users) {
+                            boolean exist = false;
+                            for (User user1 : group_users) {
+                                if (user1.getUserName().equals(user.getUserName())) {
+                                    exist = true;
+                                    break;
+                                }
+                            }
+                            if (!exist){
+                                all_users_but_group.add(user);
+                            }
+
+                        }
+
+                        listener.onDataChange(all_users_but_group);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+                        listener.onCancelled(error);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+                listener.onCancelled(error);
             }
         });
     }

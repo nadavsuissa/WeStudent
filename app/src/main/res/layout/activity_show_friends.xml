@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.project.westudentmain.activities.showFriends"
-    android:background="@drawable/backgroundimage">
+    android:background="@drawable/backgroundimage"
+    tools:context="com.project.westudentmain.activities.showFriends">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -13,27 +13,26 @@
         android:layout_height="?attr/actionBarSize"
         android:background="#927CC7"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintTop_toTopOf="parent"
-        >
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+        app:layout_constraintTop_toTopOf="parent">
 
-    <SearchView
-        android:id="@+id/users_search"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/main_toolbar"
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="150dp"
-        android:layout_toEndOf="@+id/users_search" />
+            <SearchView
+                android:id="@+id/users_search"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
 
-</RelativeLayout>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/main_toolbar"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="150dp"
+                android:layout_toEndOf="@+id/users_search" />
 
+        </RelativeLayout>
 
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -70,23 +69,23 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friendRV"
-        android:layout_width="406dp"
-        android:layout_height="500dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friendtextview">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <Space
-        android:layout_width="133dp"
-        android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friendRV" />
+        app:layout_constraintTop_toBottomOf="@+id/friendtextview"
+        app:layout_constraintVertical_bias="0.0">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

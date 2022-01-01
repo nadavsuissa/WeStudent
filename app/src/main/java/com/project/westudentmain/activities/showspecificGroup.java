@@ -51,7 +51,8 @@ public class showspecificGroup extends AppCompatActivity {
     private final Context context =this;
     private final FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
     private GroupData group;
-    private String sToken, data_base_notification;
+    private String sToken, data_base_notification,group_json;
+    private User my_user;
 
 
 
@@ -61,14 +62,18 @@ public class showspecificGroup extends AppCompatActivity {
         setContentView(R.layout.activity_group_page);
         mToolBar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolBar);
+
         connect_items_by_id();
         configTextSwitcher();
 
 
-        if(getIntent().hasExtra("from group_adapter")){
+        if(getIntent().hasExtra("from group_adapter")||getIntent().hasExtra("from showFriends")){
             Gson gson = new Gson();
             Type type = new TypeToken<GroupData>(){}.getType();
-            String group_json = getIntent().getStringExtra("from group_adapter");
+            if (getIntent().hasExtra("from group_adapter"))
+                group_json = getIntent().getStringExtra("from group_adapter");
+            else
+                group_json = getIntent().getStringExtra("from showFriends");
             group = gson.fromJson(group_json,type );
             txt_group_name.setText(group.getGroupName());
             txt_group_name.setTypeface(null, Typeface.BOLD_ITALIC);
@@ -111,7 +116,7 @@ public class showspecificGroup extends AppCompatActivity {
             FireBaseData.getUser(new CustomDataListener() {
                 @Override
                 public void onDataChange(@NonNull Object data) {
-                    User my_user = (User) data;
+                    my_user = (User) data;
 
                     FireBaseGroup.getGroupUsersFriends(group.getGroupId(), new CustomDataListener() {
                         @Override
@@ -137,6 +142,9 @@ public class showspecificGroup extends AppCompatActivity {
                     });
                     FireBaseGroup.isGroupManager(my_user.getUserName(), group.getGroupId(), (what, ok) -> {
                         if(ok){
+                            MenuItem register = mToolBar.getMenu().findItem(R.id.add_group_paticipent);
+                            register.setVisible(true);
+
                             btn_leave_group.setVisibility(View.VISIBLE);
                             btn_leave_group.setText("delete group");
                             txt_head_line_notif.setVisibility(View.VISIBLE);
@@ -244,7 +252,7 @@ public class showspecificGroup extends AppCompatActivity {
                                 "Group Notification",
                                 input.getText().toString(),
                                 context.getApplicationContext(),
-                               showspecificGroup.this);
+                                showspecificGroup.this);
                         notificationsSender.SendNotifications();
                         FireBaseGroup.pushNotification(group.getGroupId(),input.getText().toString(),(what, ok) -> {
 
@@ -267,20 +275,31 @@ public class showspecificGroup extends AppCompatActivity {
 
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
         return true;
     }
 
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        FireBaseData.getUser(new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                my_user = (User) data;
+            }
 
-        //TODO: just if im a manager
-        MenuItem register = menu.findItem(R.id.add_group_paticipent);
-        register.setVisible(true);
+            @Override
+            public void onCancelled(@NonNull String error) {
+
+            }
+        });
+
+
         return true;
     }
 
@@ -291,11 +310,15 @@ public class showspecificGroup extends AppCompatActivity {
             startActivity(new Intent(this, showSettings.class));
             return true;
         }else if(item.getItemId() == R.id.add_group_paticipent){
-            startActivity(new Intent(this,showFriends.class).putExtra("showspecificGroup","OK"));
+            startActivity(new Intent(this,showFriends.class).putExtra("showspecificGroup",group_json));
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(showspecificGroup.this,showGroup.class));
+    }
 
     private void connect_items_by_id() {
         txt_group_name = findViewById(R.id.groupnametv);
