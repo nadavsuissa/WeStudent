@@ -43,7 +43,7 @@ public class showUniversityAccount extends AppCompatActivity implements AdapterV
     String string_department;
 
 
-    String array_department[] = {"computers", "math", "physics", "medical", "engineering", "psychology", "grass"};
+    String[] array_department = {"all", "computers", "math", "physics", "medical", "engineering", "psychology", "grass"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
