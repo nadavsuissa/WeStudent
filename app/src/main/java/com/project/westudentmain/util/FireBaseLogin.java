@@ -52,7 +52,7 @@ public class FireBaseLogin {
      * @param password
      * @return listener for completion
      */
-    public Task<AuthResult> createUserWithEmailAndPassword(@NonNull String email,@NonNull String password) {
+    public static Task<AuthResult> createUserWithEmailAndPassword(@NonNull String email,@NonNull String password) {
         return mAuth.createUserWithEmailAndPassword(email, password);
     }
 

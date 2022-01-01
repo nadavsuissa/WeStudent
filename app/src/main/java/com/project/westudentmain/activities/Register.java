@@ -63,7 +63,7 @@ public class Register extends AppCompatActivity {
         fire_base = FireBaseLogin.getInstance();
         fire_base_data = FireBaseData.getInstance();
 
-        String[] year_options = {"1","2","3","4","5","6","7"};
+        String[] year_options = {"1", "2", "3", "4", "5", "6", "7"};
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -79,9 +79,10 @@ public class Register extends AppCompatActivity {
                 //Toast.makeText(Register.this, parent.getItemAtPosition(position)+" Selected", Toast.LENGTH_SHORT).show();
                 year = Integer.parseInt((String) parent.getItemAtPosition(position));
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                year =1;
+                year = 1;
             }
         });
 
@@ -101,17 +102,13 @@ public class Register extends AppCompatActivity {
             String bio = user_Bio.getText().toString().trim();
 
 
-
-
-
-
             FireBaseLogin.isUserFree(userName, new CustomOkListener() {
                 @Override
                 public void onComplete(@NonNull String what, Boolean ok) {
                     Validation validation = new Validation();
 
-                    boolean flag = validation.Register(user_email,user_password,user_firstName,user_lastName,user_userName,user_university,user_dgree,
-                            email,password,firstName,lastName,userName,university,dgree,uri,btn_upload_photo);
+                    boolean flag = validation.Register(user_email, user_password, user_firstName, user_lastName, user_userName, user_university, user_dgree,
+                            email, password, firstName, lastName, userName, university, dgree, uri, btn_upload_photo);
                     if (!flag) return;
                     User user = new User();
                     user.setMail(email);
@@ -127,24 +124,21 @@ public class Register extends AppCompatActivity {
                     user.setProfile(profile);
 
 
-
-                    fire_base.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+                    FireBaseLogin.createUserWithEmailAndPassword(email, password).addOnSuccessListener(task ->
                     {
-                        if (task.isSuccessful()) {
-                            fire_base_data.updateUser(user, new CustomOkListener() {
-                                @Override
-                                public void onComplete(@NonNull String what, Boolean ok) {
-                                    fire_base_data.uploadUserPhoto(uri, (what1, ok1) -> {
+
+                        fire_base_data.updateUser(user, new CustomOkListener() {
+                            @Override
+                            public void onComplete(@NonNull String what, Boolean ok) {
+                                fire_base_data.uploadUserPhoto(uri, (what1, ok1) -> {
+                                    if (what1.contains("100")) {
                                         Toast.makeText(Register.this, "You are successfully Registered", Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(Register.this, showProfile.class));
-                                    });
+                                    }
+                                });
 
-                                }
-                            });
-
-                        } else {
-                            Toast.makeText(Register.this, "Error in  Registration! Try again", Toast.LENGTH_LONG).show();
-                        }
+                            }
+                        });
                     });
                 }
 
@@ -256,7 +250,7 @@ public class Register extends AppCompatActivity {
 //                    }
 //                })
 //                .show();
-        startActivity(new Intent(Register.this,Login.class));
+        startActivity(new Intent(Register.this, Login.class));
     }
 
     private void connect_items_by_id() {
