@@ -56,6 +56,24 @@ public class OnlyUsersRecViewAdapter extends RecyclerView.Adapter<OnlyUsersRecVi
         String username = users.get(position).getUserName();
         holder.txt_username.setText(username);
 
+        holder.button_friend_action.setOnClickListener(v -> {
+            FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
+            fireBaseGroup.askUserByManagerGroup(group.getGroupId(),users.get(position).getUserName(),(what, ok) -> {
+                if (ok){
+                    Toast.makeText(context, "request sent", Toast.LENGTH_SHORT).show();
+                    users.remove(users.get(position));
+                    setUsers(users);
+                }
+                else {
+                    Toast.makeText(context, what, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+        holder.btn_decline.setVisibility(View.GONE);
+        holder.button_friend_action.setText("send request");
+        holder.button_friend_action.setBackgroundColor(context.getColor(R.color.purple_200));
+
         // set picture
         FireBaseData.getIdByUserName(users.get(position).getUserName(), new CustomDataListener() {
             @Override
@@ -72,15 +90,7 @@ public class OnlyUsersRecViewAdapter extends RecyclerView.Adapter<OnlyUsersRecVi
         });
 
 
-        holder.btn_decline.setVisibility(View.GONE);
-        holder.button_friend_action.setVisibility(View.GONE);
 
-        holder.card_root.setOnClickListener(v -> {
-            FireBaseGroup fireBaseGroup = FireBaseGroup.getInstance();
-            fireBaseGroup.askUserByManagerGroup(group.getGroupId(),users.get(position).getUserName(),(what, ok) -> {
-
-            });
-        });
     }
 
     @Override

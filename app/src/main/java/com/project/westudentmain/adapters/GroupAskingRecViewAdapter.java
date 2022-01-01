@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -78,14 +79,16 @@ public class GroupAskingRecViewAdapter extends RecyclerView.Adapter<GroupAskingR
         showAskingStatus(holder);
         holder.btn_accept.setOnClickListener(v -> {
             fire_base_group.acceptByManagerGroup(group.getGroupId(),selected_user.getUserName(),(what, ok) -> {
-
-
+                Toast.makeText(context, selected_user.getUserName()+" "+"accepted", Toast.LENGTH_SHORT).show();
+                users.remove(selected_user);
+                setMembers(users);
             });
         });
 
         holder.btn_decline.setOnClickListener(v -> {
             fire_base_group.declineByManagerGroup(group.getGroupId(),selected_user.getUserName(),(what, ok) -> {
-
+                users.remove(selected_user);
+                setMembers(users);
             });
         });
 

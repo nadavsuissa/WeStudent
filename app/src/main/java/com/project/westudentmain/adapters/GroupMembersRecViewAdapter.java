@@ -85,6 +85,8 @@ public class GroupMembersRecViewAdapter extends RecyclerView.Adapter<GroupMember
                         showMemberStatus(holder);
                         holder.button_friend_action.setOnClickListener(view ->{
                             removeMember(selected_user);
+                            users.remove(selected_user);
+                            setMembers(users);
                         });
                     }
                 });

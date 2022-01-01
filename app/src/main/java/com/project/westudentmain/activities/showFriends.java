@@ -121,7 +121,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -131,60 +132,98 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidproject.R;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.project.westudentmain.adapters.OnlyUsersRecViewAdapter;
 import com.project.westudentmain.adapters.UserRecyclerViewAdapter;
+import com.project.westudentmain.classes.GroupData;
 import com.project.westudentmain.classes.User;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FireBaseData;
+import com.project.westudentmain.util.FireBaseGroup;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class showFriends extends AppCompatActivity {
     private Toolbar mToolBar;
 
     private RecyclerView user_friends_rec_view;
-    private ArrayList<User> users;
-    private FireBaseData fire_base_data;
+    private ArrayList<User> all_users;
+    private final FireBaseData fire_base_data = FireBaseData.getInstance();
     private Context context = this;
     private SearchView search_user;
+    private String group_json;
+    private GroupData group;
+    private ArrayList<User> users_group_friend;
+    private TextView txt_headline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_friends);
         initViews();
-
-        //TODO: show people who is not in group to send them request to join
-
-//        if(getIntent().hasExtra("showspecificGroup")){
-//            users = (ArrayList<User>) data;
-//            UserRecyclerViewAdapter adapter = new UserRecyclerViewAdapter(context);
-//            adapter.setUsers(users);
-//            user_friends_rec_view.setAdapter(adapter);
-//            user_friends_rec_view.setLayoutManager(new GridLayoutManager(context, 1));
-//        }
-
         setSupportActionBar(mToolBar);
-        CustomDataListener customDataListener = new CustomDataListener() {
-            @Override
-            public void onDataChange(@NonNull Object data) {
-                users = (ArrayList<User>) data;
-                UserRecyclerViewAdapter adapter = new UserRecyclerViewAdapter(context);
-                adapter.setUsers(users);
-                user_friends_rec_view.setAdapter(adapter);
-                user_friends_rec_view.setLayoutManager(new GridLayoutManager(context, 1)); // splitting the contacts to 2 columns
-            }
+        CustomDataListener customDataListener;
 
-            @Override
-            public void onCancelled(@NonNull String error) {
+        if(getIntent().hasExtra("showspecificGroup")) {
+            txt_headline.setVisibility(View.GONE);
+            Gson gson = new Gson();
+            Type type = new TypeToken<GroupData>() {
+            }.getType();
+            group_json = getIntent().getStringExtra("showspecificGroup");
+            group = gson.fromJson(group_json, type);
 
-            }
-        };
-        fire_base_data = FireBaseData.getInstance();
-        if(getIntent().getBooleanExtra("from profile",false)){
-            fire_base_data.getFriends(customDataListener);
+            FireBaseGroup.getGroupUsersFriends(group.getGroupId(), new CustomDataListener() {
+                @Override
+                public void onDataChange(@NonNull Object data) {
+                    users_group_friend = (ArrayList<User>) data;
+                }
+
+                @Override
+                public void onCancelled(@NonNull String error) {
+
+                }
+            });
+
+            customDataListener = new CustomDataListener() {
+                @Override
+                public void onDataChange(@NonNull Object data) {
+                     ArrayList<User> users_not_in_group = (ArrayList<User>) data;
+                    OnlyUsersRecViewAdapter adapter = new OnlyUsersRecViewAdapter(context, group);
+                    adapter.setUsers(users_not_in_group);
+                    user_friends_rec_view.setAdapter(adapter);
+                    user_friends_rec_view.setLayoutManager(new GridLayoutManager(context, 1)); // splitting the contacts to 2 columns
+                }
+
+                @Override
+                public void onCancelled(@NonNull String error) {
+
+                }
+            };
+            FireBaseGroup.getAllUserButGroup(group.getGroupId(), customDataListener);
         }
         else {
-            fire_base_data.getAllUsers(customDataListener);
+            customDataListener = new CustomDataListener() {
+                @Override
+                public void onDataChange(@NonNull Object data) {
+                    all_users = (ArrayList<User>) data;
+                    UserRecyclerViewAdapter adapter = new UserRecyclerViewAdapter(context);
+                    adapter.setUsers(all_users);
+                    user_friends_rec_view.setAdapter(adapter);
+                    user_friends_rec_view.setLayoutManager(new GridLayoutManager(context, 1)); // splitting the contacts to 2 columns
+                }
+
+                @Override
+                public void onCancelled(@NonNull String error) {
+
+                }
+            };
+            if (getIntent().getBooleanExtra("from profile", false)) {
+                fire_base_data.getFriends(customDataListener);
+            } else {
+                fire_base_data.getAllUsers(customDataListener);
+            }
         }
     }
 
@@ -192,6 +231,7 @@ public class showFriends extends AppCompatActivity {
     private void initViews() {
         mToolBar = findViewById(R.id.main_toolbar);
         user_friends_rec_view = findViewById(R.id.friendRV);
+        txt_headline = findViewById(R.id.friendtextview);
     }
 
 
@@ -214,6 +254,10 @@ public class showFriends extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if(getIntent().hasExtra("showspecificGroup")){
+            startActivity(new Intent(showFriends.this,showspecificGroup.class).putExtra("from showFriends",group_json));
+        }
+        else
         startActivity(new Intent(showFriends.this, showProfile.class)); // this is how to move between screens
     }
 }
