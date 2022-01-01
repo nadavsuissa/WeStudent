@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.project.westudentmain.util.FireBaseToken;
 
 public class Login extends AppCompatActivity {
     private EditText user_name, pass_word;
+    private TextView university_register;
     private Button btn_login, btn_sign;
     private static final String TAG = "Login";
 
@@ -90,6 +92,9 @@ public class Login extends AppCompatActivity {
 
         });
         btn_sign.setOnClickListener(v -> startActivity(new Intent(Login.this, Register.class)));
+
+        university_register = findViewById(R.id.logi_register_university);
+        university_register.setOnClickListener(view -> startActivity(new Intent(Login.this, UniversityRegister.class)));
     }
 
     @Override

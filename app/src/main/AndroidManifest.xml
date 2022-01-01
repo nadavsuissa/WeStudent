@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
         <activity
+            android:name="com.project.westudentmain.activities.UniversityRegister"
+            android:exported="false" />
+        <activity
             android:name="com.project.westudentmain.activities.showspecificGroup"
             android:exported="true" />
         <activity

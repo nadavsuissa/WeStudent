@@ -58,41 +58,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginPassword" />
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/linear_layout_login"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="32dp"-->
-<!--        android:gravity="center"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:textAlignment="center"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.48"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/loginPassword"-->
-<!--        app:layout_constraintVertical_bias="0.3">-->
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="40dp"-->
-<!--            android:text="are you a university?"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="16sp" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/sign_up_login"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="@string/SignUP"-->
-<!--            android:textColor="@color/Red"-->
-<!--            android:textSize="16sp" />-->
-
-<!--    </LinearLayout>-->
-
     <Button
         android:id="@+id/signup1"
         android:layout_width="wrap_content"
@@ -115,6 +80,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/logi_register_university"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="are you university?"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
