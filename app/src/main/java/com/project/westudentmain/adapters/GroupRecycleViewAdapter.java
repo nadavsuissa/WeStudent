@@ -34,6 +34,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
     private final FireBaseData fire_base_data = FireBaseData.getInstance();
     private ArrayList<Group> groups = new ArrayList<>();
     Context context;
+    int position;
 
     public GroupRecycleViewAdapter(Context context) {
         this.context = context;
@@ -52,6 +53,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
         Group selected_group = groups.get(position);
         holder.txt_group_name.setText(groups.get(position).getGroupName());
         holder.txt_intent.setText(groups.get(position).getDescription());
+        this.position = position;
 
         holder.card_root.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +151,8 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
             });
         }else if (btn_status.equals("delete")) {
             FireBaseGroup.getInstance().deleteGroup(selected_group_id, (what, ok) -> {
-
+                    groups.remove(position);
+                    notifyDataSetChanged();
             });
         }
     }
