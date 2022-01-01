@@ -36,7 +36,7 @@ public class showUniversityAccount extends AppCompatActivity implements AdapterV
     final Calendar myCalendar = Calendar.getInstance();
     private RecyclerView notification_rec_view;
     private Context context = this;
-
+    private NotificationRecyclerViewAdapter adapter;
     Button send_notification;
     EditText date, head, body;
     Spinner department;
@@ -56,7 +56,7 @@ public class showUniversityAccount extends AppCompatActivity implements AdapterV
             @Override
             public void onDataChange(@NonNull Object data) {
                 ArrayList<UniversityNotification> notifications = (ArrayList<UniversityNotification>) data;
-                NotificationRecyclerViewAdapter adapter = new NotificationRecyclerViewAdapter(context);
+                adapter = new NotificationRecyclerViewAdapter(context);
                 adapter.setNotifications(notifications);
                 notification_rec_view.setAdapter(adapter);
                 notification_rec_view.setLayoutManager(new GridLayoutManager(context, 2)); // splitting the contacts to 2 columns
@@ -126,6 +126,20 @@ public class showUniversityAccount extends AppCompatActivity implements AdapterV
                         showUniversityAccount.this
                 );
                 notificationsSender.SendNotifications();
+
+                FireBaseUniversity.getNotifications(new CustomDataListener() {
+                    @Override
+                    public void onDataChange(@NonNull Object data) {
+                        ArrayList<UniversityNotification> notifications = (ArrayList<UniversityNotification>) data;
+                        adapter.setNotifications(notifications);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull String error) {
+
+                    }
+                });
+
                 Toast.makeText(this, what, Toast.LENGTH_SHORT).show();
             });
         });
