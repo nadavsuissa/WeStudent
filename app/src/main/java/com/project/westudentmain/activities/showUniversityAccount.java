@@ -2,6 +2,7 @@ package com.project.westudentmain.activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,9 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidproject.R;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.project.westudentmain.adapters.NotificationRecyclerViewAdapter;
 import com.project.westudentmain.classes.UniversityNotification;
 import com.project.westudentmain.util.CustomDataListener;
 import com.project.westudentmain.util.FcmNotificationsSender;
@@ -30,6 +34,8 @@ import java.util.Locale;
 
 public class showUniversityAccount extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     final Calendar myCalendar = Calendar.getInstance();
+    private RecyclerView notification_rec_view;
+    private Context context = this;
 
     Button send_notification;
     EditText date, head, body;
@@ -45,6 +51,22 @@ public class showUniversityAccount extends AppCompatActivity implements AdapterV
         setContentView(R.layout.activity_show_university_account);
         FirebaseMessaging.getInstance().subscribeToTopic("all");
 
+        notification_rec_view = findViewById(R.id.notificationRV);
+        FireBaseUniversity.getNotifications(new CustomDataListener() {
+            @Override
+            public void onDataChange(@NonNull Object data) {
+                ArrayList<UniversityNotification> notifications = (ArrayList<UniversityNotification>) data;
+                NotificationRecyclerViewAdapter adapter = new NotificationRecyclerViewAdapter(context);
+                adapter.setNotifications(notifications);
+                notification_rec_view.setAdapter(adapter);
+                notification_rec_view.setLayoutManager(new GridLayoutManager(context, 2)); // splitting the contacts to 2 columns
+            }
+
+            @Override
+            public void onCancelled(@NonNull String error) {
+
+            }
+        });
 
         department = findViewById(R.id.notification_department);
         department.setOnItemSelectedListener(this);
