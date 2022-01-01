@@ -48,7 +48,9 @@
             android:exported="true" />
         <activity
             android:name="com.project.westudentmain.activities.Register"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity
             android:name="com.project.westudentmain.activities.Login"
             android:exported="true">
