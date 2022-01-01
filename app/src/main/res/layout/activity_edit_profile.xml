@@ -7,7 +7,6 @@
     android:background="@drawable/backgroundimage">
 
 
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -28,15 +27,14 @@
         android:id="@+id/editTextTextPersonName4"
         android:layout_width="300dp"
         android:layout_height="40dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_corner"
         android:ems="10"
         android:gravity="center"
         android:hint="@string/enter_a_bio"
-        android:background="@drawable/rounded_corner"
         android:inputType="textPersonName"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11"
         tools:ignore="TouchTargetSizeCheck" />
@@ -45,17 +43,16 @@
         android:id="@+id/textView11"
         android:layout_width="150dp"
         android:layout_height="25dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_corner"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="4dp"
+
         android:gravity="center"
         android:text="@string/bio"
-
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
+
     <TextView
         android:id="@+id/textViewProfile"
         android:layout_width="match_parent"
@@ -71,7 +68,6 @@
 
 
     <TextView
-        android:background="@drawable/rounded_corner"
 
         android:id="@+id/TextViewName"
         android:layout_width="150dp"
@@ -88,12 +84,12 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <EditText
-        android:background="@drawable/rounded_corner"
-
         android:id="@+id/EditTextName"
+
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_corner"
         android:ems="10"
         android:gravity="center"
         android:hint="@string/enter_your_name"
@@ -108,7 +104,6 @@
         tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
     <TextView
-        android:background="@drawable/rounded_corner"
 
         android:id="@+id/TextViewSurName"
         android:layout_width="150dp"
@@ -125,12 +120,12 @@
         app:layout_constraintTop_toBottomOf="@+id/EditTextName" />
 
     <EditText
-        android:background="@drawable/rounded_corner"
-
         android:id="@+id/EditTextSurname"
+
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_corner"
         android:ems="10"
         android:gravity="center"
         android:hint="@string/enter_your_surname"
@@ -145,7 +140,6 @@
         tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
     <TextView
-        android:background="@drawable/rounded_corner"
 
         android:id="@+id/TextViewPhoneNo"
         android:layout_width="150dp"
@@ -162,12 +156,12 @@
         app:layout_constraintTop_toBottomOf="@+id/EditTextSurname" />
 
     <EditText
-        android:background="@drawable/rounded_corner"
-
         android:id="@+id/EditTextPhoneNo"
+
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_corner"
         android:ems="10"
         android:gravity="center"
         android:hint="@string/enter_your_phone_number"
@@ -187,9 +181,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
+        android:backgroundTint="#F8CBA1"
         android:text="@string/ok"
         android:textAlignment="center"
-        android:backgroundTint="#F8CBA1"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -199,26 +193,24 @@
         app:layout_constraintVertical_bias="0.868" />
 
     <TextView
-        android:background="@drawable/rectangle_border"
+
         android:id="@+id/textView3"
         android:layout_width="150dp"
         android:layout_height="25dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="128dp"
         android:gravity="center"
         android:text="@string/user_name"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewProfile" />
 
     <TextView
-        android:background="@drawable/rectangle_border"
         android:id="@+id/textView6"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginTop="12dp"
+        android:background="@drawable/rectangle_border"
         android:gravity="center"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -231,7 +223,6 @@
         android:layout_width="150dp"
         android:layout_height="25dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/rounded_corner"
         android:gravity="center"
         android:text="@string/address"
 
@@ -247,10 +238,10 @@
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corner"
         android:ems="10"
         android:gravity="center"
         android:hint="@string/enter_an_address"
-        android:background="@drawable/rounded_corner"
 
         android:inputType="textPersonName"
         android:textAlignment="center"

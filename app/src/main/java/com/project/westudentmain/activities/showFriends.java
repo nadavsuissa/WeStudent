@@ -221,8 +221,11 @@ public class showFriends extends AppCompatActivity {
             };
             if (getIntent().getBooleanExtra("from profile", false)) {
                 fire_base_data.getFriends(customDataListener);
+
             } else {
+                txt_headline.setText("All Users");
                 fire_base_data.getAllUsers(customDataListener);
+
             }
         }
     }
