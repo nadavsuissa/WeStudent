@@ -37,7 +37,7 @@ import com.project.westudentmain.util.FireBaseLogin;
 import java.io.File;
 
 // TODO: swap dgree with degree
-public class Register extends AppCompatActivity {
+public class Register extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private ImageView student_card;
     private Button btn2_signup, btn_upload_photo;
     private EditText user_email, user_password, user_firstName, user_lastName, user_userName, user_university, user_dgree, user_homeTown, user_Bio;
@@ -45,6 +45,10 @@ public class Register extends AppCompatActivity {
 
     private Spinner spinner_year;
     private int year;
+
+    private Spinner department;
+    private String string_department;
+    private String[] array_department = {"computers", "math", "physics", "medical", "engineering", "psychology", "grass"};
 
     private FireBaseLogin fire_base;
     private FireBaseData fire_base_data;
@@ -64,6 +68,12 @@ public class Register extends AppCompatActivity {
         fire_base_data = FireBaseData.getInstance();
 
         String[] year_options = {"1", "2", "3", "4", "5", "6", "7"};
+
+        department = findViewById(R.id.spinner_department);
+        department.setOnItemSelectedListener(this);
+        ArrayAdapter ad = new ArrayAdapter(this, android.R.layout.simple_spinner_item, array_department);
+        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        department.setAdapter(ad);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -121,6 +131,7 @@ public class Register extends AppCompatActivity {
                     profile.setHomeTown(homeTown);
                     profile.setBIO(bio);
                     profile.setStartingYear(year);
+                    profile.setDepartment(string_department);
                     user.setProfile(profile);
 
 
@@ -270,4 +281,13 @@ public class Register extends AppCompatActivity {
         txt_year = findViewById(R.id.txt_year_register);
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+        string_department = array_department[position];
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }
