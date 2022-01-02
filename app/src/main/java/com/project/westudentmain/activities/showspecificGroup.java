@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -177,25 +178,16 @@ public class showspecificGroup extends AppCompatActivity {
 
 
             btn_leave_group.setOnClickListener(v -> {
-                FireBaseGroup.getGroupData(group.getGroupId(), new CustomDataListener() {
+                FireBaseData.getUser(new CustomDataListener() {
                     @Override
                     public void onDataChange(@NonNull Object data) {
-                        Group group_functions = (Group) data;
-                        FireBaseData.getUser(new CustomDataListener() {
-                            @Override
-                            public void onDataChange(@NonNull Object data) {
-                                User my_user = (User) data;
-                                if(group_functions.isOnManagerList(my_user.getUserName())){
-                                    fireBaseGroup.deleteGroup(group.getGroupId(), (what, ok) -> {
-                                    });
-                                }
-                                else {
-                                    fireBaseGroup.leaveGroup(group.getGroupId(), (what, ok) -> {
-                                    });
-                                }
+                        User my_user = (User) data;
+                        FireBaseGroup.isGroupManager(my_user.getUserName(), group.getGroupId(), (what, ok) -> {
+                            if(ok){
+                                popUpDialogDelete("delete");
                             }
-                            @Override
-                            public void onCancelled(@NonNull String error) {
+                            else {
+                                popUpDialogDelete("leave");
                             }
                         });
                     }
@@ -205,6 +197,33 @@ public class showspecificGroup extends AppCompatActivity {
                 });
             });
         }
+    }
+    private void popUpDialogDelete(String option) {
+        AlertDialog alertDialog = new AlertDialog.Builder(context)
+                //set title
+                .setTitle("Are you sure you want to "+option+" this group?")
+                //set positive button
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+                        if (option.equals("delete")){
+                            fireBaseGroup.deleteGroup(group.getGroupId(), (what, ok) -> {
+                            });
+                        }
+                        else {
+                            fireBaseGroup.leaveGroup(group.getGroupId(), (what, ok) -> {
+                            });
+                        }
+                    }
+                })
+                //set negative button
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .show();
     }
 
     private void configTextSwitcher() {

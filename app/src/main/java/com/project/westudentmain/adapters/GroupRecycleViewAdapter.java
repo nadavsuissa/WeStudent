@@ -2,7 +2,9 @@ package com.project.westudentmain.adapters;
 
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,6 +116,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
         }else if (selected_group.isOnManagerList(my_user_id)) {
             holder.btn_join.setText("delete");
             holder.btn_join.setBackgroundColor(context.getColor(R.color.red));
+            holder.btn_withdraw.setVisibility(View.GONE);
         }
     }
 
@@ -150,11 +153,32 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
                 holder.btn_join.setBackgroundColor(context.getColor(R.color.blue));
             });
         }else if (btn_status.equals("delete")) {
-            FireBaseGroup.getInstance().deleteGroup(selected_group_id, (what, ok) -> {
-                    groups.remove(position);
-                    notifyDataSetChanged();
-            });
+            popUpDialog(selected_group_id);
         }
+    }
+
+    private void popUpDialog(String selected_group_id) {
+        AlertDialog alertDialog = new AlertDialog.Builder(context)
+                //set title
+                .setTitle("Are you sure you want to delete this group?")
+                //set positive button
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+                        FireBaseGroup.getInstance().deleteGroup(selected_group_id, (what, ok) -> {
+                            groups.remove(position);
+                            notifyDataSetChanged();
+                        });
+                    }
+                })
+                //set negative button
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .show();
     }
 
 
