@@ -29,9 +29,6 @@
             android:name="com.project.westudentmain.activities.createGroup"
             android:exported="true" />
         <activity
-            android:name="com.project.westudentmain.activities.showProject"
-            android:exported="true" />
-        <activity
             android:name="com.project.westudentmain.activities.showGroup"
             android:exported="true" />
         <activity
