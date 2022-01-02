@@ -28,13 +28,14 @@
         android:id="@+id/groupdescriptionoutput"
         android:layout_width="160dp"
         android:layout_height="50dp"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="204dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/rounded_corner"
         android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupmanageroutput" />
+        app:layout_constraintTop_toBottomOf="@+id/groupmanageroutput"
+        app:layout_constraintVertical_bias="0.8" />
 
     <TextView
         android:id="@+id/groupnametv"
@@ -101,8 +102,8 @@
         android:id="@+id/groupmanageroutput"
         android:layout_width="160dp"
         android:layout_height="50dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="204dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/rounded_corner"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -129,31 +130,28 @@
         android:id="@+id/groupmanagertv"
         android:layout_width="160dp"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/rounded_corner"
         android:gravity="center"
         android:text="@string/manager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.58"
-        app:layout_constraintStart_toEndOf="@+id/groupmanageroutput"
+        app:layout_constraintEnd_toStartOf="@+id/groupmanageroutput"
+        app:layout_constraintHorizontal_bias="0.363"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
     <TextView
         android:id="@+id/groupdescriptiontv"
         android:layout_width="160dp"
         android:layout_height="50dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="32dp"
         android:background="@drawable/rounded_corner"
         android:gravity="center"
         android:text="@string/group_description"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/groupmanagertv"
+        app:layout_constraintEnd_toStartOf="@+id/groupdescriptionoutput"
+        app:layout_constraintHorizontal_bias="0.363"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groupmanagertv"
-        app:layout_constraintVertical_bias="0.526" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/imageView29"
