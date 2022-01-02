@@ -114,7 +114,6 @@
                 android:layout_width="280dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="600dp"
                 android:ems="10"
 
                 android:hint="Degree"
@@ -122,21 +121,45 @@
                 android:inputType="textEmailAddress"
                 android:minHeight="48dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/txt_department_register" />
+
+            <TextView
+                android:id="@+id/txt_department_register"
+                android:layout_width="123dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="32dp"
+                android:text="department:"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/registerHomeTown"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/registerUniversity"
+                app:layout_constraintTop_toBottomOf="@+id/registerUniversity" />
+
+
+            <Spinner
+                android:id="@+id/spinner_department"
+                android:layout_width="159dp"
+                android:layout_height="51dp"
+                android:spinnerMode="dialog"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_department_register"
+                app:layout_constraintStart_toEndOf="@+id/txt_department_register"
+                app:layout_constraintTop_toTopOf="@+id/txt_department_register"
+                app:layout_constraintVertical_bias="1.0" />
 
             <EditText
                 android:id="@+id/registerHomeTown"
                 android:layout_width="280dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="669dp"
+                android:layout_marginTop="16dp"
                 android:ems="10"
                 android:hint="home town"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
                 android:minHeight="48dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/registerDegree" />
 
             <TextView
                 android:id="@+id/txt_year_register"
@@ -161,22 +184,22 @@
                 app:layout_constraintBottom_toBottomOf="@+id/txt_year_register"
                 app:layout_constraintStart_toEndOf="@+id/txt_year_register"
                 app:layout_constraintTop_toTopOf="@+id/txt_year_register"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="0.187" />
 
             <EditText
                 android:id="@+id/registerBio"
                 android:layout_width="280dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="808dp"
+                android:layout_marginTop="16dp"
                 android:ems="10"
-                android:hint="Tell us about you"
 
+                android:hint="Tell us about you"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
                 android:minHeight="48dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/txt_year_register" />
 
             <EditText
                 android:id="@+id/registerUserName"
@@ -270,14 +293,24 @@
                 app:srcCompat="@drawable/school" />
 
             <ImageView
+                android:id="@+id/imageView17"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView14"
+                app:srcCompat="@drawable/school" />
+
+            <ImageView
                 android:id="@+id/imageView15"
 
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="596dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_department_register"
                 app:srcCompat="@drawable/degrees" />
 
             <ImageView
