@@ -32,9 +32,6 @@
             android:name="com.project.westudentmain.activities.showFriends"
             android:exported="true" />
         <activity
-            android:name="com.project.westudentmain.activities.showChat"
-            android:exported="true" />
-        <activity
             android:name="com.project.westudentmain.activities.showSettings"
             android:exported="true" />
         <activity
