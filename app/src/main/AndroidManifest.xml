@@ -23,9 +23,6 @@
             android:name="com.project.westudentmain.activities.showUniversityAccount"
             android:exported="false" />
         <activity
-            android:name="com.project.westudentmain.activities.createProject"
-            android:exported="true" />
-        <activity
             android:name="com.project.westudentmain.activities.createGroup"
             android:exported="true" />
         <activity
